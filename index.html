@@ -849,14 +849,14 @@
             // Fixed: Create link to GitHub Pages using githubPath if available
             let chapterLink = '#';
             if (chapter.githubPath) {
-                chapterLink = '/${chapter.githubPath}/`;
+                chapterLink = `/${chapter.githubPath}/index.html`;
             } else if (chapter.path) {
                 // Fallback to constructed path if githubPath is not available
-                chapterLink = `https://asura-cr.github.io/series/${seriesName.toLowerCase().replace(/\s+/g, '_')}/chapter_${chapter.chapterNumber}/`;
+                chapterLink = `/series/${seriesName.toLowerCase().replace(/\s+/g, '_')}/chapter_${chapter.chapterNumber}/index.html`;
             }
             
             chapterItem.innerHTML = `
-                <a href="${chapterLink}" class="text-purple-500 hover:text-purple-400 chapter-link" target="_blank">
+                <a href="${chapterLink}" class="text-purple-500 hover:text-purple-400 chapter-link">
                     • Chapter ${chapter.chapterNumber}
                 </a>
                 <span class="text-gray-400">${chapter.formattedTime}</span>
@@ -864,7 +864,6 @@
             
             chapterList.appendChild(chapterItem);
         });
-        
         // Assemble the manga item
         contentDiv.appendChild(title);
         contentDiv.appendChild(chapterList);
