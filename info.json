@@ -78,6 +78,12 @@
         "filePattern": "01-kopya-optimized.webp"
       },
       {
+        "chapter": 119,
+        "startNumber": 280463,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp"
+      },
+      {
         "chapter": 143,
         "startNumber": 280451,
         "frameCount": 12,
