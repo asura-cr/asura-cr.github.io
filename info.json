@@ -11,6 +11,17 @@
     ]
   },
   {
+    "series": "Somebody Stop the Pope",
+    "chapters": [
+      {
+        "chapter": 33,
+        "startNumber": 280424,
+        "frameCount": 10,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  },
+  {
     "series": "The Terminally Ill Young Master",
     "chapters": [
       {
