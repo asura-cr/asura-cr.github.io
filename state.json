@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280297,
+  "lastStartNumber": 280320,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -15,6 +15,11 @@
       "timestamp": "2025-03-14T12:37:56.356086",
       "imageCount": 16,
       "githubPath": "series/logging_10_000_years_into_the_future/chapter_201"
+    },
+    "Unknown Series_83": {
+      "timestamp": "2025-03-14T12:44:47.677402",
+      "imageCount": 23,
+      "githubPath": "series/unknown_series/chapter_83"
     }
   }
 }
