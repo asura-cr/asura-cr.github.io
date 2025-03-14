@@ -1,10 +1,15 @@
 {
-  "lastStartNumber": 280268,
+  "lastStartNumber": 280281,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
       "imageCount": 18,
       "githubPath": "series/unknown_series/chapter_27"
+    },
+    "The Terminally Ill Young Master_48": {
+      "timestamp": "2025-03-14T12:31:41.888479",
+      "imageCount": 13,
+      "githubPath": "series/the_terminally_ill_young_master/chapter_48"
     }
   }
 }
