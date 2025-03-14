@@ -10,7 +10,6 @@
     <style>
         .chapter-link:hover {
             text-decoration: underline;
-            text-color: #FFFDD0
         }
 
         .card {
@@ -850,7 +849,7 @@
             // Fixed: Create link to GitHub Pages using githubPath if available
             let chapterLink = '#';
             if (chapter.githubPath) {
-                chapterLink = `https://asura-cr.github.io/${chapter.githubPath}/`;
+                chapterLink = '/${chapter.githubPath}/`;
             } else if (chapter.path) {
                 // Fallback to constructed path if githubPath is not available
                 chapterLink = `https://asura-cr.github.io/series/${seriesName.toLowerCase().replace(/\s+/g, '_')}/chapter_${chapter.chapterNumber}/`;
