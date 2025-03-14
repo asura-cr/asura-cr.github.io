@@ -53,6 +53,12 @@
         "startNumber": 280321,
         "frameCount": 23,
         "filePattern": "01-kopya-optimized.webp"
+      },
+      {
+        "chapter": "unknown",
+        "startNumber": 280374,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp"
       }
     ]
   }
