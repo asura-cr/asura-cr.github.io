@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280517,
+  "lastStartNumber": 280529,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -80,6 +80,11 @@
       "timestamp": "2025-03-14T14:09:12.688713",
       "imageCount": 15,
       "githubPath": "series/the_heavenly_demon_wants_a_quiet_life/chapter_23"
+    },
+    "Unknown Series_194": {
+      "timestamp": "2025-03-14T14:15:19.804966",
+      "imageCount": 12,
+      "githubPath": "series/unknown_series/chapter_194"
     }
   }
 }
