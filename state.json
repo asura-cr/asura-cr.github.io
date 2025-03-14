@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280423,
+  "lastStartNumber": 280433,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -50,6 +50,11 @@
       "timestamp": "2025-03-14T13:23:13.647846",
       "imageCount": 13,
       "githubPath": "series/unknown_series/chapter_48"
+    },
+    "Somebody Stop the Pope_33": {
+      "timestamp": "2025-03-14T13:34:48.504346",
+      "imageCount": 10,
+      "githubPath": "series/somebody_stop_the_pope/chapter_33"
     }
   }
 }
