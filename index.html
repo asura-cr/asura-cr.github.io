@@ -800,8 +800,8 @@
         }
     }
 
-    // Function to display manga in the grid
-    function displayManga(seriesList) {
+// Function to display manga in the grid
+function displayManga(seriesList) {
     const mangaGrid = document.getElementById('mangaGrid');
     mangaGrid.innerHTML = '';
     
@@ -846,7 +846,7 @@
             const chapterItem = document.createElement('li');
             chapterItem.className = 'flex items-center justify-between';
             
-            // Fixed: Create link to GitHub Pages using githubPath if available
+            // Use githubPath directly if available
             let chapterLink = '#';
             if (chapter.githubPath) {
                 chapterLink = `/${chapter.githubPath}/index.html`;
@@ -877,7 +877,7 @@
     // Populate the 3D carousel
     populateSeriesCards(seriesList);
 }
-    
+
     // Helper function to format series name (convert from snake_case to Title Case)
     function formatSeriesName(seriesName) {
         if (seriesName === 'Unknown Series') return seriesName;
