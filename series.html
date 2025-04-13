@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asura Premium - Series View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white">
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="fixed top-0 left-0 w-full h-full bg-gray-900 flex justify-center items-center z-50">
+    <div class="flex flex-col items-center">
+      <div class="mb-4">
+        <span class="text-2xl font-bold">Loading</span>
+        <span class="text-purple-500 text-2xl">...</span>
+      </div>
+      <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-purple-600 rounded-full" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content" class="hidden">
+    <div class="container mx-auto p-4">
+      <!-- Series Info Card -->
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <div class="flex flex-col md:flex-row">
+          <img id="series-cover" alt="Cover image" class="w-48 h-auto rounded-lg" src="https://placehold.co/200x300"/>
+          <div class="md:ml-4 mt-4 md:mt-0">
+            <h1 id="series-title" class="text-2xl font-bold">Loading series...</h1>
+            <div class="mt-4">
+              <div class="flex items-center mb-2">
+                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded">Status</span>
+                <span id="series-status" class="ml-2 bg-gray-700 text-gray-300 px-2 py-1 rounded">Loading...</span>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded">Type</span>
+                <span id="series-type" class="ml-2 bg-gray-700 text-gray-300 px-2 py-1 rounded">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chapters Section -->
+      <div class="bg-gray-800 p-4 mt-4 rounded-lg">
+        <h2 id="chapter-heading" class="text-xl font-bold mb-4">Chapter Loading...</h2>
+        
+        <!-- First/Latest Chapter Buttons -->
+        <div class="flex space-x-4 mb-4">
+          <button id="first-chapter-btn" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-1/2">
+            First Chapter<br/>
+            <span class="font-bold">Chapter 1</span>
+          </button>
+          <button id="latest-chapter-btn" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-1/2">
+            New Chapter<br/>
+            <span id="latest-chapter-num" class="font-bold">Chapter ?</span>
+          </button>
+        </div>
+        
+        <!-- Search Bar -->
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="w-full p-2 rounded-lg bg-gray-700 text-gray-300 mb-4" 
+          placeholder="Search Chapter. Example: 25 or 178"
+        />
+        
+        <!-- Chapter List -->
+        <div id="chapterList" class="space-y-2">
+          <!-- Chapters will be populated here by JavaScript -->
+          <div class="bg-gray-700 p-2 rounded-lg flex justify-between items-center">
+            <div>
+              <span class="font-bold">Loading chapters...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Simulate loading progress
+  window.addEventListener('DOMContentLoaded', function() {
+    let progress = 0;
+    const progressBar = document.getElementById('progress-bar');
+    const interval = setInterval(() => {
+      progress += 5;
+      progressBar.style.width = progress + '%';
+      if (progress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          document.getElementById('loading-screen').style.display = 'none';
+          document.getElementById('content').classList.remove('hidden');
+        }, 500);
+      }
+    }, 150);
+  });
+
+  // Get series name from URL parameter
+  function getSeriesNameFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let seriesName = urlParams.get('series');
+    
+    if (!seriesName) {
+      // If no parameter is provided, try to get from path
+      const pathParts = window.location.pathname.split('/');
+      const filename = pathParts[pathParts.length - 1];
+      if (filename && filename !== 'index.html') {
+        seriesName = filename.replace('.html', '').replace(/_/g, ' ');
+      }
+    }
+    
+    return seriesName || 'playing_the_perfect_fox_eyed_villain'; // Default series as fallback
+  }
+
+  // Load series data from state.json (or generate mock data for this demo)
+  async function loadSeriesData() {
+    const seriesName = getSeriesNameFromUrl();
+    let seriesData;
+    
+    try {
+      // In a real implementation, you would fetch this data from state.json
+      // For this demo, we'll generate mock data
+      const response = await fetch("state.json");
+      if (response.ok) {
+        const data = await response.json();
+        // Process your state.json data to get the series info
+        console.log("Loaded real data from state.json");
+        // This part would be implemented based on your state.json structure
+      }
+    } catch (error) {
+      console.log("Using mock data:", error);
+    }
+    
+    // Fallback to mock data
+    seriesData = generateMockSeriesData(seriesName);
+    
+    // Update page title
+    document.title = `${seriesData.name} - Asura Premium`;
+    
+    // Update series info
+    document.getElementById('series-title').textContent = seriesData.name;
+    document.getElementById('series-status').textContent = seriesData.status;
+    document.getElementById('series-type').textContent = seriesData.type;
+    document.getElementById('chapter-heading').textContent = `Chapter ${seriesData.name}`;
+    document.getElementById('latest-chapter-num').textContent = `Chapter ${seriesData.latestChapter}`;
+    
+    // Load chapters
+    displayChapters(seriesData.chapters, seriesData.originalName);
+    
+    // Set up event listeners
+    setupEventListeners(seriesData);
+  }
+  
+  // Generate mock data for a series
+  function generateMockSeriesData(seriesName) {
+    const formattedName = formatSeriesName(seriesName);
+    
+    // Mock chapters data based on your example
+    const chapters = [
+      { number: 8, date: "April 13th 2025", isLatest: true },
+      { number: 7, date: "April 10th 2025", isLatest: false },
+      { number: 6, date: "March 25th 2025", isLatest: false },
+      { number: 5, date: "March 25th 2025", isLatest: false },
+      { number: 4, date: "March 24th 2025", isLatest: false },
+      { number: 3, date: "March 20th 2025", isLatest: false },
+      { number: 2, date: "March 15th 2025", isLatest: false },
+      { number: 1, date: "March 10th 2025", isLatest: false }
+    ];
+    
+    return {
+      name: formattedName,
+      originalName: seriesName,
+      status: "Ongoing",
+      type: "Manhwa",
+      latestChapter: 8,
+      chapters: chapters
+    };
+  }
+  
+  // Display chapters in the list
+  function displayChapters(chapters, seriesName) {
+    const chapterList = document.getElementById('chapterList');
+    chapterList.innerHTML = '';
+    
+    if (chapters.length === 0) {
+      chapterList.innerHTML = `
+        <div class="text-center p-8 bg-gray-700 rounded-lg">
+          <p class="text-xl">No chapters found.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    chapters.forEach(chapter => {
+      const chapterItem = document.createElement('div');
+      chapterItem.className = 'bg-gray-700 p-2 rounded-lg flex justify-between items-center';
+      
+      // Generate chapter link path (would link to actual chapter in a real app)
+      const chapterPath = `./chapters/${seriesName.toLowerCase().replace(/\s+/g, '_')}_chapter_${chapter.number}.html`;
+      
+      chapterItem.innerHTML = `
+        <div>
+          <span class="font-bold">Chapter ${chapter.number}</span>
+          <span class="ml-2 text-sm text-gray-400">${chapter.date}</span>
+        </div>
+        ${chapter.isLatest ? '<i class="fas fa-check-circle text-purple-600"></i>' : ''}
+      `;
+      
+      // Add click event to navigate to chapter
+      chapterItem.addEventListener('click', function() {
+        window.location.href = chapterPath;
+      });
+      
+      chapterList.appendChild(chapterItem);
+    });
+  }
+  
+  // Set up event listeners
+  function setupEventListeners(seriesData) {
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      if (!searchTerm) {
+        displayChapters(seriesData.chapters, seriesData.originalName);
+        return;
+      }
+      
+      const filteredChapters = seriesData.chapters.filter(chapter => 
+        chapter.number.toString().includes(searchTerm)
+      );
+      
+      displayChapters(filteredChapters, seriesData.originalName);
+    });
+    
+    // First chapter button
+    document.getElementById('first-chapter-btn').addEventListener('click', function() {
+      const firstChapterPath = `./chapters/${seriesData.originalName.toLowerCase().replace(/\s+/g, '_')}_chapter_1.html`;
+      window.location.href = firstChapterPath;
+    });
+    
+    // Latest chapter button
+    document.getElementById('latest-chapter-btn').addEventListener('click', function() {
+      const latestChapterPath = `./chapters/${seriesData.originalName.toLowerCase().replace(/\s+/g, '_')}_chapter_${seriesData.latestChapter}.html`;
+      window.location.href = latestChapterPath;
+    });
+  }
+  
+  // Helper function to format series name
+  function formatSeriesName(seriesName) {
+    if (!seriesName) return 'Unknown Series';
+    
+    return seriesName
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  
+  // Load series data when the page loads
+  document.addEventListener('DOMContentLoaded', loadSeriesData);
+</script>
+</body>
+</html>
