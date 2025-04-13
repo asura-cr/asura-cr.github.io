@@ -35,14 +35,6 @@
         </div>
         <p class="text-gray-400 text-sm">Made by l3v2s on discord</p>
       </header>
-      
-      <!-- Featured Series Carousel -->
-      <div class="mb-8 overflow-hidden">
-        <h2 class="text-xl font-bold mb-4">Featured Series</h2>
-        <div id="featured-series" class="flex space-x-4 overflow-x-auto pb-4">
-          <!-- Will be populated by JavaScript -->
-        </div>
-      </div>
 
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
@@ -52,10 +44,10 @@
           <h2 class="text-xl font-bold">Latest Chapters</h2>
         </div>
         <div class="flex space-x-4">
-          <select id="seriesFilter" class="bg-gray-800 text-white px-4 py-2 rounded text-sm">
+          <select id="seriesFilter" class="bg-black border border-gray-700 text-white px-4 py-2 rounded text-sm">
             <option value="all">All Series</option>
           </select>
-          <button id="refreshButton" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded flex items-center">
+          <button id="refreshButton" class="bg-black border border-gray-700 hover:bg-gray-900 text-white px-4 py-2 rounded flex items-center">
             <i class="fas fa-sync-alt mr-2"></i>
             <span>Refresh</span>
           </button>
@@ -164,9 +156,8 @@
         filterSelect.appendChild(option);
       });
       
-      // Display the manga and featured series
+      // Display the manga
       displayManga(sortedSeries);
-      displayFeaturedSeries(sortedSeries.slice(0, 5));
       
       // Set up event listeners
       filterSelect.addEventListener('change', () => {
@@ -186,7 +177,7 @@
     } catch (error) {
       console.error('Error loading list:', error);
       document.getElementById('mangaGrid').innerHTML = `
-        <div class="col-span-full text-center p-8 bg-gray-800 rounded">
+        <div class="col-span-full text-center p-8 bg-black border border-gray-800 rounded">
           <p class="text-xl">Failed to load manga data. Please check that state.json exists.</p>
           <p class="mt-2 text-gray-400">${error.message}</p>
           <button id="retryButton" class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
@@ -202,48 +193,6 @@
     }
   }
 
-  // Function to populate featured series
-  function displayFeaturedSeries(seriesList) {
-    const container = document.getElementById('featured-series');
-    container.innerHTML = '';
-    
-    seriesList.forEach(([seriesName, chapters]) => {
-      const formattedName = formatSeriesName(seriesName);
-      const card = document.createElement('div');
-      card.className = 'flex-shrink-0 w-48';
-      
-      const latestChapter = chapters[0] || { chapterNumber: 'N/A', formattedTime: '' };
-      
-      card.innerHTML = `
-        <div class="bg-gray-800 p-2 rounded">
-          <img alt="Cover image of ${formattedName}" class="rounded mb-2 w-full h-64 object-cover" src="https://placehold.co/300x400"/>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-yellow-500">
-              ${Math.floor(Math.random() * 5) + 6}
-              <i class="fas fa-star"></i>
-            </span>
-            <span class="text-green-500">
-              • Ongoing
-            </span>
-          </div>
-          <h2 class="text-lg font-bold mb-2 truncate" title="${formattedName}">
-            ${formattedName}
-          </h2>
-          <div class="bg-gray-700 p-2 rounded mb-2">
-            <span class="text-yellow-500">
-              Chapter ${latestChapter.chapterNumber}
-            </span>
-            <span class="text-red-500">
-              • New
-            </span>
-          </div>
-        </div>
-      `;
-      
-      container.appendChild(card);
-    });
-  }
-
   // Function to display manga in the grid
   function displayManga(seriesList) {
     const mangaGrid = document.getElementById('mangaGrid');
@@ -251,7 +200,7 @@
     
     if (seriesList.length === 0) {
       mangaGrid.innerHTML = `
-        <div class="col-span-full text-center p-8 bg-gray-800 rounded">
+        <div class="col-span-full text-center p-8 bg-black border border-gray-800 rounded">
           <p class="text-xl">No chapters found.</p>
         </div>
       `;
@@ -261,7 +210,7 @@
     seriesList.forEach(([seriesName, chapters]) => {
       const formattedName = formatSeriesName(seriesName);
       const card = document.createElement('div');
-      card.className = 'bg-gray-800 p-2 rounded';
+      card.className = 'bg-black border border-gray-800 p-2 rounded';
       
       // Get the two most recent chapters
       const latestChapters = chapters.slice(0, 2);
@@ -296,7 +245,7 @@
           '#';
         
         const chapterDiv = document.createElement('div');
-        chapterDiv.className = 'bg-gray-700 p-2 rounded mb-2';
+        chapterDiv.className = 'bg-gray-900 p-2 rounded mb-2';
         
         chapterDiv.innerHTML = `
           <a href="${htmlLink}" class="flex items-center justify-between w-full">
