@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manga Downloader - Series & Chapters</title>
+    <title>Encore - Bypass Asura Premium </title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -41,7 +41,7 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
@@ -115,28 +115,49 @@
                 
                 // Helper function to calculate time ago text
                 function getTimeAgoText(timestamp) {
-                    const uploadTime = new Date(timestamp);
-                    const now = new Date();
-                    const diffMs = now - uploadTime;
-                    
-                    // Convert to appropriate time units
-                    const diffSecs = Math.floor(diffMs / 1000);
-                    const diffMins = Math.floor(diffSecs / 60);
-                    const diffHours = Math.floor(diffMins / 60);
-                    const diffDays = Math.floor(diffHours / 24);
-                    
-                    let timeAgoText = '';
-                    if (diffDays > 0) {
-                        timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-                    } else if (diffHours > 0) {
-                        timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-                    } else if (diffMins > 0) {
-                        timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-                    } else {
-                        timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                    try {
+                        if (!timestamp) return "Unknown time";
+                        
+                        const uploadTime = new Date(timestamp);
+                        // Check if date is valid
+                        if (isNaN(uploadTime.getTime())) return "Unknown time";
+                        
+                        const now = new Date();
+                        const diffMs = now - uploadTime;
+                        
+                        // Handle any negative time differences (clock skew)
+                        if (diffMs < 0) return "Just now";
+                        
+                        // Check if the timestamp is too old (more than 30 days)
+                        // This is likely due to an invalid timestamp format
+                        if (diffMs > 30 * 24 * 60 * 60 * 1000) {
+                            // Check if chapter was just uploaded and timestamp might be wrong
+                            // In this case, just say "Recently"
+                            return "Recently";
+                        }
+                        
+                        // Convert to appropriate time units
+                        const diffSecs = Math.floor(diffMs / 1000);
+                        const diffMins = Math.floor(diffSecs / 60);
+                        const diffHours = Math.floor(diffMins / 60);
+                        const diffDays = Math.floor(diffHours / 24);
+                        
+                        let timeAgoText = '';
+                        if (diffDays > 0) {
+                            timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+                        } else if (diffHours > 0) {
+                            timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+                        } else if (diffMins > 0) {
+                            timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+                        } else {
+                            timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                        }
+                        
+                        return timeAgoText;
+                    } catch (error) {
+                        console.error("Error calculating time ago:", error);
+                        return "Recently";
                     }
-                    
-                    return timeAgoText;
                 }
                 
                 // Helper function to create chapter items
@@ -171,7 +192,20 @@
                     // Use the chapter's uploadTime if available, otherwise fall back to config
                     let timeAgoText = '';
                     if (chapter.uploadTime) {
-                        timeAgoText = getTimeAgoText(chapter.uploadTime);
+                        // Check if the uploadTime is valid before using it
+                        const uploadTime = new Date(chapter.uploadTime);
+                        if (!isNaN(uploadTime.getTime())) {
+                            // If more than 30 days ago, show "Recently" instead
+                            const now = new Date();
+                            const diffMs = now - uploadTime;
+                            if (diffMs > 30 * 24 * 60 * 60 * 1000) {
+                                timeAgoText = "Recently";
+                            } else {
+                                timeAgoText = getTimeAgoText(chapter.uploadTime);
+                            }
+                        } else {
+                            timeAgoText = "Recently";
+                        }
                     } else {
                         // Fallback to using config lastUpdated
                         timeAgoText = getTimeAgoText(configData.lastUpdated);
