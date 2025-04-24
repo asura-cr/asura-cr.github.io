@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280643,
+  "lastStartNumber": 280662,
   "downloadedChapters": {
     "Unknown Series_26": {
       "timestamp": "2025-04-24T19:35:53.414297",
@@ -35,6 +35,11 @@
       "timestamp": "2025-04-24T20:20:06.712068",
       "imageCount": 11,
       "githubPath": "series/the_hero_returns/chapter_117"
+    },
+    "Unknown Series_72": {
+      "timestamp": "2025-04-24T20:22:50.264482",
+      "imageCount": 19,
+      "githubPath": "series/unknown_series/chapter_72"
     }
   }
 }
