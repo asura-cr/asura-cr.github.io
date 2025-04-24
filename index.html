@@ -106,54 +106,52 @@
                 const seriesContainer = document.getElementById('seriesContainer');
                 seriesContainer.innerHTML = '';
                 
-                // Sort series by latest chapter update
-                seriesData.sort((a, b) => {
-                    const aLatestChapter = Math.max(...a.chapters.map(ch => typeof ch.chapter === 'number' ? ch.chapter : 0));
-                    const bLatestChapter = Math.max(...b.chapters.map(ch => typeof ch.chapter === 'number' ? ch.chapter : 0));
-                    return bLatestChapter - aLatestChapter;
-                });
-                
                 // Helper function to calculate time ago text
-                function getTimeAgoText(timestamp) {
+                function getTimeAgo(timestamp) {
                     if (!timestamp) return 'Unknown time';
                     
-                    const uploadTime = new Date(timestamp);
-                    const now = new Date();
-                    
-                    // Validate the date
-                    if (isNaN(uploadTime.getTime())) {
+                    const date = new Date(timestamp);
+                    if (isNaN(date.getTime())) {
                         return 'Invalid date';
                     }
                     
-                    const diffMs = now - uploadTime;
+                    const now = new Date();
+                    const diff = now - date;
                     
-                    // If the difference is negative (future date), return 'Just now'
-                    if (diffMs < 0) {
-                        return 'Just now';
-                    }
+                    const minutes = Math.floor(diff / 60000);
+                    const hours = Math.floor(minutes / 60);
+                    const days = Math.floor(hours / 24);
                     
-                    // Convert to appropriate time units
-                    const diffSecs = Math.floor(diffMs / 1000);
-                    const diffMins = Math.floor(diffSecs / 60);
-                    const diffHours = Math.floor(diffMins / 60);
-                    const diffDays = Math.floor(diffHours / 24);
-                    
-                    // If more than 10 hours old, don't show the time as the content will be cleaned up
-                    if (diffHours >= 10) {
+                    // If more than 10 hours old, mark as expired
+                    if (hours >= 10) {
                         return 'Expired';
                     }
                     
-                    // Return appropriate time format
-                    if (diffHours > 0) {
-                        return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-                    } else if (diffMins > 0) {
-                        return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-                    } else if (diffSecs > 10) {
-                        return `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                    if (hours > 0) {
+                        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                    } else if (minutes > 0) {
+                        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
                     } else {
-                        return 'Just now';
+                        return 'just now';
                     }
                 }
+
+                // Sort series by latest chapter update
+                seriesData.sort((a, b) => {
+                    // Get latest chapter numbers for comparison
+                    const getLatestChapterNum = (chapters) => {
+                        if (!chapters || chapters.length === 0) return 0;
+                        const nums = chapters.map(ch => {
+                            const num = parseFloat(ch.chapter);
+                            return isNaN(num) ? 0 : num;
+                        });
+                        return Math.max(...nums);
+                    };
+
+                    const aLatest = getLatestChapterNum(a.chapters);
+                    const bLatest = getLatestChapterNum(b.chapters);
+                    return bLatest - aLatest;
+                });
                 
                 // Helper function to create chapter items
                 function createChapterItem(chapter, series, configData) {
@@ -165,7 +163,7 @@
                     const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
                     
                     // Update path to match GitHub repository structure
-                    const chapterPath = `series/${seriesFolder}/${chapterFolder}/index.html`;
+                    const chapterPath = chapter.path ? chapter.path.replace(/\\/g, '/') : `series/${seriesFolder}/${chapterFolder}/index.html`;
                     
                     // Viewer URL
                     const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
@@ -184,16 +182,9 @@
                     const timeInfo = document.createElement('div');
                     timeInfo.className = 'text-gray-400 text-xs mt-1';
                     
-                    // Use the chapter's uploadTime if available, otherwise fall back to config
-                    let timeAgoText = '';
-                    if (chapter.uploadTime) {
-                        timeAgoText = getTimeAgoText(chapter.uploadTime);
-                    } else {
-                        // Fallback to using config lastUpdated
-                        timeAgoText = getTimeAgoText(configData.lastUpdated);
-                    }
-                    
-                    timeInfo.textContent = timeAgoText;
+                    // Use the chapter's uploadTime if available
+                    const timestamp = chapter.uploadTime ? new Date(chapter.uploadTime) : new Date();
+                    timeInfo.textContent = getTimeAgo(timestamp);
                     
                     chapterInfo.appendChild(chapterNumber);
                     chapterInfo.appendChild(timeInfo);
@@ -218,9 +209,15 @@
                 seriesData.forEach(series => {
                     // Sort chapters in descending order
                     series.chapters.sort((a, b) => {
-                        const aChapter = typeof a.chapter === 'number' ? a.chapter : parseInt(a.chapter) || 0;
-                        const bChapter = typeof b.chapter === 'number' ? b.chapter : parseInt(b.chapter) || 0;
-                        return bChapter - aChapter;
+                        const numA = parseFloat(a.chapter);
+                        const numB = parseFloat(b.chapter);
+                        
+                        if (!isNaN(numA) && !isNaN(numB)) {
+                            return numB - numA; // Descending order
+                        }
+                        
+                        // Fallback to string comparison if not numbers
+                        return String(b.chapter).localeCompare(String(a.chapter));
                     });
                     
                     // Create series card
