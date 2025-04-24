@@ -66,6 +66,17 @@
     ]
   },
   {
+    "series": "The Last Adventurer",
+    "chapters": [
+      {
+        "chapter": 62,
+        "startNumber": 280663,
+        "frameCount": 9,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  },
+  {
     "series": "The Terminally Ill Young Master",
     "chapters": [
       {
