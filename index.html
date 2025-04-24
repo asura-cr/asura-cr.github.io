@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manga Downloader - Series & Chapters</title>
+    <title>Encore - Bypass Asura Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -38,7 +38,7 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
@@ -139,8 +139,10 @@
                         // Create folder paths
                         const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
                         const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
-                        const htmlFile = `${seriesFolder}_chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}.html`;
-                        const chapterPath = `downloads/${seriesFolder}/${chapterFolder}/${htmlFile}`;
+                        
+                        // Update path to match GitHub repository structure (series/folder/chapter_folder/index.html)
+                        // instead of downloads/series_folder/chapter_folder/series_chapter.html
+                        const chapterPath = `series/${seriesFolder}/${chapterFolder}/index.html`;
                         
                         // Viewer URL
                         const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
