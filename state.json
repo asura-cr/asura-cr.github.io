@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280662,
+  "lastStartNumber": 280671,
   "downloadedChapters": {
     "Unknown Series_26": {
       "timestamp": "2025-04-24T19:35:53.414297",
@@ -40,6 +40,11 @@
       "timestamp": "2025-04-24T20:22:50.264482",
       "imageCount": 19,
       "githubPath": "series/unknown_series/chapter_72"
+    },
+    "The Last Adventurer_62": {
+      "timestamp": "2025-04-24T20:29:20.288379",
+      "imageCount": 9,
+      "githubPath": "series/the_last_adventurer/chapter_62"
     }
   }
 }
