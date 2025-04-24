@@ -115,48 +115,43 @@
                 
                 // Helper function to calculate time ago text
                 function getTimeAgoText(timestamp) {
-                    try {
-                        if (!timestamp) return "Unknown time";
-                        
-                        const uploadTime = new Date(timestamp);
-                        // Check if date is valid
-                        if (isNaN(uploadTime.getTime())) return "Unknown time";
-                        
-                        const now = new Date();
-                        const diffMs = now - uploadTime;
-                        
-                        // Handle any negative time differences (clock skew)
-                        if (diffMs < 0) return "Just now";
-                        
-                        // Check if the timestamp is too old (more than 30 days)
-                        // This is likely due to an invalid timestamp format
-                        if (diffMs > 30 * 24 * 60 * 60 * 1000) {
-                            // Check if chapter was just uploaded and timestamp might be wrong
-                            // In this case, just say "Recently"
-                            return "Recently";
-                        }
-                        
-                        // Convert to appropriate time units
-                        const diffSecs = Math.floor(diffMs / 1000);
-                        const diffMins = Math.floor(diffSecs / 60);
-                        const diffHours = Math.floor(diffMins / 60);
-                        const diffDays = Math.floor(diffHours / 24);
-                        
-                        let timeAgoText = '';
-                        if (diffDays > 0) {
-                            timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-                        } else if (diffHours > 0) {
-                            timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-                        } else if (diffMins > 0) {
-                            timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-                        } else {
-                            timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
-                        }
-                        
-                        return timeAgoText;
-                    } catch (error) {
-                        console.error("Error calculating time ago:", error);
-                        return "Recently";
+                    if (!timestamp) return 'Unknown time';
+                    
+                    const uploadTime = new Date(timestamp);
+                    const now = new Date();
+                    
+                    // Validate the date
+                    if (isNaN(uploadTime.getTime())) {
+                        return 'Invalid date';
+                    }
+                    
+                    const diffMs = now - uploadTime;
+                    
+                    // If the difference is negative (future date), return 'Just now'
+                    if (diffMs < 0) {
+                        return 'Just now';
+                    }
+                    
+                    // Convert to appropriate time units
+                    const diffSecs = Math.floor(diffMs / 1000);
+                    const diffMins = Math.floor(diffSecs / 60);
+                    const diffHours = Math.floor(diffMins / 60);
+                    const diffDays = Math.floor(diffHours / 24);
+                    
+                    // If more than 10 hours old, don't show the time as the content will be cleaned up
+                    if (diffHours >= 10) {
+                        return 'Expired';
+                    }
+                    
+                    // Return appropriate time format
+                    if (diffHours > 0) {
+                        return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+                    } else if (diffMins > 0) {
+                        return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+                    } else if (diffSecs > 10) {
+                        return `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                    } else {
+                        return 'Just now';
                     }
                 }
                 
@@ -192,20 +187,7 @@
                     // Use the chapter's uploadTime if available, otherwise fall back to config
                     let timeAgoText = '';
                     if (chapter.uploadTime) {
-                        // Check if the uploadTime is valid before using it
-                        const uploadTime = new Date(chapter.uploadTime);
-                        if (!isNaN(uploadTime.getTime())) {
-                            // If more than 30 days ago, show "Recently" instead
-                            const now = new Date();
-                            const diffMs = now - uploadTime;
-                            if (diffMs > 30 * 24 * 60 * 60 * 1000) {
-                                timeAgoText = "Recently";
-                            } else {
-                                timeAgoText = getTimeAgoText(chapter.uploadTime);
-                            }
-                        } else {
-                            timeAgoText = "Recently";
-                        }
+                        timeAgoText = getTimeAgoText(chapter.uploadTime);
                     } else {
                         // Fallback to using config lastUpdated
                         timeAgoText = getTimeAgoText(configData.lastUpdated);
