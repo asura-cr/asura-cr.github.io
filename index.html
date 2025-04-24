@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encore- Bypass Asura Premium</title>
+    <title>Manga Downloader - Series & Chapters</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -41,7 +41,7 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
@@ -174,27 +174,7 @@
                         timeAgoText = getTimeAgoText(chapter.uploadTime);
                     } else {
                         // Fallback to using config lastUpdated
-                        const uploadTime = new Date(configData.lastUpdated);
-                        const now = new Date();
-                        const diffMs = now - uploadTime;
-                        
-                        // Convert to appropriate time units
-                        const diffSecs = Math.floor(diffMs / 1000);
-                        const diffMins = Math.floor(diffSecs / 60);
-                        const diffHours = Math.floor(diffMins / 60);
-                        const diffDays = Math.floor(diffHours / 24);
-                        
-                        // For demo purposes (if no uploadTime), create a staggered time display
-                        const chapterIndex = series.chapters.indexOf(chapter);
-                        const hoursOffset = chapterIndex * 2;
-                        const simulatedHours = diffHours + hoursOffset;
-                        
-                        if (simulatedHours > 24) {
-                            const days = Math.floor(simulatedHours / 24);
-                            timeAgoText = `${days} day${days !== 1 ? 's' : ''} ago`;
-                        } else {
-                            timeAgoText = `${simulatedHours} hour${simulatedHours !== 1 ? 's' : ''} ago`;
-                        }
+                        timeAgoText = getTimeAgoText(configData.lastUpdated);
                     }
                     
                     timeInfo.textContent = timeAgoText;
