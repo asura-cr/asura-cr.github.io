@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280598,
+  "lastStartNumber": 280616,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -105,6 +105,11 @@
       "timestamp": "2025-04-24T19:59:12.217633",
       "imageCount": 8,
       "githubPath": "series/unknown_series/chapter_162"
+    },
+    "The Extra's Academy Survival Guide_69": {
+      "timestamp": "2025-04-24T20:01:53.416607",
+      "imageCount": 18,
+      "githubPath": "series/the_extra_s_academy_survival_guide/chapter_69"
     }
   }
 }
