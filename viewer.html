@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .image-container {
+            padding-bottom: 30px;
+        }
+        
+        .manga-image {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .manga-image:hover {
+            transform: scale(1.01);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <header class="fixed top-0 left-0 right-0 bg-gray-800 shadow-md z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-blue-400 hover:text-blue-300 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Back to Library
+            </a>
+            <h1 id="page-title" class="text-xl font-bold truncate max-w-md">Loading...</h1>
+            <div class="flex space-x-3">
+                <button id="prev-chapter" class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous Chapter
+                </button>
+                <button id="next-chapter" class="bg-blue-600 hover:bg-blue-500 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next Chapter
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 pt-20 pb-10">
+        <div id="loading" class="text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <p class="mt-4 text-gray-400">Loading images...</p>
+        </div>
+        
+        <div id="image-container" class="flex flex-col items-center space-y-4 hidden"></div>
+        
+        <div id="error-message" class="text-center py-20 hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <p class="mt-4 text-red-400">Error loading manga images</p>
+            <button id="retry-button" class="mt-4 bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded">
+                Retry
+            </button>
+        </div>
+        
+        <div class="navigation-buttons flex justify-between mt-8 mb-20">
+            <button id="prev-chapter-bottom" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                Previous Chapter
+            </button>
+            <a href="index.html" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
+                Back to Library
+            </a>
+            <button id="next-chapter-bottom" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                Next Chapter
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Extract query parameters
+            const params = new URLSearchParams(window.location.search);
+            const series = params.get('series');
+            const chapter = params.get('chapter');
+            
+            if (!series || !chapter) {
+                showError("Missing series or chapter parameters");
+                return;
+            }
+            
+            // Update page title
+            document.getElementById('page-title').textContent = `${series} - Chapter ${chapter}`;
+            document.title = `${series} - Chapter ${chapter}`;
+            
+            try {
+                // Load info.json to get chapter data
+                const infoResponse = await fetch('info.json');
+                if (!infoResponse.ok) {
+                    throw new Error('Failed to load series information');
+                }
+                
+                const seriesData = await infoResponse.json();
+                
+                // Find the current series
+                const currentSeries = seriesData.find(s => s.series === series);
+                if (!currentSeries) {
+                    throw new Error(`Series "${series}" not found`);
+                }
+                
+                // Find the current chapter
+                const chapterNumber = parseInt(chapter);
+                const currentChapter = currentSeries.chapters.find(c => c.chapter === chapterNumber);
+                if (!currentChapter) {
+                    throw new Error(`Chapter ${chapter} not found in series "${series}"`);
+                }
+                
+                // Set up navigation buttons
+                setupNavigation(currentSeries, chapterNumber);
+                
+                // Generate image URLs based on chapter data
+                const startNumber = currentChapter.startNumber;
+                const frameCount = currentChapter.frameCount;
+                const filePattern = currentChapter.filePattern;
+                
+                const imageUrls = [];
+                
+                // Create GitHub raw URLs for images
+                for (let i = 0; i < frameCount; i++) {
+                    // Create folder paths based on GitHub structure
+                    const seriesFolder = series.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    const chapterFolder = `chapter_${chapter.toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+                    const imageName = `page_${i.toString().padStart(3, '0')}.jpg`;
+                    
+                    // Use GitHub raw URL format - adjust username/repo as needed
+                    const githubRawUrl = `https://raw.githubusercontent.com/Asura-cr/Asura-cr.github.io/main/series/${seriesFolder}/${chapterFolder}/${imageName}`;
+                    imageUrls.push(githubRawUrl);
+                }
+                
+                // Load and display images
+                await loadImages(imageUrls);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message);
+            }
+        });
+        
+        async function loadImages(imageUrls) {
+            const imageContainer = document.getElementById('image-container');
+            const loading = document.getElementById('loading');
+            
+            // Show loading indicator
+            loading.classList.remove('hidden');
+            imageContainer.classList.add('hidden');
+            
+            try {
+                for (let i = 0; i < imageUrls.length; i++) {
+                    const imageUrl = imageUrls[i];
+                    
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.className = 'image-container w-full max-w-3xl fade-in';
+                    
+                    const image = document.createElement('img');
+                    image.className = 'manga-image';
+                    image.src = imageUrl;
+                    image.alt = `Page ${i + 1}`;
+                    image.loading = 'lazy';
+                    
+                    // Add loading indicator for each image
+                    const loadingSpinner = document.createElement('div');
+                    loadingSpinner.className = 'animate-spin mx-auto h-8 w-8 border-t-2 border-b-2 border-blue-500 rounded-full';
+                    imageWrapper.appendChild(loadingSpinner);
+                    
+                    // Replace spinner with image when loaded
+                    image.onload = function() {
+                        imageWrapper.removeChild(loadingSpinner);
+                        imageWrapper.appendChild(image);
+                    };
+                    
+                    // Handle image load errors
+                    image.onerror = function() {
+                        imageWrapper.removeChild(loadingSpinner);
+                        
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'bg-red-900/20 border border-red-800 rounded p-4 text-center';
+                        errorMessage.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <p>Failed to load image ${i + 1}</p>
+                        `;
+                        imageWrapper.appendChild(errorMessage);
+                    };
+                    
+                    // Start loading
+                    imageContainer.appendChild(imageWrapper);
+                    const img = new Image();
+                    img.src = imageUrl;
+                }
+                
+                // Hide loading, show images
+                loading.classList.add('hidden');
+                imageContainer.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading images:', error);
+                showError(error.message);
+            }
+        }
+        
+        function setupNavigation(series, currentChapter) {
+            // Sort chapters numerically
+            const chapters = series.chapters.sort((a, b) => a.chapter - b.chapter);
+            
+            // Find current chapter index
+            const currentIndex = chapters.findIndex(ch => ch.chapter === currentChapter);
+            
+            // Set up previous chapter buttons
+            const prevButtons = [
+                document.getElementById('prev-chapter'),
+                document.getElementById('prev-chapter-bottom')
+            ];
+            
+            // Set up next chapter buttons
+            const nextButtons = [
+                document.getElementById('next-chapter'),
+                document.getElementById('next-chapter-bottom')
+            ];
+            
+            // Disable previous button if we're at the first chapter
+            if (currentIndex <= 0) {
+                prevButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                });
+            } else {
+                const prevChapter = chapters[currentIndex - 1].chapter;
+                prevButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${prevChapter}`;
+                    });
+                });
+            }
+            
+            // Disable next button if we're at the last chapter
+            if (currentIndex >= chapters.length - 1) {
+                nextButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                });
+            } else {
+                const nextChapter = chapters[currentIndex + 1].chapter;
+                nextButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${nextChapter}`;
+                    });
+                });
+            }
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('image-container').classList.add('hidden');
+            
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.querySelector('p').textContent = message || 'Error loading manga images';
+            errorMessage.classList.remove('hidden');
+            
+            // Set up retry button
+            document.getElementById('retry-button').addEventListener('click', () => {
+                window.location.reload();
+            });
+        }
+    </script>
+</body>
+</html>
