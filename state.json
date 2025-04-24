@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280590,
+  "lastStartNumber": 280598,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -100,6 +100,11 @@
       "timestamp": "2025-04-24T19:50:15.454665",
       "imageCount": 13,
       "githubPath": "series/unknown_series/chapter_125"
+    },
+    "Unknown Series_162": {
+      "timestamp": "2025-04-24T19:59:12.217633",
+      "imageCount": 8,
+      "githubPath": "series/unknown_series/chapter_162"
     }
   }
 }
