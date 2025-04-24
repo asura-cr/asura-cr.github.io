@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 280552,
+  "lastStartNumber": 280568,
   "downloadedChapters": {
     "Unknown Series_27": {
       "timestamp": "2025-03-14T12:25:33.106543",
@@ -90,6 +90,11 @@
       "timestamp": "2025-04-24T19:35:53.414297",
       "imageCount": 11,
       "githubPath": "series/unknown_series/chapter_26"
+    },
+    "Legend of the Reincarnated Demon_35": {
+      "timestamp": "2025-04-24T19:42:53.634828",
+      "imageCount": 15,
+      "githubPath": "series/legend_of_the_reincarnated_demon/chapter_35"
     }
   }
 }
