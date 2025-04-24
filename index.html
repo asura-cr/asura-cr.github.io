@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encore - Bypass Asura Premium</title>
+    <title>Manga Downloader - Series & Chapters</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -14,7 +14,10 @@
             font-family: Arial, sans-serif;
         }
         .series-card {
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #1E1E1E;
+            border-radius: 6px;
+            overflow: hidden;
         }
         .series-card:hover {
             transform: scale(1.05);
@@ -38,31 +41,38 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
-        <div class="relative mb-6">
-            <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-blue-500 via-blue-400/50 to-transparent rounded-full"></div>
-            <div class="pl-4">
-                <h2 class="relative flex items-center text-lg font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                    <span class="mr-2 bg-blue-500/10 rounded-md text-white">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="h-7 w-7 ml-2 inline-block align-middle" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="none" d="M0 0h24v24H0z"></path>
-                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM8.5 15H7.3l-2.55-3.5V15H3.5V9h1.25l2.5 3.5V9H8.5v6zm5-4.74H11v1.12h2.5v1.26H11v1.11h2.5V15h-4V9h4v1.26zm7 3.74c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1V9h1.25v4.51h1.13V9.99h1.25v3.51h1.12V9h1.25v5z"></path>
-                        </svg>
-                    </span>Latest Updates
-                </h2>
-                <div class="h-px mt-2 bg-gradient-to-r from-blue-500/50 to-transparent"></div>
+        <div id="seriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Loading placeholders -->
+            <div class="series-card">
+                <div class="p-4 bg-gray-900 border-b border-gray-700">
+                    <div class="h-5 bg-gray-700 rounded w-3/4 mb-2"></div>
+                    <div class="h-4 bg-gray-700 rounded w-1/3"></div>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-2">
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div id="seriesContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Series cards will be dynamically added here -->
-            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
-            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
-            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
-            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
+            <div class="series-card">
+                <div class="p-4 bg-gray-900 border-b border-gray-700">
+                    <div class="h-5 bg-gray-700 rounded w-3/4 mb-2"></div>
+                    <div class="h-4 bg-gray-700 rounded w-1/3"></div>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-2">
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                        <div class="h-5 bg-gray-700 rounded"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="mt-10 text-center text-gray-500 text-sm">
@@ -76,10 +86,16 @@
             try {
                 // Load info.json
                 const infoResponse = await fetch('info.json');
+                if (!infoResponse.ok) {
+                    throw new Error('Failed to load info.json');
+                }
                 const seriesData = await infoResponse.json();
                 
                 // Load config.json
                 const configResponse = await fetch('config.json');
+                if (!configResponse.ok) {
+                    throw new Error('Failed to load config.json');
+                }
                 const configData = await configResponse.json();
                 
                 // Update UI with config data
@@ -127,21 +143,22 @@
                     
                     // Create chapters list
                     const chaptersList = document.createElement('div');
-                    chaptersList.className = 'flex-1 overflow-y-auto max-h-48 p-1';
+                    chaptersList.className = 'flex-1 overflow-y-auto max-h-48 p-3';
                     
                     // Add the latest 5 chapters (or fewer if less available)
                     const chaptersToShow = series.chapters.slice(0, 5);
+                    const remainingChapters = series.chapters.slice(5);
                     
-                    chaptersToShow.forEach(chapter => {
+                    // Helper function to create chapter items
+                    function createChapterItem(chapter) {
                         const chapterItem = document.createElement('div');
-                        chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-1 p-2 text-xs';
+                        chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-2 p-3 text-xs';
                         
-                        // Create folder paths
+                        // Create GitHub paths
                         const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
                         const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
                         
-                        // Update path to match GitHub repository structure (series/folder/chapter_folder/index.html)
-                        // instead of downloads/series_folder/chapter_folder/series_chapter.html
+                        // Update path to match GitHub repository structure
                         const chapterPath = `series/${seriesFolder}/${chapterFolder}/index.html`;
                         
                         // Viewer URL
@@ -161,7 +178,7 @@
                         const timeInfo = document.createElement('div');
                         timeInfo.className = 'text-gray-400 text-xs mt-1';
                         
-                        // Calculate time ago using chapter's timestamp if available, otherwise use global lastUpdated
+                        // Calculate time ago
                         const uploadTime = chapter.uploadTime ? new Date(chapter.uploadTime) : new Date(configData.lastUpdated);
                         const now = new Date();
                         const diffMs = now - uploadTime;
@@ -183,11 +200,10 @@
                             timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
                         }
                         
-                        // For demo purposes, add a simulated variation in upload times for different chapters
-                        // This can be removed once real uploadTime data is available in the JSON
+                        // For demo purposes, add variation in upload times
                         if (!chapter.uploadTime) {
                             const chapterIndex = series.chapters.indexOf(chapter);
-                            const hoursOffset = chapterIndex * 2; // Each chapter is 2 hours older than the next newer one
+                            const hoursOffset = chapterIndex * 2;
                             const simulatedHours = diffHours + hoursOffset;
                             
                             if (simulatedHours > 24) {
@@ -216,14 +232,38 @@
                         // Add the row to the chapter item
                         chapterItem.appendChild(chapterItemContent);
                         
-                        // Add the chapter item to the list
+                        return chapterItem;
+                    }
+                    
+                    // Add function to show all chapters when clicked
+                    function showAllChapters(allChaptersList, showMoreBtn, remainingChaps) {
+                        // Add each of the remaining chapters to the list
+                        remainingChaps.forEach(chapter => {
+                            const chapterItem = createChapterItem(chapter);
+                            allChaptersList.appendChild(chapterItem);
+                        });
+                        
+                        // Hide the "Show more" button
+                        showMoreBtn.style.display = 'none';
+                    }
+                    
+                    // Add initial chapters
+                    chaptersToShow.forEach(chapter => {
+                        const chapterItem = createChapterItem(chapter);
                         chaptersList.appendChild(chapterItem);
                     });
                     
+                    // Add "Show more" button if needed
                     if (series.chapters.length > 5) {
                         const showMoreButton = document.createElement('button');
-                        showMoreButton.className = 'w-full text-center text-xs text-blue-400 hover:text-blue-300 mt-1 py-1';
+                        showMoreButton.className = 'w-full text-center text-xs bg-gray-700 hover:bg-gray-600 text-blue-400 hover:text-blue-300 mt-1 py-2 rounded transition-colors duration-200';
                         showMoreButton.textContent = `Show ${series.chapters.length - 5} more chapters`;
+                        
+                        // Add click event listener
+                        showMoreButton.addEventListener('click', function() {
+                            showAllChapters(chaptersList, showMoreButton, remainingChapters);
+                        });
+                        
                         chaptersList.appendChild(showMoreButton);
                     }
                     
