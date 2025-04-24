@@ -22,6 +22,17 @@
     ]
   },
   {
+    "series": "Solo Max-Level Newbie",
+    "chapters": [
+      {
+        "chapter": 203,
+        "startNumber": 289947,
+        "frameCount": 13,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  },
+  {
     "series": "Somebody Stop the Pope",
     "chapters": [
       {
