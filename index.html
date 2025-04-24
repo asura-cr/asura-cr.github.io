@@ -3,925 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asura Premium Cracked</title>
-    <link rel="icon" href="/favicon.ico">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Manga Downloader - Series & Chapters</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        .chapter-link:hover {
-            text-decoration: underline;
-        }
-
-        .card {
-            --background: linear-gradient(to right, #13b37f 0%, #11a3c8 100%);
-            width: 140px;
-            height: 180px;
-            padding: 0.9px;
-            border-radius: 0.7rem;
-            overflow: visible;
-            background: #f7ba2b;
-            background: var(--background);
-            position: relative;
-            z-index: 1;
-        }
-
-        .card::after {
-            position: absolute;
-            content: "";
-            top: -22px;
-            left: 0px;
-            right: 0;
-            z-index: -1;
-            height: 100%;
-            width: 100%;
-            transform: scale(0.76);
-            filter: blur(34.5px);
-            background: #f7ba2b;
-            background: var(--background);
-            transition: opacity 0.5s;
-        }
-
-        .card-info {
-            --color: #1f1a1d;
-            background: var(--color);
-            color: var(--color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            border-radius: 0.7rem;
-        }
-
-        .card .title {
-            font-weight: light;
-            letter-spacing: 0.2em;
-        }
-
-        /* Hover */
-        .card:hover::after {
-            opacity: 0.6;
-            padding: 0.7rem 0;
-            top: 18px;
-            transition: 0.6s;
-        }
-
-        .card:hover .card-info {
-            color: #fff9f9;
-            transition: color 1s;
-        }
-
-        @keyframes autoRun3d {
-            from {
-                transform: perspective(800px) rotateY(-360deg);
-            }
-
-            to {
-                transform: perspective(800px) rotateY(0deg);
-            }
-        }
-
-        @keyframes animateBrightness {
-            10% {
-                filter: brightness(1);
-            }
-
-            50% {
-                filter: brightness(0.1);
-            }
-
-            90% {
-                filter: brightness(1);
-            }
-        }
-
-        .card-3d {
-            position: relative;
-            width: 400px;
-            height: 200px;
-            transform-style: preserve-3d;
-            transform: perspective(800px);
-            animation: autoRun3d 20s linear infinite;
-            will-change: transform;
-            margin: 0 auto;
-            margin-bottom: 30px;
-        }
-
-        .card-3d div {
-            position: absolute;
-            width: 80px;
-            height: 112px;
-            background-color: #000000;
-            border: solid 2px #333333;
-            border-radius: 0.5rem;
-            top: 50%;
-            left: 50%;
-            transform-origin: center center;
-            animation: animateBrightness 20s linear infinite;
-            transition-duration: 200ms;
-            will-change: transform, filter;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-size: 12px;
-            color: #FFFFFF;
-            padding: 5px;
-            overflow: hidden;
-        }
-
-        .card-3d:hover {
-            animation-play-state: paused !important;
-        }
-
-        .card-3d:hover div {
-            animation-play-state: paused !important;
-        }
-
-        .card-3d div:nth-child(1) {
-            transform: translate(-50%, -50%) rotateY(0deg) translateZ(150px);
-            animation-delay: -0s;
-        }
-
-        .card-3d div:nth-child(2) {
-            transform: translate(-50%, -50%) rotateY(36deg) translateZ(150px);
-            animation-delay: -2s;
-        }
-
-        .card-3d div:nth-child(3) {
-            transform: translate(-50%, -50%) rotateY(72deg) translateZ(150px);
-            animation-delay: -4s;
-        }
-
-        .card-3d div:nth-child(4) {
-            transform: translate(-50%, -50%) rotateY(108deg) translateZ(150px);
-            animation-delay: -6s;
-        }
-
-        .card-3d div:nth-child(5) {
-            transform: translate(-50%, -50%) rotateY(144deg) translateZ(150px);
-            animation-delay: -8s;
-        }
-
-        .card-3d div:nth-child(6) {
-            transform: translate(-50%, -50%) rotateY(180deg) translateZ(150px);
-            animation-delay: -10s;
-        }
-
-        .card-3d div:nth-child(7) {
-            transform: translate(-50%, -50%) rotateY(216deg) translateZ(150px);
-            animation-delay: -12s;
-        }
-
-        .card-3d div:nth-child(8) {
-            transform: translate(-50%, -50%) rotateY(252deg) translateZ(150px);
-            animation-delay: -14s;
-        }
-
-        .card-3d div:nth-child(9) {
-            transform: translate(-50%, -50%) rotateY(288deg) translateZ(150px);
-            animation-delay: -16s;
-        }
-
-        .card-3d div:nth-child(10) {
-            transform: translate(-50%, -50%) rotateY(324deg) translateZ(150px);
-            animation-delay: -18s;
-        }
-
-        .button {
-            --main-focus: #2d8cf0;
-            --font-color: #ffffff;
-            --bg-color-sub: #1a1a1a;
-            --bg-color: #2a2a2a;
-            --main-color: #4a4a4a;
-            position: relative;
-            width: 150px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            border: 2px solid var(--main-color);
-            box-shadow: 4px 4px var(--main-color);
-            background-color: var(--bg-color);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .button, .button__icon, .button__text {
-            transition: all 0.3s;
-        }
-
-        .button .button__text {
-            transform: translateX(30px);
-            color: var(--font-color);
-            font-weight: 600;
-        }
-
-        .button .button__icon {
-            position: absolute;
-            transform: translateX(109px);
-            height: 100%;
-            width: 39px;
-            background-color: var(--bg-color-sub);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .button .svg {
-            width: 20px;
-            fill: var(--font-color);
-        }
-
-        .button:hover {
-            background: var(--bg-color);
-        }
-
-        .button:hover .button__text {
-            color: transparent;
-        }
-
-        .button:hover .button__icon {
-            width: 148px;
-            transform: translateX(0);
-        }
-
-        .button:active {
-            transform: translate(3px, 3px);
-            box-shadow: 0px 0px var(--main-color);
-        }
-
-        .loader {
-            width: fit-content;
-            height: fit-content;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        /* Text animation (Loading) */
-        .loader-1 {
-            position: relative;
-            width: 100%;
-            height: 50px;
-            margin-bottom: 20px;
-        }
-
-        .loader span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 38px;
-            letter-spacing: 5px;
-        }
-
-        .loader span:nth-child(1) {
-            color: transparent;
-            -webkit-text-stroke: 0.3px rgb(255, 255, 255);
-        }
-
-        .loader span:nth-child(2) {
-            color: rgb(255, 255, 255);
-            -webkit-text-stroke: 1px rgb(255, 255, 255);
-            animation: uiverse723 3s ease-in-out infinite;
-        }
-
-        @keyframes uiverse723 {
-            0%,
-            100% {
-                clip-path: polygon(
-                    0% 45%,
-                    15% 44%,
-                    32% 50%,
-                    54% 60%,
-                    70% 61%,
-                    84% 59%,
-                    100% 52%,
-                    100% 100%,
-                    0% 100%
-                );
-            }
-            50% {
-                clip-path: polygon(
-                    0% 60%,
-                    16% 65%,
-                    34% 66%,
-                    51% 62%,
-                    67% 50%,
-                    84% 45%,
-                    100% 46%,
-                    100% 100%,
-                    0% 100%
-                );
-            }
-        }
-
-        /* Cat and wall container */
-        .wrapper {
-            width: fit-content;
-            height: fit-content;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Cat styling */
-        .catContainer {
-            width: 100%;
-            height: fit-content;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .catbody {
-            width: 80px;
-            height: auto;
-        }
-
-        /* Restored original tail positioning */
-        .tail {
-            position: absolute;
-            width: 17px;
-            top: 50%;
-            animation: tail 0.5s ease-in infinite alternate-reverse;
-            transform-origin: top;
-        }
-
-        @keyframes tail {
-            0% {
-                transform: rotateZ(60deg);
-            }
-            50% {
-                transform: rotateZ(0deg);
-            }
-            100% {
-                transform: rotateZ(-20deg);
-            }
-        }
-
-        /* Z text animation */
-        .text {
-            display: flex;
-            flex-direction: column;
-            width: 50px;
-            position: absolute;
-            margin: 0px 0px 100px 120px;
-        }
-
-        .zzz {
-            color: white;
-            font-weight: 700;
-            font-size: 15px;
-            animation: zzz 2s linear infinite;
-        }
-
-        .bigzzz {
-            color: white;
-            font-weight: 700;
-            font-size: 25px;
-            margin-left: 10px;
-            animation: zzz 2.3s linear infinite;
-        }
-
-        @keyframes zzz {
-            0% {
-                color: transparent;
-            }
-            50% {
-                color: white;
-            }
-            100% {
-                color: transparent;
-            }
-        }
-
-        /* Wall styling */
-        .wallContainer {
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-top: -30px;
-        }
-
-        .wall {
-            width: 300px;
-            height: auto;
-        }
-
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        #content {
-            display: none;
-        }
-
-        :root {
-            --dark-bg: #141619;
-            --secondary-bg: #2c2e4a;
-            --accent: #964734;
-            --light-text: #FDFBD4;
-        }
-
-        /* Base Styles */
         body {
-            background-color: var(--dark-bg);
-            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #E0E0E0;
             font-family: Arial, sans-serif;
+        }
+        .series-card {
+            transition: transform 0.2s;
+        }
+        .series-card:hover {
+            transform: scale(1.05);
+        }
+        .chapter-link {
+            transition: background-color 0.2s;
+        }
+        .chapter-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .dot-animation {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-<!-- Loading Screen -->
-<div id="loading-screen">
-    <div class="wrapper">
-        <div class="catContainer">
-            <svg
-                class="catbody"
-                viewBox="0 0 733 673"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path
-                    d="M111.002 139.5C270.502 -24.5001 471.503 2.4997 621.002 139.5C770.501 276.5 768.504 627.5 621.002 649.5C473.5 671.5 246 687.5 111.002 649.5C-23.9964 611.5 -48.4982 303.5 111.002 139.5Z"
-                    fill="#eee"
-                ></path>
-                <path d="M184 9L270.603 159H97.3975L184 9Z" fill="#eee"></path>
-                <path d="M541 0L627.603 150H454.397L541 0Z" fill="#eee"></path>
-            </svg>
-            <svg
-                class="tail"
-                viewBox="0 0 158 564"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path
-                    d="M5.97602 76.066C-11.1099 41.6747 12.9018 0 51.3036 0V0C71.5336 0 89.8636 12.2558 97.2565 31.0866C173.697 225.792 180.478 345.852 97.0691 536.666C89.7636 553.378 73.0672 564 54.8273 564V564C16.9427 564 -5.4224 521.149 13.0712 488.085C90.2225 350.15 87.9612 241.089 5.97602 76.066Z"
-                    fill="gray"
-                ></path>
-            </svg>
-            <div class="text">
-                <span class="bigzzz">Z</span>
-                <span class="zzz">Z</span>
+<body>
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
+            <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
+        </header>
+
+        <div class="relative mb-6">
+            <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-blue-500 via-blue-400/50 to-transparent rounded-full"></div>
+            <div class="pl-4">
+                <h2 class="relative flex items-center text-lg font-semibold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    <span class="mr-2 bg-blue-500/10 rounded-md text-white">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="h-7 w-7 ml-2 inline-block align-middle" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM8.5 15H7.3l-2.55-3.5V15H3.5V9h1.25l2.5 3.5V9H8.5v6zm5-4.74H11v1.12h2.5v1.26H11v1.11h2.5V15h-4V9h4v1.26zm7 3.74c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1V9h1.25v4.51h1.13V9.99h1.25v3.51h1.12V9h1.25v5z"></path>
+                        </svg>
+                    </span>Latest Updates
+                </h2>
+                <div class="h-px mt-2 bg-gradient-to-r from-blue-500/50 to-transparent"></div>
             </div>
         </div>
-        <div class="wallContainer">
-            <svg
-                class="wall"
-                viewBox="0 0 500 126"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <line
-                    x1="50"
-                    y1="3"
-                    x2="450"
-                    y2="3"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="100"
-                    y1="85"
-                    x2="400"
-                    y2="85"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="125"
-                    y1="122"
-                    x2="375"
-                    y2="122"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line y1="43" x2="500" y2="43" stroke="#7C7C7C" stroke-width="6"></line>
-                <line
-                    x1="115.5"
-                    y1="43.0061"
-                    x2="115.5"
-                    y2="1.99391"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="189"
-                    y1="43.0122"
-                    x2="189"
-                    y2="2.00002"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="262.5"
-                    y1="43.0183"
-                    x2="262.5"
-                    y2="2.00612"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="336"
-                    y1="43.0244"
-                    x2="336"
-                    y2="2.01222"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="409.5"
-                    y1="43.0305"
-                    x2="409.5"
-                    y2="2.01833"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="153"
-                    y1="84.0122"
-                    x2="153"
-                    y2="43"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="228"
-                    y1="84.0122"
-                    x2="228"
-                    y2="43"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="303"
-                    y1="84.0122"
-                    x2="303"
-                    y2="43"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="378"
-                    y1="84.0122"
-                    x2="378"
-                    y2="43"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="192"
-                    y1="125.012"
-                    x2="192"
-                    y2="84"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="267"
-                    y1="125.012"
-                    x2="267"
-                    y2="84"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-                <line
-                    x1="342"
-                    y1="125.012"
-                    x2="342"
-                    y2="84"
-                    stroke="#7C7C7C"
-                    stroke-width="6"
-                ></line>
-            </svg>
+
+        <div id="seriesContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Series cards will be dynamically added here -->
+            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
+            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
+            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
+            <div class="animate-pulse bg-gray-800 rounded-lg h-64"></div>
         </div>
-        <div class="loader">
-            <div class="loader-1">
-                <span>Loading</span>
-                <span>Loading</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Main Content -->
-    <div id="content">
-        <div class="container mx-auto p-4">
-            <header class="mb-8">
-                <h1 class="text-3xl font-bold text-center mb-2">Bypass Asura</h1>
-                <p class="text-gray-400 text-center">Made by l3v2s on discord</p>
-            </header>
-            
-            <div class="card-3d" id="seriesCards">
-                <!-- Cards will be dynamically populated by JavaScript -->
-            </div>
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold">Latest Chapters</h2>
-                <div class="flex space-x-4">
-                    <select id="seriesFilter" class="bg-gray-800 text-white px-4 py-2 rounded">
-                        <option value="all">All Series</option>
-                    </select>
-                    <button id="refreshButton" class="button">
-                        <span class="button__text">Refresh</span>
-                        <span class="button__icon">
-                            <svg class="svg" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M35.3 12.7c-2.89-2.9-6.88-4.7-11.3-4.7-8.84 0-15.98 7.16-15.98 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55l-6.45 6.45h14v-14l-4.7 4.7z"></path>
-                                <path d="M0 0h48v48h-48z" fill="none"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="mangaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Manga items will be populated here by JavaScript -->
-            </div>
+        
+        <div class="mt-10 text-center text-gray-500 text-sm">
+            <p>Last updated: <span id="lastUpdated">Loading...</span></p>
         </div>
     </div>
 
-<script>
-    // Show loading screen for 3 seconds
-    window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-        }, 3000);
-    });
-
-    // Function to load the state.json file and display manga
-    async function loadMangaList() {
-        try {
-            const response = await fetch("state.json");
-            if (!response.ok) {
-                throw new Error('Failed to load data(status: ' + response.status + ')');
-            }
-            
-            const data = await response.json();
-            const downloadedChapters = data.downloadedChapters || {};
-            
-            // Process the data
-            const seriesMap = {};
-            
-            // Group chapters by series
-            Object.entries(downloadedChapters).forEach(([key, chapter]) => {
-                // Skip invalid entries
-                if (!chapter || typeof chapter !== 'object') {
-                    console.warn(`Skipping invalid chapter entry for key: ${key}`);
-                    return;
-                }
+    <script>
+        // Fetch and display series data from info.json
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Load info.json
+                const infoResponse = await fetch('info.json');
+                const seriesData = await infoResponse.json();
                 
-                const [seriesName, chapterNumber] = key.split('_');
+                // Load config.json
+                const configResponse = await fetch('config.json');
+                const configData = await configResponse.json();
                 
-                // Check if chapter has a valid timestamp
-                const timestamp = chapter.timestamp ? new Date(chapter.timestamp) : new Date();
+                // Update UI with config data
+                document.getElementById('lastUpdated').textContent = new Date(configData.lastUpdated).toLocaleString();
+                document.getElementById('scanStatus').textContent = `Next scan starts at #${configData.lastStartNumber}`;
                 
-                if (!seriesMap[seriesName]) {
-                    seriesMap[seriesName] = [];
-                }
+                // Clear loading placeholders
+                const seriesContainer = document.getElementById('seriesContainer');
+                seriesContainer.innerHTML = '';
                 
-                // Check if path exists before using replace
-                const path = chapter.path ? chapter.path.replace(/\\/g, '/') : '';
-                
-                seriesMap[seriesName].push({
-                    chapterNumber,
-                    timestamp,
-                    formattedTime: getTimeAgo(timestamp),
-                    path: path,
-                    imageCount: chapter.imageCount || 0
+                // Sort series by latest chapter update
+                seriesData.sort((a, b) => {
+                    const aLatestChapter = Math.max(...a.chapters.map(ch => typeof ch.chapter === 'number' ? ch.chapter : 0));
+                    const bLatestChapter = Math.max(...b.chapters.map(ch => typeof ch.chapter === 'number' ? ch.chapter : 0));
+                    return bLatestChapter - aLatestChapter;
                 });
-            });
-            
-            // Sort chapters within each series by chapter number (newest first)
-            Object.values(seriesMap).forEach(chapters => {
-                chapters.sort((a, b) => {
-                    // Try to compare as numbers if possible
-                    const numA = parseInt(a.chapterNumber);
-                    const numB = parseInt(b.chapterNumber);
+                
+                // Generate cards for each series
+                seriesData.forEach(series => {
+                    // Sort chapters in descending order
+                    series.chapters.sort((a, b) => {
+                        const aChapter = typeof a.chapter === 'number' ? a.chapter : parseInt(a.chapter) || 0;
+                        const bChapter = typeof b.chapter === 'number' ? b.chapter : parseInt(b.chapter) || 0;
+                        return bChapter - aChapter;
+                    });
                     
-                    if (!isNaN(numA) && !isNaN(numB)) {
-                        return numB - numA; // Descending order
+                    // Create series card
+                    const seriesCard = document.createElement('div');
+                    seriesCard.className = 'series-card bg-gray-850 rounded-lg overflow-hidden flex flex-col';
+                    
+                    // Create series header
+                    const seriesHeader = document.createElement('div');
+                    seriesHeader.className = 'p-4 bg-gray-900 border-b border-gray-700';
+                    
+                    const seriesTitle = document.createElement('h3');
+                    seriesTitle.className = 'text-lg font-semibold text-white hover:text-blue-400 truncate';
+                    seriesTitle.textContent = series.series;
+                    
+                    const chapterCount = document.createElement('div');
+                    chapterCount.className = 'text-xs text-gray-400 mt-1';
+                    chapterCount.textContent = `${series.chapters.length} chapter${series.chapters.length !== 1 ? 's' : ''}`;
+                    
+                    seriesHeader.appendChild(seriesTitle);
+                    seriesHeader.appendChild(chapterCount);
+                    
+                    // Create chapters list
+                    const chaptersList = document.createElement('div');
+                    chaptersList.className = 'flex-1 overflow-y-auto max-h-48 p-1';
+                    
+                    // Add the latest 5 chapters (or fewer if less available)
+                    const chaptersToShow = series.chapters.slice(0, 5);
+                    
+                    chaptersToShow.forEach(chapter => {
+                        const chapterItem = document.createElement('a');
+                        
+                        // Create folder path for the chapter
+                        const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                        const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+                        const htmlFile = `${seriesFolder}_chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}.html`;
+                        const chapterPath = `downloads/${seriesFolder}/${chapterFolder}/${htmlFile}`;
+                        
+                        chapterItem.href = chapterPath;
+                        chapterItem.className = 'chapter-link block text-white bg-gray-800 hover:bg-gray-700 rounded mb-1 p-2 text-xs flex items-center justify-between';
+                        
+                        const chapterNumber = document.createElement('span');
+                        chapterNumber.className = 'font-bold';
+                        chapterNumber.textContent = `Chapter ${chapter.chapter}`;
+                        
+                        const frameInfo = document.createElement('span');
+                        frameInfo.className = 'text-gray-400 text-xs';
+                        frameInfo.textContent = `${chapter.frameCount} frames`;
+                        
+                        chapterItem.appendChild(chapterNumber);
+                        chapterItem.appendChild(frameInfo);
+                        
+                        chaptersList.appendChild(chapterItem);
+                    });
+                    
+                    if (series.chapters.length > 5) {
+                        const showMoreButton = document.createElement('button');
+                        showMoreButton.className = 'w-full text-center text-xs text-blue-400 hover:text-blue-300 mt-1 py-1';
+                        showMoreButton.textContent = `Show ${series.chapters.length - 5} more chapters`;
+                        chaptersList.appendChild(showMoreButton);
                     }
                     
-                    // Fall back to string comparison
-                    return b.chapterNumber.localeCompare(a.chapterNumber);
+                    // Assemble the card
+                    seriesCard.appendChild(seriesHeader);
+                    seriesCard.appendChild(chaptersList);
+                    
+                    // Add the card to the container
+                    seriesContainer.appendChild(seriesCard);
                 });
-            });
-            
-            // Sort series by most recent chapter
-            const sortedSeries = Object.entries(seriesMap).sort((a, b) => {
-                const latestA = a[1][0].timestamp;
-                const latestB = b[1][0].timestamp;
-                return latestB - latestA;
-            });
-            
-            // Populate the filter dropdown
-            const filterSelect = document.getElementById('seriesFilter');
-            filterSelect.innerHTML = '<option value="all">All Series</option>';
-            
-            sortedSeries.forEach(([seriesName]) => {
-                const formattedName = formatSeriesName(seriesName);
-                const option = document.createElement('option');
-                option.value = seriesName;
-                option.textContent = formattedName;
-                filterSelect.appendChild(option);
-            });
-            
-            // Display the manga
-            displayManga(sortedSeries);
-            
-            // Set up event listeners
-            filterSelect.addEventListener('change', () => {
-                const selectedSeries = filterSelect.value;
-                if (selectedSeries === 'all') {
-                    displayManga(sortedSeries);
-                } else {
-                    const filtered = sortedSeries.filter(([series]) => series === selectedSeries);
-                    displayManga(filtered);
-                }
-            });
-            
-            document.getElementById('refreshButton').addEventListener('click', () => {
-                loadMangaList();
-            });
-            
-        } catch (error) {
-            console.error('Error loading list:', error);
-            document.getElementById('mangaGrid').innerHTML = `
-                <div class="col-span-full text-center p-8 bg-red-900 bg-opacity-30 rounded">
-                    <p class="text-xl">Failed to load manga data. Please check that state.json exists.</p>
-                    <p class="mt-2 text-gray-400">${error.message}</p>
-                    <button id="retryButton" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
-                        Retry Loading
-                    </button>   
-                </div>
-            `;
-
-            // retry button 
-            document.getElementById('retryButton').addEventListener('click', () => {
-                loadMangaList();
-            });
-        }
-    }
-
-    // Function to populate the 3D carousel with series names
-    function populateSeriesCards(seriesList) {
-        const cardsContainer = document.getElementById('seriesCards');
-        cardsContainer.innerHTML = '';
-        // Take up to 10 series for the 3D carousel
-        const seriesToShow = seriesList.slice(0, 10);
-        seriesToShow.forEach(([seriesName]) => {
-            const cardDiv = document.createElement('div');
-            cardDiv.textContent = formatSeriesName(seriesName);
-            cardsContainer.appendChild(cardDiv);
-        });
-        // If we have fewer than 10 series, fill with empty cards
-        for (let i = seriesToShow.length; i < 10; i++) {
-            const emptyCard = document.createElement('div');
-            cardsContainer.appendChild(emptyCard);
-        }
-    }
-
-// Function to display manga in the grid
-function displayManga(seriesList) {
-    const mangaGrid = document.getElementById('mangaGrid');
-    mangaGrid.innerHTML = '';
-    
-    if (seriesList.length === 0) {
-        mangaGrid.innerHTML = `
-            <div class="col-span-full text-center p-8 bg-gray-800 rounded">
-                <p class="text-xl">No chapters found.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    seriesList.forEach(([seriesName, chapters]) => {
-        const formattedName = formatSeriesName(seriesName);
-        const seriesDiv = document.createElement('div');
-        seriesDiv.className = 'bg-gray-800 rounded-lg p-4 flex space-x-4';
-        
-        // Create the card with a default symbol instead of a cover image
-        const card = document.createElement('div');
-        card.className = 'card';
-        
-        const cardInfo = document.createElement('div');
-        cardInfo.className = 'card-info';
-        // Keep it empty and black as requested
-        card.appendChild(cardInfo);
-        
-        // Create content div
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'flex-1';
-        
-        // Create series title
-        const title = document.createElement('h2');
-        title.className = 'text-lg font-bold mb-2 text-purple-300';
-        title.textContent = formattedName;
-        
-        // Create chapter list
-        const chapterList = document.createElement('ul');
-        chapterList.className = 'text-sm space-y-2';
-        
-        // Only show up to 3 most recent chapters
-        chapters.slice(0, 3).forEach(chapter => {
-            const chapterItem = document.createElement('li');
-            chapterItem.className = 'flex items-center justify-between';
-            
-                // Create the link to the HTML file in the chapter's folder - with defensive check for path
-                const chapterPath = chapter.path || '';
-                const htmlLink = chapterPath ? 
-                    `./${chapterPath}/${seriesName.toLowerCase().replace(/\s+/g, '_')}_chapter_${chapter.chapterNumber}.html` :
-                    '#'; // Fallback link
                 
-                chapterItem.innerHTML = `
-                    <a href="${htmlLink}" class="text-purple-500 hover:text-purple-400 chapter-link">
-                        • Chapter ${chapter.chapterNumber}
-                    </a>
-                    <span class="text-gray-400">${chapter.formattedTime}</span>
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('seriesContainer').innerHTML = `
+                    <div class="col-span-full text-center py-8 text-red-500">
+                        <p>Error loading series data. Please check if info.json and config.json exist.</p>
+                        <p class="text-sm mt-2">${error.message}</p>
+                    </div>
                 `;
-                
-                chapterList.appendChild(chapterItem);
-            });
-            
-            chapterItem.innerHTML = `
-                <a href="${chapterLink}" class="text-purple-500 hover:text-purple-400 chapter-link">
-                    • Chapter ${chapter.chapterNumber}
-                </a>
-                <span class="text-gray-400">${chapter.formattedTime}</span>
-            `;
-            
-            chapterList.appendChild(chapterItem);
+            }
         });
-        // Assemble the manga item
-        contentDiv.appendChild(title);
-        contentDiv.appendChild(chapterList);
-        
-        seriesDiv.appendChild(card);
-        seriesDiv.appendChild(contentDiv);
-        
-        mangaGrid.appendChild(seriesDiv);
-    });
-    
-    // Populate the 3D carousel
-    populateSeriesCards(seriesList);
-}
-
-    // Helper function to format series name (convert from snake_case to Title Case)
-    function formatSeriesName(seriesName) {
-        if (seriesName === 'Unknown Series') return seriesName;
-        
-        return seriesName
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-    }
-    
-    // Helper function to format timestamps as "X time ago"
-    function getTimeAgo(timestamp) {
-        const now = new Date();
-        const diff = now - timestamp;
-        
-        const minutes = Math.floor(diff / 60000);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        
-        if (days > 0) {
-            return `${days} day${days > 1 ? 's' : ''} ago`;
-        } else if (hours > 0) {
-            return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-        } else if (minutes > 0) {
-            return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-        } else {
-            return 'just now';
-        }
-    }
-    
-    // Load manga list when the page loads
-    document.addEventListener('DOMContentLoaded', loadMangaList);
-</script>
-
-<script>
-    document.body.style.zoom = "90%";
-</script>
-    
+    </script>
 </body>
-</html>
+</html> 
