@@ -133,28 +133,88 @@
                     const chaptersToShow = series.chapters.slice(0, 5);
                     
                     chaptersToShow.forEach(chapter => {
-                        const chapterItem = document.createElement('a');
+                        const chapterItem = document.createElement('div');
+                        chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-1 p-2 text-xs';
                         
-                        // Create folder path for the chapter
+                        // Create folder paths
                         const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
                         const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
                         const htmlFile = `${seriesFolder}_chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}.html`;
                         const chapterPath = `downloads/${seriesFolder}/${chapterFolder}/${htmlFile}`;
                         
-                        chapterItem.href = chapterPath;
-                        chapterItem.className = 'chapter-link block text-white bg-gray-800 hover:bg-gray-700 rounded mb-1 p-2 text-xs flex items-center justify-between';
+                        // Viewer URL
+                        const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
                         
-                        const chapterNumber = document.createElement('span');
-                        chapterNumber.className = 'font-bold';
+                        // Create a flex container for the chapter info
+                        const chapterItemContent = document.createElement('div');
+                        chapterItemContent.className = 'flex items-center justify-between';
+                        
+                        // Create the chapter number and info
+                        const chapterInfo = document.createElement('div');
+                        
+                        const chapterNumber = document.createElement('div');
+                        chapterNumber.className = 'font-bold text-white';
                         chapterNumber.textContent = `Chapter ${chapter.chapter}`;
                         
-                        const frameInfo = document.createElement('span');
-                        frameInfo.className = 'text-gray-400 text-xs';
-                        frameInfo.textContent = `${chapter.frameCount} frames`;
+                        const timeInfo = document.createElement('div');
+                        timeInfo.className = 'text-gray-400 text-xs mt-1';
                         
-                        chapterItem.appendChild(chapterNumber);
-                        chapterItem.appendChild(frameInfo);
+                        // Calculate time ago using chapter's timestamp if available, otherwise use global lastUpdated
+                        const uploadTime = chapter.uploadTime ? new Date(chapter.uploadTime) : new Date(configData.lastUpdated);
+                        const now = new Date();
+                        const diffMs = now - uploadTime;
                         
+                        // Convert to appropriate time units
+                        const diffSecs = Math.floor(diffMs / 1000);
+                        const diffMins = Math.floor(diffSecs / 60);
+                        const diffHours = Math.floor(diffMins / 60);
+                        const diffDays = Math.floor(diffHours / 24);
+                        
+                        let timeAgoText = '';
+                        if (diffDays > 0) {
+                            timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+                        } else if (diffHours > 0) {
+                            timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+                        } else if (diffMins > 0) {
+                            timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+                        } else {
+                            timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                        }
+                        
+                        // For demo purposes, add a simulated variation in upload times for different chapters
+                        // This can be removed once real uploadTime data is available in the JSON
+                        if (!chapter.uploadTime) {
+                            const chapterIndex = series.chapters.indexOf(chapter);
+                            const hoursOffset = chapterIndex * 2; // Each chapter is 2 hours older than the next newer one
+                            const simulatedHours = diffHours + hoursOffset;
+                            
+                            if (simulatedHours > 24) {
+                                const days = Math.floor(simulatedHours / 24);
+                                timeAgoText = `${days} day${days !== 1 ? 's' : ''} ago`;
+                            } else {
+                                timeAgoText = `${simulatedHours} hour${simulatedHours !== 1 ? 's' : ''} ago`;
+                            }
+                        }
+                        
+                        timeInfo.textContent = timeAgoText;
+                        
+                        chapterInfo.appendChild(chapterNumber);
+                        chapterInfo.appendChild(timeInfo);
+                        
+                        // Create the read button
+                        const readButton = document.createElement('a');
+                        readButton.href = viewerUrl;
+                        readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors duration-200';
+                        readButton.textContent = 'Read';
+                        
+                        // Add chapter info and read button to the row
+                        chapterItemContent.appendChild(chapterInfo);
+                        chapterItemContent.appendChild(readButton);
+                        
+                        // Add the row to the chapter item
+                        chapterItem.appendChild(chapterItemContent);
+                        
+                        // Add the chapter item to the list
                         chaptersList.appendChild(chapterItem);
                     });
                     
