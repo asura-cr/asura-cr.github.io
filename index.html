@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manga Downloader - Series & Chapters</title>
+    <title>Encore - Bypass Asura Premium </title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -41,7 +41,7 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Manga Downloader Library</h1>
+            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
@@ -113,6 +113,111 @@
                     return bLatestChapter - aLatestChapter;
                 });
                 
+                // Helper function to calculate time ago text
+                function getTimeAgoText(timestamp) {
+                    const uploadTime = new Date(timestamp);
+                    const now = new Date();
+                    const diffMs = now - uploadTime;
+                    
+                    // Convert to appropriate time units
+                    const diffSecs = Math.floor(diffMs / 1000);
+                    const diffMins = Math.floor(diffSecs / 60);
+                    const diffHours = Math.floor(diffMins / 60);
+                    const diffDays = Math.floor(diffHours / 24);
+                    
+                    let timeAgoText = '';
+                    if (diffDays > 0) {
+                        timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+                    } else if (diffHours > 0) {
+                        timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+                    } else if (diffMins > 0) {
+                        timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+                    } else {
+                        timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
+                    }
+                    
+                    return timeAgoText;
+                }
+                
+                // Helper function to create chapter items
+                function createChapterItem(chapter, series, configData) {
+                    const chapterItem = document.createElement('div');
+                    chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-2 p-3 text-xs';
+                    
+                    // Create GitHub paths
+                    const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+                    
+                    // Update path to match GitHub repository structure
+                    const chapterPath = `series/${seriesFolder}/${chapterFolder}/index.html`;
+                    
+                    // Viewer URL
+                    const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
+                    
+                    // Create a flex container for the chapter info
+                    const chapterItemContent = document.createElement('div');
+                    chapterItemContent.className = 'flex items-center justify-between';
+                    
+                    // Create the chapter number and info
+                    const chapterInfo = document.createElement('div');
+                    
+                    const chapterNumber = document.createElement('div');
+                    chapterNumber.className = 'font-bold text-white';
+                    chapterNumber.textContent = `Chapter ${chapter.chapter}`;
+                    
+                    const timeInfo = document.createElement('div');
+                    timeInfo.className = 'text-gray-400 text-xs mt-1';
+                    
+                    // Use the chapter's uploadTime if available, otherwise fall back to config
+                    let timeAgoText = '';
+                    if (chapter.uploadTime) {
+                        timeAgoText = getTimeAgoText(chapter.uploadTime);
+                    } else {
+                        // Fallback to using config lastUpdated
+                        const uploadTime = new Date(configData.lastUpdated);
+                        const now = new Date();
+                        const diffMs = now - uploadTime;
+                        
+                        // Convert to appropriate time units
+                        const diffSecs = Math.floor(diffMs / 1000);
+                        const diffMins = Math.floor(diffSecs / 60);
+                        const diffHours = Math.floor(diffMins / 60);
+                        const diffDays = Math.floor(diffHours / 24);
+                        
+                        // For demo purposes (if no uploadTime), create a staggered time display
+                        const chapterIndex = series.chapters.indexOf(chapter);
+                        const hoursOffset = chapterIndex * 2;
+                        const simulatedHours = diffHours + hoursOffset;
+                        
+                        if (simulatedHours > 24) {
+                            const days = Math.floor(simulatedHours / 24);
+                            timeAgoText = `${days} day${days !== 1 ? 's' : ''} ago`;
+                        } else {
+                            timeAgoText = `${simulatedHours} hour${simulatedHours !== 1 ? 's' : ''} ago`;
+                        }
+                    }
+                    
+                    timeInfo.textContent = timeAgoText;
+                    
+                    chapterInfo.appendChild(chapterNumber);
+                    chapterInfo.appendChild(timeInfo);
+                    
+                    // Create the read button
+                    const readButton = document.createElement('a');
+                    readButton.href = viewerUrl;
+                    readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors duration-200';
+                    readButton.textContent = 'Read';
+                    
+                    // Add chapter info and read button to the row
+                    chapterItemContent.appendChild(chapterInfo);
+                    chapterItemContent.appendChild(readButton);
+                    
+                    // Add the row to the chapter item
+                    chapterItem.appendChild(chapterItemContent);
+                    
+                    return chapterItem;
+                }
+                
                 // Generate cards for each series
                 seriesData.forEach(series => {
                     // Sort chapters in descending order
@@ -124,7 +229,7 @@
                     
                     // Create series card
                     const seriesCard = document.createElement('div');
-                    seriesCard.className = 'series-card bg-gray-850 rounded-lg overflow-hidden flex flex-col';
+                    seriesCard.className = 'series-card flex flex-col';
                     
                     // Create series header
                     const seriesHeader = document.createElement('div');
@@ -149,97 +254,11 @@
                     const chaptersToShow = series.chapters.slice(0, 5);
                     const remainingChapters = series.chapters.slice(5);
                     
-                    // Helper function to create chapter items
-                    function createChapterItem(chapter) {
-                        const chapterItem = document.createElement('div');
-                        chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-2 p-3 text-xs';
-                        
-                        // Create GitHub paths
-                        const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                        const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
-                        
-                        // Update path to match GitHub repository structure
-                        const chapterPath = `series/${seriesFolder}/${chapterFolder}/index.html`;
-                        
-                        // Viewer URL
-                        const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
-                        
-                        // Create a flex container for the chapter info
-                        const chapterItemContent = document.createElement('div');
-                        chapterItemContent.className = 'flex items-center justify-between';
-                        
-                        // Create the chapter number and info
-                        const chapterInfo = document.createElement('div');
-                        
-                        const chapterNumber = document.createElement('div');
-                        chapterNumber.className = 'font-bold text-white';
-                        chapterNumber.textContent = `Chapter ${chapter.chapter}`;
-                        
-                        const timeInfo = document.createElement('div');
-                        timeInfo.className = 'text-gray-400 text-xs mt-1';
-                        
-                        // Calculate time ago
-                        const uploadTime = chapter.uploadTime ? new Date(chapter.uploadTime) : new Date(configData.lastUpdated);
-                        const now = new Date();
-                        const diffMs = now - uploadTime;
-                        
-                        // Convert to appropriate time units
-                        const diffSecs = Math.floor(diffMs / 1000);
-                        const diffMins = Math.floor(diffSecs / 60);
-                        const diffHours = Math.floor(diffMins / 60);
-                        const diffDays = Math.floor(diffHours / 24);
-                        
-                        let timeAgoText = '';
-                        if (diffDays > 0) {
-                            timeAgoText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-                        } else if (diffHours > 0) {
-                            timeAgoText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-                        } else if (diffMins > 0) {
-                            timeAgoText = `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-                        } else {
-                            timeAgoText = `${diffSecs} second${diffSecs !== 1 ? 's' : ''} ago`;
-                        }
-                        
-                        // For demo purposes, add variation in upload times
-                        if (!chapter.uploadTime) {
-                            const chapterIndex = series.chapters.indexOf(chapter);
-                            const hoursOffset = chapterIndex * 2;
-                            const simulatedHours = diffHours + hoursOffset;
-                            
-                            if (simulatedHours > 24) {
-                                const days = Math.floor(simulatedHours / 24);
-                                timeAgoText = `${days} day${days !== 1 ? 's' : ''} ago`;
-                            } else {
-                                timeAgoText = `${simulatedHours} hour${simulatedHours !== 1 ? 's' : ''} ago`;
-                            }
-                        }
-                        
-                        timeInfo.textContent = timeAgoText;
-                        
-                        chapterInfo.appendChild(chapterNumber);
-                        chapterInfo.appendChild(timeInfo);
-                        
-                        // Create the read button
-                        const readButton = document.createElement('a');
-                        readButton.href = viewerUrl;
-                        readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors duration-200';
-                        readButton.textContent = 'Read';
-                        
-                        // Add chapter info and read button to the row
-                        chapterItemContent.appendChild(chapterInfo);
-                        chapterItemContent.appendChild(readButton);
-                        
-                        // Add the row to the chapter item
-                        chapterItem.appendChild(chapterItemContent);
-                        
-                        return chapterItem;
-                    }
-                    
                     // Add function to show all chapters when clicked
                     function showAllChapters(allChaptersList, showMoreBtn, remainingChaps) {
                         // Add each of the remaining chapters to the list
                         remainingChaps.forEach(chapter => {
-                            const chapterItem = createChapterItem(chapter);
+                            const chapterItem = createChapterItem(chapter, series, configData);
                             allChaptersList.appendChild(chapterItem);
                         });
                         
@@ -249,7 +268,7 @@
                     
                     // Add initial chapters
                     chaptersToShow.forEach(chapter => {
-                        const chapterItem = createChapterItem(chapter);
+                        const chapterItem = createChapterItem(chapter, series, configData);
                         chaptersList.appendChild(chapterItem);
                     });
                     
