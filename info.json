@@ -55,6 +55,17 @@
     ]
   },
   {
+    "series": "The Hero Returns",
+    "chapters": [
+      {
+        "chapter": 117,
+        "startNumber": 280633,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  },
+  {
     "series": "The Terminally Ill Young Master",
     "chapters": [
       {
