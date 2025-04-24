@@ -91,20 +91,38 @@
                 }
                 const seriesData = await infoResponse.json();
                 
-                // Load config.json
-                const configResponse = await fetch('config.json');
-                if (!configResponse.ok) {
-                    throw new Error('Failed to load config.json');
-                }
-                const configData = await configResponse.json();
-                
-                // Update UI with config data
-                document.getElementById('lastUpdated').textContent = new Date(configData.lastUpdated).toLocaleString();
-                document.getElementById('scanStatus').textContent = `Next scan starts at #${configData.lastStartNumber}`;
-                
                 // Clear loading placeholders
                 const seriesContainer = document.getElementById('seriesContainer');
                 seriesContainer.innerHTML = '';
+                
+                // Update scan status with the latest chapter's start number
+                let latestStartNumber = 0;
+                seriesData.forEach(series => {
+                    series.chapters.forEach(chapter => {
+                        if (chapter.startNumber > latestStartNumber) {
+                            latestStartNumber = chapter.startNumber;
+                        }
+                    });
+                });
+                
+                // Update UI with latest info
+                document.getElementById('scanStatus').textContent = `Next scan starts at #${latestStartNumber + 100}`; // Add buffer for next scan
+                
+                // Find the most recent upload time for last updated
+                let latestUploadTime = null;
+                seriesData.forEach(series => {
+                    series.chapters.forEach(chapter => {
+                        if (chapter.uploadTime) {
+                            const uploadTime = new Date(chapter.uploadTime);
+                            if (!latestUploadTime || uploadTime > latestUploadTime) {
+                                latestUploadTime = uploadTime;
+                            }
+                        }
+                    });
+                });
+                
+                document.getElementById('lastUpdated').textContent = latestUploadTime ? 
+                    latestUploadTime.toLocaleString() : 'Unknown';
                 
                 // Helper function to calculate time ago text
                 function getTimeAgo(timestamp) {
@@ -152,9 +170,9 @@
                     const bLatest = getLatestChapterNum(b.chapters);
                     return bLatest - aLatest;
                 });
-                
+
                 // Helper function to create chapter items
-                function createChapterItem(chapter, series, configData) {
+                function createChapterItem(chapter, series) {
                     const chapterItem = document.createElement('div');
                     chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-2 p-3 text-xs';
                     
@@ -204,7 +222,7 @@
                     
                     return chapterItem;
                 }
-                
+
                 // Generate cards for each series
                 seriesData.forEach(series => {
                     // Sort chapters in descending order
@@ -251,7 +269,7 @@
                     function showAllChapters(allChaptersList, showMoreBtn, remainingChaps) {
                         // Add each of the remaining chapters to the list
                         remainingChaps.forEach(chapter => {
-                            const chapterItem = createChapterItem(chapter, series, configData);
+                            const chapterItem = createChapterItem(chapter, series);
                             allChaptersList.appendChild(chapterItem);
                         });
                         
@@ -261,7 +279,7 @@
                     
                     // Add initial chapters
                     chaptersToShow.forEach(chapter => {
-                        const chapterItem = createChapterItem(chapter, series, configData);
+                        const chapterItem = createChapterItem(chapter, series);
                         chaptersList.appendChild(chapterItem);
                     });
                     
@@ -291,7 +309,7 @@
                 console.error('Error loading data:', error);
                 document.getElementById('seriesContainer').innerHTML = `
                     <div class="col-span-full text-center py-8 text-red-500">
-                        <p>Error loading series data. Please check if info.json and config.json exist.</p>
+                        <p>Error loading series data. Please check if info.json exists.</p>
                         <p class="text-sm mt-2">${error.message}</p>
                     </div>
                 `;
