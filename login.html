@@ -6,6 +6,13 @@
     <title>Login - Encore</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #3e1f16 50%, #600f0f 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
         .form {
             display: flex;
             flex-direction: column;
@@ -13,14 +20,17 @@
             padding-left: 2em;
             padding-right: 2em;
             padding-bottom: 0.4em;
-            background-color: #171717;
+            background-color: rgba(23, 23, 23, 0.8);
             border-radius: 25px;
             transition: .4s ease-in-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .form:hover {
             transform: scale(1.05);
-            border: 1px solid black;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
 
         #heading {
@@ -82,7 +92,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center">
+<body class="flex items-center justify-center">
     <div class="w-full max-w-md px-4">
         <form class="form" id="loginForm" onsubmit="return handleLogin(event)">
             <p id="heading">Login</p>
@@ -124,16 +134,13 @@
             const errorMessage = document.getElementById('errorMessage');
 
             try {
-                // Here you would typically make an API call to validate credentials
-                // For now, we'll simulate the authentication
                 const isValid = await validateCredentials(username, password);
                 
-                if (isValid) {
-                    // Set authentication with 12-hour expiry
-                    const expiry = new Date().getTime() + (12 * 60 * 60 * 1000); // 12 hours
+                if (isValid.valid) {
+                    // Set authentication with the same expiry as the credentials
                     const authData = {
                         token: btoa(username + ':' + new Date().getTime()),
-                        expiry: expiry,
+                        expiry: isValid.expiry * 1000, // Convert to milliseconds
                         username: username
                     };
                     localStorage.setItem('auth', JSON.stringify(authData));
@@ -149,11 +156,40 @@
             return false;
         }
 
-        // Simulated credential validation (replace with actual validation)
+        // Validate credentials against credentials.json
         async function validateCredentials(username, password) {
-            // This should be replaced with actual validation logic
-            // For now, we'll return true for any non-empty credentials
-            return username.trim() !== '' && password.trim() !== '';
+            try {
+                const response = await fetch('credentials.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load credentials');
+                }
+                
+                const data = await response.json();
+                const currentTime = Math.floor(new Date().getTime() / 1000); // Convert to seconds
+                
+                // Find matching credentials that haven't expired
+                const validCred = data.credentials.find(cred => 
+                    cred.username === username && 
+                    cred.password === password && 
+                    cred.expiry > currentTime
+                );
+                
+                if (validCred) {
+                    return {
+                        valid: true,
+                        expiry: validCred.expiry
+                    };
+                }
+                
+                return {
+                    valid: false
+                };
+            } catch (error) {
+                console.error('Error validating credentials:', error);
+                return {
+                    valid: false
+                };
+            }
         }
 
         // Check authentication on page load
