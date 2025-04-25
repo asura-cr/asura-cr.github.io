@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290176,
+  "lastStartNumber": 290189,
   "downloadedChapters": {
     "Legend of the Reincarnated Demon_0": {
       "timestamp": "2025-04-25T18:06:20.629949",
@@ -12,6 +12,12 @@
       "imageCount": 10,
       "githubPath": "series/unknown_series/chapter_32",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_32"
+    },
+    "The Knight King Who Returned with a God_10": {
+      "timestamp": "2025-04-26T01:35:04.863429",
+      "imageCount": 13,
+      "githubPath": "series/the_knight_king_who_returned_with_a_god/chapter_10",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_knight_king_who_returned_with_a_god\\chapter_10"
     }
   }
 }
