@@ -41,7 +41,15 @@
 <body>
     <div class="container mx-auto px-4 py-6">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Encore</h1>
+                <div class="flex items-center space-x-4">
+                    <span id="username" class="text-gray-400"></span>
+                    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition-colors duration-200">
+                        Logout
+                    </button>
+                </div>
+            </div>
             <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
@@ -81,8 +89,41 @@
     </div>
 
     <script>
-        // Fetch and display series data from info.json
+        // Authentication check
+        function checkAuth() {
+            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
+                localStorage.removeItem('auth');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('auth');
+            window.location.href = 'login.html';
+        }
+
+        // Update UI with username
+        function updateUI() {
+            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+            if (authData.username) {
+                document.getElementById('username').textContent = authData.username;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication first
+            if (!checkAuth()) return;
+
+            // Update UI
+            updateUI();
+
+            // Add logout button listener
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
             try {
                 // Load info.json
                 const infoResponse = await fetch('info.json');
@@ -176,15 +217,18 @@
                     const chapterItem = document.createElement('div');
                     chapterItem.className = 'bg-gray-800 hover:bg-gray-700 rounded mb-2 p-3 text-xs';
                     
+                    // Ensure chapter number is valid
+                    const chapterNumber = chapter.chapter || 'unknown';
+                    
                     // Create GitHub paths
-                    const seriesFolder = series.series.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                    const chapterFolder = `chapter_${(typeof chapter.chapter === 'number' ? chapter.chapter : chapter.chapter).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+                    const seriesFolder = (series.series || 'unknown').toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    const chapterFolder = `chapter_${(typeof chapterNumber === 'number' ? chapterNumber : chapterNumber).toString().toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
                     
                     // Update path to match GitHub repository structure
                     const chapterPath = chapter.path ? chapter.path.replace(/\\/g, '/') : `series/${seriesFolder}/${chapterFolder}/index.html`;
                     
-                    // Viewer URL
-                    const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(chapter.chapter)}`;
+                    // Viewer URL with fallback for unknown values
+                    const viewerUrl = `viewer.html?series=${encodeURIComponent(series.series || 'Unknown Series')}&chapter=${encodeURIComponent(chapterNumber)}`;
                     
                     // Create a flex container for the chapter info
                     const chapterItemContent = document.createElement('div');
@@ -193,9 +237,9 @@
                     // Create the chapter number and info
                     const chapterInfo = document.createElement('div');
                     
-                    const chapterNumber = document.createElement('div');
-                    chapterNumber.className = 'font-bold text-white';
-                    chapterNumber.textContent = `Chapter ${chapter.chapter}`;
+                    const chapterNumberElement = document.createElement('div');
+                    chapterNumberElement.className = 'font-bold text-white';
+                    chapterNumberElement.textContent = `Chapter ${chapterNumber}`;
                     
                     const timeInfo = document.createElement('div');
                     timeInfo.className = 'text-gray-400 text-xs mt-1';
@@ -204,7 +248,7 @@
                     const timestamp = chapter.uploadTime ? new Date(chapter.uploadTime) : new Date();
                     timeInfo.textContent = getTimeAgo(timestamp);
                     
-                    chapterInfo.appendChild(chapterNumber);
+                    chapterInfo.appendChild(chapterNumberElement);
                     chapterInfo.appendChild(timeInfo);
                     
                     // Create the read button
@@ -225,6 +269,20 @@
 
                 // Generate cards for each series
                 seriesData.forEach(series => {
+                    // Skip series with no valid chapters
+                    if (!series.chapters || series.chapters.length === 0) {
+                        return;
+                    }
+                    
+                    // Filter out invalid chapters
+                    series.chapters = series.chapters.filter(chapter => 
+                        chapter && (chapter.chapter || chapter.chapter === 0)
+                    );
+                    
+                    if (series.chapters.length === 0) {
+                        return;
+                    }
+                    
                     // Sort chapters in descending order
                     series.chapters.sort((a, b) => {
                         const numA = parseFloat(a.chapter);
@@ -235,7 +293,7 @@
                         }
                         
                         // Fallback to string comparison if not numbers
-                        return String(b.chapter).localeCompare(String(a.chapter));
+                        return String(b.chapter || '').localeCompare(String(a.chapter || ''));
                     });
                     
                     // Create series card
@@ -248,7 +306,7 @@
                     
                     const seriesTitle = document.createElement('h3');
                     seriesTitle.className = 'text-lg font-semibold text-white hover:text-blue-400 truncate';
-                    seriesTitle.textContent = series.series;
+                    seriesTitle.textContent = series.series || 'Unknown Series';
                     
                     const chapterCount = document.createElement('div');
                     chapterCount.className = 'text-xs text-gray-400 mt-1';
@@ -315,6 +373,9 @@
                 `;
             }
         });
+
+        // Periodically check authentication
+        setInterval(checkAuth, 60000); // Check every minute
     </script>
 </body>
 </html> 
