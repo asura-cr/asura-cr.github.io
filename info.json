@@ -10,29 +10,5 @@
         "uploadTime": "2025-04-25T11:11:52.726548"
       }
     ]
-  },
-  {
-    "series": "SSS-Class Suicide Hunter",
-    "chapters": [
-      {
-        "chapter": 135,
-        "startNumber": 289909,
-        "frameCount": 10,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-24T23:44:31.454428"
-      }
-    ]
-  },
-  {
-    "series": "Unknown Series",
-    "chapters": [
-      {
-        "chapter": "unknown",
-        "startNumber": 289919,
-        "frameCount": 13,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-24T23:47:35.091428"
-      }
-    ]
   }
 ]
