@@ -114,14 +114,8 @@
     </div>
 
     <script>
-        // Function to hash password
-        async function hashPassword(password, salt) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password + salt);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+        // API URL - Replace with your Glitch URL
+        const API_URL = 'https://rapid-hazel-art.glitch.me/';
 
         // Check if user is already logged in
         function checkAuth() {
@@ -143,64 +137,34 @@
             const errorMessage = document.getElementById('errorMessage');
 
             try {
-                const isValid = await validateCredentials(username, password);
+                const response = await fetch(`${API_URL}/api/validate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
                 
-                if (isValid.valid) {
+                if (data.valid) {
                     const authData = {
                         token: btoa(username + ':' + new Date().getTime()),
-                        expiry: isValid.expiry * 1000, // Convert to milliseconds
+                        expiry: data.expiry * 1000, // Convert to milliseconds
                         username: username
                     };
                     localStorage.setItem('auth', JSON.stringify(authData));
                     window.location.href = 'index.html';
                 } else {
-                    errorMessage.textContent = 'Invalid username or password';
+                    errorMessage.textContent = data.message || 'Invalid username or password';
                     errorMessage.style.display = 'block';
                 }
             } catch (error) {
+                console.error('Error:', error);
                 errorMessage.textContent = 'An error occurred. Please try again.';
                 errorMessage.style.display = 'block';
             }
             return false;
-        }
-
-        // Validate credentials against credentials.json
-        async function validateCredentials(username, password) {
-            try {
-                const response = await fetch('credentials.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load credentials');
-                }
-                
-                const data = await response.json();
-                const currentTime = Math.floor(new Date().getTime() / 1000);
-                
-                // Hash the provided password
-                const hashedPassword = await hashPassword(password, 'default_salt'); // Use same salt as bot
-                
-                // Find matching credentials that haven't expired
-                const validCred = data.credentials.find(cred => 
-                    cred.username === username && 
-                    cred.password === hashedPassword && 
-                    cred.expiry > currentTime
-                );
-                
-                if (validCred) {
-                    return {
-                        valid: true,
-                        expiry: validCred.expiry
-                    };
-                }
-                
-                return {
-                    valid: false
-                };
-            } catch (error) {
-                console.error('Error validating credentials:', error);
-                return {
-                    valid: false
-                };
-            }
         }
 
         // Check authentication on page load
