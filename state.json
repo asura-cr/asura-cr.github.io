@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290051,
+  "lastStartNumber": 290064,
   "downloadedChapters": {
     "Solo Max-Level Newbie_203": {
       "timestamp": "2025-04-25T11:11:51.682382",
@@ -36,6 +36,12 @@
       "imageCount": 12,
       "githubPath": "series/unknown_series/chapter_92",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_92"
+    },
+    "Unknown Series_93": {
+      "timestamp": "2025-04-25T11:57:42.510216",
+      "imageCount": 13,
+      "githubPath": "series/unknown_series/chapter_93",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_93"
     }
   }
 }
