@@ -114,6 +114,15 @@
     </div>
 
     <script>
+        // Function to hash password
+        async function hashPassword(password, salt) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + salt);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         // Check if user is already logged in
         function checkAuth() {
             const authData = JSON.parse(localStorage.getItem('auth') || '{}');
@@ -137,7 +146,6 @@
                 const isValid = await validateCredentials(username, password);
                 
                 if (isValid.valid) {
-                    // Set authentication with the same expiry as the credentials
                     const authData = {
                         token: btoa(username + ':' + new Date().getTime()),
                         expiry: isValid.expiry * 1000, // Convert to milliseconds
@@ -165,12 +173,15 @@
                 }
                 
                 const data = await response.json();
-                const currentTime = Math.floor(new Date().getTime() / 1000); // Convert to seconds
+                const currentTime = Math.floor(new Date().getTime() / 1000);
+                
+                // Hash the provided password
+                const hashedPassword = await hashPassword(password, 'default_salt'); // Use same salt as bot
                 
                 // Find matching credentials that haven't expired
                 const validCred = data.credentials.find(cred => 
                     cred.username === username && 
-                    cred.password === password && 
+                    cred.password === hashedPassword && 
                     cred.expiry > currentTime
                 );
                 
