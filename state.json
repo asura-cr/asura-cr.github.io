@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290140,
+  "lastStartNumber": 290154,
   "downloadedChapters": {
     "Solo Max-Level Newbie_203": {
       "timestamp": "2025-04-25T11:11:51.682382",
@@ -66,6 +66,12 @@
       "imageCount": 8,
       "githubPath": "series/unknown_series/chapter_unknown",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
+    },
+    "Legend of the Reincarnated Demon_0": {
+      "timestamp": "2025-04-25T18:06:20.629949",
+      "imageCount": 14,
+      "githubPath": "series/legend_of_the_reincarnated_demon/chapter_0",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\legend_of_the_reincarnated_demon\\chapter_0"
     }
   }
 }
