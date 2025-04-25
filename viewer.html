@@ -60,13 +60,16 @@
                 Back to Library
             </a>
             <h1 id="page-title" class="text-xl font-bold truncate max-w-md">Loading...</h1>
-            <div class="flex space-x-3">
-                <button id="prev-chapter" class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
-                    Previous Chapter
-                </button>
-                <button id="next-chapter" class="bg-blue-600 hover:bg-blue-500 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
-                    Next Chapter
-                </button>
+            <div class="flex items-center space-x-3">
+                <span id="username" class="text-gray-400 text-sm"></span>
+                <div class="flex space-x-3">
+                    <button id="prev-chapter" class="bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous Chapter
+                    </button>
+                    <button id="next-chapter" class="bg-blue-600 hover:bg-blue-500 text-sm px-3 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next Chapter
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -103,7 +106,32 @@
     </div>
 
     <script>
+        // Authentication check
+        function checkAuth() {
+            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
+                localStorage.removeItem('auth');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Update UI with username
+        function updateUI() {
+            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+            if (authData.username) {
+                document.getElementById('username').textContent = authData.username;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication first
+            if (!checkAuth()) return;
+
+            // Update UI
+            updateUI();
+
             // Extract query parameters
             const params = new URLSearchParams(window.location.search);
             const series = params.get('series');
@@ -297,6 +325,9 @@
                 window.location.reload();
             });
         }
+
+        // Periodically check authentication
+        setInterval(checkAuth, 60000); // Check every minute
     </script>
 </body>
 </html>
