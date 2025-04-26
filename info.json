@@ -12,6 +12,18 @@
     ]
   },
   {
+    "series": "The Last Adventurer",
+    "chapters": [
+      {
+        "chapter": 68,
+        "startNumber": 290216,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-26T19:55:18.264427"
+      }
+    ]
+  },
+  {
     "series": "Unknown Series",
     "chapters": [
       {
