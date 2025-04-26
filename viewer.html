@@ -129,22 +129,22 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // Check authentication first
             if (!await checkAuth()) return;
-
+            
             // Update UI
             updateUI();
-
+            
             // Extract query parameters
             const params = new URLSearchParams(window.location.search);
             const series = params.get('series');
-            const chapter = params.get('chapter');
+            const chapterParam = params.get('chapter');
             
-            if (!series || !chapter) {
+            if (!series || !chapterParam) {
                 showError("Missing series or chapter parameters");
                 return;
             }
             
             // Update page title
-            document.title = `${series} - Chapter ${chapter}`;
+            document.title = `${series} - Chapter ${chapterParam}`;
             const seriesLink = document.getElementById('series-link');
             seriesLink.textContent = series;
             seriesLink.href = `series.html?series=${encodeURIComponent(series)}`;
@@ -152,27 +152,18 @@
             try {
                 // Load info.json to get chapter data
                 const infoResponse = await fetch('info.json');
-                if (!infoResponse.ok) {
-                    throw new Error('Failed to load series information');
-                }
+                if (!infoResponse.ok) throw new Error('Failed to load series information');
                 
                 const seriesData = await infoResponse.json();
                 
                 // Find the current series
                 const currentSeries = seriesData.find(s => s.series === series);
-                if (!currentSeries) {
-                    throw new Error(`Series "${series}" not found`);
-                }
+                if (!currentSeries) throw new Error(`Series "${series}" not found`);
                 
-                // Find the current chapter
-                const chapterNumber = chapter;
-                const currentChapter = currentSeries.chapters.find(c => c.chapter === chapterNumber);
-                if (!currentChapter) {
-                    throw new Error(`Chapter ${chapter} not found in series "${series}"`);
-                }
+                const currentChapter = currentSeries.chapters.find(c => String(c.chapter) === chapterParam);
+                if (!currentChapter) throw new Error(`Chapter "${chapterParam}" not found in series "${series}"`);
                 
-                // Set up navigation buttons
-                setupNavigation(currentSeries, chapterNumber);
+                setupNavigation(currentSeries, chapterParam);
                 
                 // Generate image URLs based on chapter data
                 const startNumber = currentChapter.startNumber;
@@ -185,12 +176,9 @@
                 for (let i = 0; i < frameCount; i++) {
                     // Create folder paths based on GitHub structure
                     const seriesFolder = series.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                    // For unknown chapters, we need to preserve the underscore
-                    const chapterName = chapter.toString().toLowerCase();
-                    const chapterFolder = `chapter_${chapterName}`;
+                    const chapterFolder = `chapter_${chapterParam.toLowerCase()}`;
                     const imageName = `page_${i.toString().padStart(3, '0')}.jpg`;
                     
-                    // Use GitHub raw URL format - adjust username/repo as needed
                     const githubRawUrl = `https://raw.githubusercontent.com/Asura-cr/Asura-cr.github.io/main/series/${seriesFolder}/${chapterFolder}/${imageName}`;
                     imageUrls.push(githubRawUrl);
                 }
@@ -267,14 +255,20 @@
             }
         }
         
-        function setupNavigation(series, currentChapter) {
-            // Sort chapters numerically
-            const chapters = series.chapters.sort((a, b) => a.chapter - b.chapter);
+        function setupNavigation(series, currentChapterParam) {
+            const chapters = [...series.chapters].sort((a, b) => {
+                const aVal = isNaN(a.chapter) ? a.chapter.toString() : Number(a.chapter);
+                const bVal = isNaN(b.chapter) ? b.chapter.toString() : Number(b.chapter);
+                
+                if (typeof aVal === 'number' && typeof bVal === 'number') {
+                    return aVal - bVal;
+                } else {
+                    return aVal.localeCompare(bVal);
+                }
+            });
             
-            // Find current chapter index
-            const currentIndex = chapters.findIndex(ch => ch.chapter === currentChapter);
+            const currentIndex = chapters.findIndex(ch => String(ch.chapter) === currentChapterParam);
             
-            // Set up previous chapter buttons
             const prevButtons = [
                 document.getElementById('prev-chapter'),
                 document.getElementById('prev-chapter-bottom')
@@ -296,7 +290,7 @@
                 const prevChapter = chapters[currentIndex - 1].chapter;
                 prevButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
-                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${prevChapter}`;
+                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(prevChapter)}`;
                     });
                 });
             }
@@ -311,7 +305,7 @@
                 const nextChapter = chapters[currentIndex + 1].chapter;
                 nextButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
-                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${nextChapter}`;
+                        window.location.href = `viewer.html?series=${encodeURIComponent(series.series)}&chapter=${encodeURIComponent(nextChapter)}`;
                     });
                 });
             }
