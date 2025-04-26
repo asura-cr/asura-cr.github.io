@@ -98,42 +98,14 @@
 
     <script>
         // Authentication check
-        async function checkAuth() {
+        function checkAuth() {
             const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (!authData.token || !authData.expiry || !authData.username) {
-                window.location.href = 'login.html';
-                return false;
-            }
-
-            try {
-                // Validate against credentials.json
-                const response = await fetch('credentials.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load credentials');
-                }
-                
-                const data = await response.json();
-                const currentTime = Math.floor(new Date().getTime() / 1000); // Convert to seconds
-                
-                // Check if the user's credentials still exist and haven't expired
-                const validCred = data.credentials.find(cred => 
-                    cred.username === authData.username && 
-                    cred.expiry > currentTime
-                );
-                
-                if (!validCred) {
-                    localStorage.removeItem('auth');
-                    window.location.href = 'login.html';
-                    return false;
-                }
-
-                return true;
-            } catch (error) {
-                console.error('Error validating credentials:', error);
+            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
                 localStorage.removeItem('auth');
                 window.location.href = 'login.html';
                 return false;
             }
+            return true;
         }
 
         // Update UI with username
