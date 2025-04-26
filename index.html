@@ -50,6 +50,7 @@
                     </button>
                 </div>
             </div>
+            <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </header>
 
         <div id="seriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -83,7 +84,6 @@
         </div>
         
         <div class="mt-10 text-center text-gray-500 text-sm">
-            <p class="text-center text-gray-400 mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
             <p>Last updated: <span id="lastUpdated">Loading...</span></p>
         </div>
     </div>
@@ -304,9 +304,10 @@
                     const seriesHeader = document.createElement('div');
                     seriesHeader.className = 'p-4 bg-gray-900 border-b border-gray-700';
                     
-                    const seriesTitle = document.createElement('h3');
-                    seriesTitle.className = 'text-lg font-semibold text-white hover:text-blue-400 truncate';
+                    const seriesTitle = document.createElement('a');
+                    seriesTitle.className = 'text-lg font-semibold text-white hover:text-blue-400 truncate block';
                     seriesTitle.textContent = series.series || 'Unknown Series';
+                    seriesTitle.href = `series.html?series=${encodeURIComponent(series.series)}`;
                     
                     const chapterCount = document.createElement('div');
                     chapterCount.className = 'text-xs text-gray-400 mt-1';
