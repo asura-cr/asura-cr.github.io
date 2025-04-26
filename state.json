@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290255,
+  "lastStartNumber": 290269,
   "downloadedChapters": {
     "Bad Born Blood_33": {
       "timestamp": "2025-04-26T19:51:52.541554",
@@ -30,6 +30,12 @@
       "imageCount": 10,
       "githubPath": "series/unknown_series/chapter_unknown",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
+    },
+    "Emperor of Solo Play_8": {
+      "timestamp": "2025-04-26T20:24:41.972392",
+      "imageCount": 14,
+      "githubPath": "series/emperor_of_solo_play/chapter_8",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\emperor_of_solo_play\\chapter_8"
     }
   }
 }
