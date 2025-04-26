@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290244,
+  "lastStartNumber": 290255,
   "downloadedChapters": {
     "Bad Born Blood_33": {
       "timestamp": "2025-04-26T19:51:52.541554",
@@ -24,6 +24,12 @@
       "imageCount": 15,
       "githubPath": "series/unknown_series/chapter_98",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_98"
+    },
+    "Unknown Series_unknown": {
+      "timestamp": "2025-04-26T20:03:21.234029",
+      "imageCount": 10,
+      "githubPath": "series/unknown_series/chapter_unknown",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
     }
   }
 }
