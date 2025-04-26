@@ -12,6 +12,18 @@
     ]
   },
   {
+    "series": "Emperor of Solo Play",
+    "chapters": [
+      {
+        "chapter": 8,
+        "startNumber": 290256,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-26T20:24:42.637685"
+      }
+    ]
+  },
+  {
     "series": "The Last Adventurer",
     "chapters": [
       {
