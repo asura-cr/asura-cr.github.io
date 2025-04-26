@@ -165,7 +165,7 @@
                 }
                 
                 // Find the current chapter
-                const chapterNumber = parseInt(chapter);
+                const chapterNumber = chapter;
                 const currentChapter = currentSeries.chapters.find(c => c.chapter === chapterNumber);
                 if (!currentChapter) {
                     throw new Error(`Chapter ${chapter} not found in series "${series}"`);
