@@ -42,10 +42,10 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-    <header class="fixed top-0 left-0 right-0 bg-gray-800 shadow-md z-50">
+<body class="bg-black text-white min-h-screen">
+    <header class="fixed top-0 left-0 right-0 bg-zinc-900 shadow-md z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-blue-400 hover:text-blue-300 flex items-center">
+            <a href="index.html" class="text-gray-400 hover:text-white flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
@@ -62,7 +62,7 @@
 
     <main class="container mx-auto px-4 pt-20 pb-10">
         <div id="loading" class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
             <p class="mt-4 text-gray-400">Loading series details...</p>
         </div>
 
@@ -75,11 +75,11 @@
                 </div>
             </div>
 
-            <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                <div class="p-4 border-b border-gray-700">
+            <div class="bg-zinc-900 rounded-lg shadow-lg overflow-hidden">
+                <div class="p-4 border-b border-zinc-800">
                     <h2 class="text-xl font-semibold">Chapters</h2>
                 </div>
-                <div id="chapters-list" class="divide-y divide-gray-700">
+                <div id="chapters-list" class="divide-y divide-zinc-800">
                     <!-- Chapters will be inserted here -->
                 </div>
             </div>
@@ -90,7 +90,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <p class="mt-4 text-red-400">Error loading series details</p>
-            <button id="retry-button" class="mt-4 bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded">
+            <button id="retry-button" class="mt-4 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
                 Retry
             </button>
         </div>
@@ -108,18 +108,18 @@
             return true;
         }
 
+        // Logout function
+        function logout() {
+            localStorage.removeItem('auth');
+            window.location.href = 'login.html';
+        }
+
         // Update UI with username
         function updateUI() {
             const authData = JSON.parse(localStorage.getItem('auth') || '{}');
             if (authData.username) {
                 document.getElementById('username').textContent = authData.username;
             }
-        }
-
-        // Logout function
-        function logout() {
-            localStorage.removeItem('auth');
-            window.location.href = 'login.html';
         }
 
         // Helper function to format time ago
@@ -228,7 +228,7 @@
 
                     const readButton = document.createElement('a');
                     readButton.href = `viewer.html?series=${encodeURIComponent(seriesName)}&chapter=${encodeURIComponent(chapter.chapter)}`;
-                    readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm transition-colors duration-200 ml-4';
+                    readButton.className = 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition-colors duration-200 ml-4';
                     readButton.textContent = 'Read';
 
                     chapterDiv.appendChild(chapterInfo);
