@@ -59,7 +59,8 @@
                 </svg>
                 Back to Library
             </a>
-            <h1 id="page-title" class="text-xl font-bold truncate max-w-md">Loading...</h1>
+            <h1 id="page-title" class="text-xl font-bold truncate max-w-md hidden"></h1>
+            <a id="series-link" class="text-xl font-bold truncate max-w-md text-white hover:text-blue-400 transition-colors duration-200">Loading...</a>
             <div class="flex items-center space-x-3">
                 <span id="username" class="text-gray-400 text-sm"></span>
                 <div class="flex space-x-3">
@@ -86,7 +87,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <p class="mt-4 text-red-400">Error loading images</p>
+            <p class="mt-4 text-red-400">Error loading manga images</p>
             <button id="retry-button" class="mt-4 bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded">
                 Retry
             </button>
@@ -107,14 +108,42 @@
 
     <script>
         // Authentication check
-        function checkAuth() {
+        async function checkAuth() {
             const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
+            if (!authData.token || !authData.expiry || !authData.username) {
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            try {
+                // Validate against credentials.json
+                const response = await fetch('credentials.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load credentials');
+                }
+                
+                const data = await response.json();
+                const currentTime = Math.floor(new Date().getTime() / 1000); // Convert to seconds
+                
+                // Check if the user's credentials still exist and haven't expired
+                const validCred = data.credentials.find(cred => 
+                    cred.username === authData.username && 
+                    cred.expiry > currentTime
+                );
+                
+                if (!validCred) {
+                    localStorage.removeItem('auth');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Error validating credentials:', error);
                 localStorage.removeItem('auth');
                 window.location.href = 'login.html';
                 return false;
             }
-            return true;
         }
 
         // Update UI with username
@@ -127,7 +156,7 @@
 
         document.addEventListener('DOMContentLoaded', async function() {
             // Check authentication first
-            if (!checkAuth()) return;
+            if (!await checkAuth()) return;
 
             // Update UI
             updateUI();
@@ -143,8 +172,10 @@
             }
             
             // Update page title
-            document.getElementById('page-title').textContent = `${series} - Chapter ${chapter}`;
             document.title = `${series} - Chapter ${chapter}`;
+            const seriesLink = document.getElementById('series-link');
+            seriesLink.textContent = series;
+            seriesLink.href = `series.html?series=${encodeURIComponent(series)}`;
             
             try {
                 // Load info.json to get chapter data
@@ -317,7 +348,7 @@
             document.getElementById('image-container').classList.add('hidden');
             
             const errorMessage = document.getElementById('error-message');
-            errorMessage.querySelector('p').textContent = message || 'Error loading images';
+            errorMessage.querySelector('p').textContent = message || 'Error loading manga images';
             errorMessage.classList.remove('hidden');
             
             // Set up retry button
