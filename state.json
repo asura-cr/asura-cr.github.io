@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290215,
+  "lastStartNumber": 290229,
   "downloadedChapters": {
     "Bad Born Blood_33": {
       "timestamp": "2025-04-26T19:51:52.541554",
@@ -12,6 +12,12 @@
       "imageCount": 11,
       "githubPath": "series/unknown_series/chapter_4",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_4"
+    },
+    "The Last Adventurer_68": {
+      "timestamp": "2025-04-26T19:55:17.622603",
+      "imageCount": 14,
+      "githubPath": "series/the_last_adventurer/chapter_68",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_last_adventurer\\chapter_68"
     }
   }
 }
