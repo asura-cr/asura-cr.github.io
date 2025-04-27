@@ -12,18 +12,6 @@
     ]
   },
   {
-    "series": "Playing the Perfect Fox-Eyed Villain",
-    "chapters": [
-      {
-        "chapter": 10,
-        "startNumber": 290331,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T13:53:42.254031"
-      }
-    ]
-  },
-  {
     "series": "The Fox-Eyed Villain of the Demon Academy ",
     "chapters": [
       {
@@ -77,13 +65,6 @@
         "frameCount": 15,
         "filePattern": "01-optimized.webp",
         "uploadTime": "2025-04-27T19:01:25.373097"
-      },
-      {
-        "chapter": "unknown3",
-        "startNumber": 290343,
-        "frameCount": 16,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T13:55:30.299312"
       },
       {
         "chapter": "unknown4",
