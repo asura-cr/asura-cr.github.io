@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290342,
+  "lastStartNumber": 290359,
   "downloadedChapters": {
     "Unknown Series_unknown1": {
       "timestamp": "2025-04-27T13:45:07.776948",
@@ -18,7 +18,13 @@
       "imageCount": 12,
       "githubPath": "series/playing_the_perfect_fox_eyed_villain/chapter_10",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\playing_the_perfect_fox_eyed_villain\\chapter_10"
+    },
+    "Unknown Series_unknown3": {
+      "timestamp": "2025-04-27T13:55:29.627206",
+      "imageCount": 16,
+      "githubPath": "series/unknown_series/chapter_unknown3",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown3"
     }
   },
-  "unknownChapterCounter": 2
+  "unknownChapterCounter": 3
 }
