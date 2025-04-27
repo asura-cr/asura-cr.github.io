@@ -50,7 +50,7 @@
           height: 245px;
         }
 
-        #card {
+        .cyber-card-main {
           position: absolute;
           inset: 0;
           z-index: 0;
@@ -90,6 +90,15 @@
           text-shadow:
             0 0 10px rgba(92, 103, 255, 0.5),
             0 0 20px rgba(92, 103, 255, 0.3);
+          cursor: pointer; /* Make the title appear clickable */
+          z-index: 300; /* Ensure title is clickable */
+          position: relative;
+        }
+
+        /* Make title glow on hover */
+        .title:hover {
+          filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.5));
+          transform: translateY(-5px);
         }
 
         .subtitle {
@@ -159,18 +168,17 @@
           transition: opacity 0.3s ease;
         }
 
-        /* Hover effects */
-        .tracker:hover ~ #card .title {
-          opacity: 1;
-          transform: translateY(-10px);
-        }
-
-        .tracker:hover ~ #card .glowing-elements div {
+        /* Hover effects handled by JS instead of CSS for better control */
+        .container:hover .glowing-elements div {
           opacity: 1;
         }
 
-        .tracker:hover ~ #card .card-particles span {
+        .container:hover .card-particles span {
           animation: particleFloat 2s infinite;
+        }
+        
+        .container:hover .cyber-card-main {
+          filter: brightness(1.1);
         }
 
         @keyframes particleFloat {
@@ -225,7 +233,7 @@
           right: 60%;
         }
 
-        #card::before {
+        .cyber-card-main::before {
           content: "";
           background: radial-gradient(
             circle at center,
@@ -244,64 +252,14 @@
           transition: opacity 0.3s ease;
         }
 
-        .tracker:hover ~ #card::before {
+        .container:hover .cyber-card-main::before {
           opacity: 1;
         }
 
-        .tracker {
-          position: absolute;
-          z-index: 100;
-          width: 100%;
-          height: 100%;
-          pointer-events: auto;
-        }
-
-        .container:hover .tracker {
-          cursor: default;
-        }
-
-        .container:hover #card::before {
-          transition: 200ms;
-          content: "";
-          opacity: 80%;
-        }
-
+        /* Remove trackers since we're using direct hover */
         .canvas {
           inset: 0;
-          z-index: 100;
           position: absolute;
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          grid-template-rows: 1fr 1fr 1fr;
-          gap: 0px 0px;
-          grid-template-areas:
-            "tr-1 tr-2 tr-3"
-            "tr-4 tr-5 tr-6"
-            "tr-7 tr-8 tr-9";
-        }
-
-        .tr-1 { grid-area: tr-1; }
-        .tr-2 { grid-area: tr-2; }
-        .tr-3 { grid-area: tr-3; }
-        .tr-4 { grid-area: tr-4; }
-        .tr-5 { grid-area: tr-5; }
-        .tr-6 { grid-area: tr-6; }
-        .tr-7 { grid-area: tr-7; }
-        .tr-8 { grid-area: tr-8; }
-        .tr-9 { grid-area: tr-9; }
-
-        /* Removing all the rotation effects */
-        .tr-1:hover ~ #card,
-        .tr-2:hover ~ #card,
-        .tr-3:hover ~ #card,
-        .tr-4:hover ~ #card,
-        .tr-5:hover ~ #card,
-        .tr-6:hover ~ #card,
-        .tr-7:hover ~ #card,
-        .tr-8:hover ~ #card,
-        .tr-9:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: none;
         }
 
         .noselect {
@@ -449,7 +407,7 @@
           }
         }
 
-        #card:hover .card-glare {
+        .container:hover .card-glare {
           opacity: 1;
         }
 
@@ -457,7 +415,7 @@
           transition: all 0.3s ease;
         }
 
-        #card:hover .corner-elements span {
+        .container:hover .corner-elements span {
           border-color: rgba(92, 103, 255, 0.8);
           box-shadow: 0 0 10px rgba(92, 103, 255, 0.5);
         }
@@ -471,50 +429,22 @@
             bottom: 0;
             padding: 10px;
             overflow-y: auto;
-            z-index: 150;
-            pointer-events: auto;
+            z-index: 100; /* Ensure it's above card but below title */
+        }
+        
+        /* Make chapter items and buttons clearly interactive */
+        .bg-gray-800 {
+            position: relative;
+            z-index: 200;
+        }
+        
+        .bg-gray-800 a {
+            position: relative;
+            z-index: 300;
         }
 
         .cyber-card {
             margin-bottom: 20px;
-        }
-        
-        /* Make sure all interactive elements can be clicked */
-        .card-content a, 
-        .card-content .title,
-        .bg-gray-800,
-        .card-chapters {
-            position: relative;
-            z-index: 200;
-            pointer-events: auto;
-        }
-
-        /* Restore the hover brightness effect */
-        .container:hover #card {
-          transition: 300ms;
-          filter: brightness(1.1);
-        }
-
-        /* Apply hover effects for glow elements */
-        .container:hover .glow-1,
-        .container:hover .glow-2,
-        .container:hover .glow-3 {
-          opacity: 1;
-        }
-        
-        /* Apply hover effect for card particles */
-        .container:hover .card-particles span {
-          animation: particleFloat 2s infinite;
-        }
-        
-        /* Apply hover effect for card title */
-        .container:hover .title {
-          transform: translateY(-10px);
-        }
-        
-        /* Apply hover effect for card glare */
-        .container:hover .card-glare {
-          opacity: 1;
         }
     </style>
 </head>
@@ -784,19 +714,8 @@
                     const container = document.createElement('div');
                     container.className = 'container noselect';
                     
-                    const canvas = document.createElement('div');
-                    canvas.className = 'canvas';
-                    
-                    // Add trackers
-                    for (let i = 1; i <= 9; i++) {
-                        const tracker = document.createElement('div');
-                        tracker.className = `tracker tr-${i}`;
-                        canvas.appendChild(tracker);
-                    }
-                    
-                    // Create card element
-                    const card = document.createElement('div');
-                    card.id = 'card';
+                    const cardMain = document.createElement('div');
+                    cardMain.className = 'cyber-card-main';
                     
                     const cardContent = document.createElement('div');
                     cardContent.className = 'card-content';
@@ -818,7 +737,6 @@
                     const title = document.createElement('div');
                     title.className = 'title';
                     title.textContent = series.series || 'Unknown Series';
-                    title.style.cursor = 'pointer'; // Add pointer cursor to indicate it's clickable
                     // Make only the title clickable to go to the series page
                     title.addEventListener('click', () => {
                         window.location.href = `series.html?series=${encodeURIComponent(series.series)}`;
@@ -881,18 +799,12 @@
                     chaptersDiv.style.maxHeight = '150px';
                     chaptersDiv.style.scrollbarWidth = 'thin';
                     chaptersDiv.style.scrollbarColor = '#4a5568 #2d3748';
-                    // Make sure clicks on the chapters area don't trigger the card click
-                    chaptersDiv.style.position = 'relative';
-                    chaptersDiv.style.zIndex = '300'; // Higher than tracker z-index (200)
                     
                     // Add the latest 3 chapters
                     const chaptersToShow = series.chapters.slice(0, 3);
                     
                     chaptersToShow.forEach(chapter => {
                         const chapterItem = createChapterItem(chapter, series);
-                        // Ensure chapter items have pointer events
-                        chapterItem.style.position = 'relative';
-                        chapterItem.style.zIndex = '300';
                         chaptersDiv.appendChild(chapterItem);
                     });
                     
@@ -900,8 +812,6 @@
                     if (series.chapters.length > 3) {
                         const viewAllLink = document.createElement('div');
                         viewAllLink.className = 'text-center mt-2';
-                        viewAllLink.style.position = 'relative';
-                        viewAllLink.style.zIndex = '300';
                         
                         const viewAllBtn = document.createElement('a');
                         viewAllBtn.href = `series.html?series=${encodeURIComponent(series.series)}`;
@@ -914,10 +824,8 @@
                     
                     // Assemble the card
                     cardContent.appendChild(chaptersDiv);
-                    card.appendChild(cardContent);
-                    canvas.appendChild(card);
-                    container.appendChild(canvas);
-                    
+                    cardMain.appendChild(cardContent);
+                    container.appendChild(cardMain);
                     cyberCard.appendChild(container);
                     seriesContainer.appendChild(cyberCard);
                 });
