@@ -672,21 +672,26 @@
                     }
                 }
 
-                // Sort series by latest chapter update
+                // Sort series by latest chapter upload time instead of chapter number
                 seriesData.sort((a, b) => {
-                    // Get latest chapter numbers for comparison
-                    const getLatestChapterNum = (chapters) => {
+                    // Find the most recent upload time for each series
+                    const getLatestUploadTime = (chapters) => {
                         if (!chapters || chapters.length === 0) return 0;
-                        const nums = chapters.map(ch => {
-                            const num = parseFloat(ch.chapter);
-                            return isNaN(num) ? 0 : num;
+                        let latestTime = 0;
+                        chapters.forEach(ch => {
+                            if (ch.uploadTime) {
+                                const time = new Date(ch.uploadTime).getTime();
+                                if (time > latestTime) {
+                                    latestTime = time;
+                                }
+                            }
                         });
-                        return Math.max(...nums);
+                        return latestTime;
                     };
 
-                    const aLatest = getLatestChapterNum(a.chapters);
-                    const bLatest = getLatestChapterNum(b.chapters);
-                    return bLatest - aLatest;
+                    const aLatest = getLatestUploadTime(a.chapters);
+                    const bLatest = getLatestUploadTime(b.chapters);
+                    return bLatest - aLatest; // Most recent first
                 });
 
                 // Helper function to create chapter items
@@ -734,6 +739,11 @@
                     readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors duration-200';
                     readButton.textContent = 'Read';
                     
+                    // Prevent click propagation so the button works independently of card
+                    readButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                    });
+                    
                     // Add chapter info and read button to the row
                     chapterItemContent.appendChild(chapterInfo);
                     chapterItemContent.appendChild(readButton);
@@ -760,17 +770,11 @@
                         return;
                     }
                     
-                    // Sort chapters in descending order
+                    // Sort chapters by upload time (most recent first)
                     series.chapters.sort((a, b) => {
-                        const numA = parseFloat(a.chapter);
-                        const numB = parseFloat(b.chapter);
-                        
-                        if (!isNaN(numA) && !isNaN(numB)) {
-                            return numB - numA; // Descending order
-                        }
-                        
-                        // Fallback to string comparison if not numbers
-                        return String(b.chapter || '').localeCompare(String(a.chapter || ''));
+                        const timeA = a.uploadTime ? new Date(a.uploadTime).getTime() : 0;
+                        const timeB = b.uploadTime ? new Date(b.uploadTime).getTime() : 0;
+                        return timeB - timeA; // Most recent first
                     });
                     
                     // Create cyber card
@@ -865,15 +869,23 @@
                     scanLine.className = 'scan-line';
                     cardContent.appendChild(scanLine);
                     
-                    // Add chapters list
+                    // Add chapters list with scroll bar
                     const chaptersDiv = document.createElement('div');
                     chaptersDiv.className = 'card-chapters';
+                    chaptersDiv.style.overflowY = 'auto';
+                    chaptersDiv.style.maxHeight = '150px';
+                    chaptersDiv.style.scrollbarWidth = 'thin';
+                    chaptersDiv.style.scrollbarColor = '#4a5568 #2d3748';
                     
                     // Add the latest 3 chapters
                     const chaptersToShow = series.chapters.slice(0, 3);
                     
                     chaptersToShow.forEach(chapter => {
                         const chapterItem = createChapterItem(chapter, series);
+                        // Prevent card click when clicking on chapter item
+                        chapterItem.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                        });
                         chaptersDiv.appendChild(chapterItem);
                     });
                     
@@ -885,6 +897,10 @@
                         viewAllBtn.href = `series.html?series=${encodeURIComponent(series.series)}`;
                         viewAllBtn.className = 'text-blue-400 hover:text-blue-300 text-xs';
                         viewAllBtn.textContent = `View all ${series.chapters.length} chapters`;
+                        // Prevent click propagation
+                        viewAllBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                        });
                         viewAllLink.appendChild(viewAllBtn);
                         chaptersDiv.appendChild(viewAllLink);
                     }
