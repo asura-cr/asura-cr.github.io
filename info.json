@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "series": "Unknown Series",
+    "chapters": [
+      {
+        "chapter": "unknown1",
+        "startNumber": 290308,
+        "frameCount": 9,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-27T11:53:43.842627"
+      }
+    ]
+  }
+]
