@@ -733,16 +733,13 @@
                     chapterInfo.appendChild(chapterNumberElement);
                     chapterInfo.appendChild(timeInfo);
                     
-                    // Create the read button
+                    // Create the read button with high z-index to ensure it's clickable
                     const readButton = document.createElement('a');
                     readButton.href = viewerUrl;
                     readButton.className = 'bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors duration-200';
                     readButton.textContent = 'Read';
-                    
-                    // Prevent click propagation so the button works independently of card
-                    readButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                    });
+                    readButton.style.position = 'relative';
+                    readButton.style.zIndex = '350';
                     
                     // Add chapter info and read button to the row
                     chapterItemContent.appendChild(chapterInfo);
@@ -876,16 +873,18 @@
                     chaptersDiv.style.maxHeight = '150px';
                     chaptersDiv.style.scrollbarWidth = 'thin';
                     chaptersDiv.style.scrollbarColor = '#4a5568 #2d3748';
+                    // Make sure clicks on the chapters area don't trigger the card click
+                    chaptersDiv.style.position = 'relative';
+                    chaptersDiv.style.zIndex = '300'; // Higher than tracker z-index (200)
                     
                     // Add the latest 3 chapters
                     const chaptersToShow = series.chapters.slice(0, 3);
                     
                     chaptersToShow.forEach(chapter => {
                         const chapterItem = createChapterItem(chapter, series);
-                        // Prevent card click when clicking on chapter item
-                        chapterItem.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                        });
+                        // Ensure chapter items have pointer events
+                        chapterItem.style.position = 'relative';
+                        chapterItem.style.zIndex = '300';
                         chaptersDiv.appendChild(chapterItem);
                     });
                     
@@ -893,14 +892,14 @@
                     if (series.chapters.length > 3) {
                         const viewAllLink = document.createElement('div');
                         viewAllLink.className = 'text-center mt-2';
+                        viewAllLink.style.position = 'relative';
+                        viewAllLink.style.zIndex = '300';
+                        
                         const viewAllBtn = document.createElement('a');
                         viewAllBtn.href = `series.html?series=${encodeURIComponent(series.series)}`;
                         viewAllBtn.className = 'text-blue-400 hover:text-blue-300 text-xs';
                         viewAllBtn.textContent = `View all ${series.chapters.length} chapters`;
-                        // Prevent click propagation
-                        viewAllBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                        });
+                        
                         viewAllLink.appendChild(viewAllBtn);
                         chaptersDiv.appendChild(viewAllLink);
                     }
@@ -911,9 +910,16 @@
                     canvas.appendChild(card);
                     container.appendChild(canvas);
                     
-                    // Add link functionality for the entire card
-                    container.addEventListener('click', () => {
-                        window.location.href = `series.html?series=${encodeURIComponent(series.series)}`;
+                    // Add link functionality for the entire card,
+                    // but don't activate when clicking on child elements with their own interactions
+                    container.addEventListener('click', (e) => {
+                        // Only navigate if the click didn't happen on an interactive element
+                        const clickedOnLink = e.target.closest('a');
+                        const clickedOnChapterItem = e.target.closest('.bg-gray-800');
+                        
+                        if (!clickedOnLink && !clickedOnChapterItem) {
+                            window.location.href = `series.html?series=${encodeURIComponent(series.series)}`;
+                        }
                     });
                     
                     cyberCard.appendChild(container);
