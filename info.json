@@ -51,6 +51,13 @@
     "series": "Unknown Series",
     "chapters": [
       {
+        "chapter": 1,
+        "startNumber": 290416,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-27T19:07:58.174190"
+      },
+      {
         "chapter": 72,
         "startNumber": 290401,
         "frameCount": 15,
