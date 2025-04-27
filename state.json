@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290486,
+  "lastStartNumber": 290499,
   "downloadedChapters": {
     "The Ultimate Shut-in_27": {
       "timestamp": "2025-04-27T18:54:28.758979",
@@ -36,6 +36,12 @@
       "imageCount": 11,
       "githubPath": "series/unknown_series/chapter_unknown4",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown4"
+    },
+    "Worthless Regression_82": {
+      "timestamp": "2025-04-28T03:04:54.239138",
+      "imageCount": 12,
+      "githubPath": "series/worthless_regression/chapter_82",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\worthless_regression\\chapter_82"
     }
   },
   "unknownChapterCounter": 4
