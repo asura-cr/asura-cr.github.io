@@ -98,6 +98,13 @@
         "frameCount": 16,
         "filePattern": "01-optimized.webp",
         "uploadTime": "2025-04-27T13:55:30.299312"
+      },
+      {
+        "chapter": "unknown4",
+        "startNumber": 290475,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-27T21:42:47.279257"
       }
     ]
   }
