@@ -1,41 +1,4 @@
 {
   "lastStartNumber": 290307,
-  "downloadedChapters": {
-    "Bad Born Blood_33": {
-      "timestamp": "2025-04-26T19:51:52.541554",
-      "imageCount": 15,
-      "githubPath": "series/bad_born_blood/chapter_33",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\bad_born_blood\\chapter_33"
-    },
-    "Unknown Series_4": {
-      "timestamp": "2025-04-26T19:53:02.183874",
-      "imageCount": 11,
-      "githubPath": "series/unknown_series/chapter_4",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_4"
-    },
-    "The Last Adventurer_68": {
-      "timestamp": "2025-04-26T19:55:17.622603",
-      "imageCount": 14,
-      "githubPath": "series/the_last_adventurer/chapter_68",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_last_adventurer\\chapter_68"
-    },
-    "Unknown Series_98": {
-      "timestamp": "2025-04-26T19:57:17.383729",
-      "imageCount": 15,
-      "githubPath": "series/unknown_series/chapter_98",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_98"
-    },
-    "Unknown Series_unknown": {
-      "timestamp": "2025-04-26T20:03:21.234029",
-      "imageCount": 10,
-      "githubPath": "series/unknown_series/chapter_unknown",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
-    },
-    "Emperor of Solo Play_8": {
-      "timestamp": "2025-04-26T20:24:41.972392",
-      "imageCount": 14,
-      "githubPath": "series/emperor_of_solo_play/chapter_8",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\emperor_of_solo_play\\chapter_8"
-    }
-  }
+  "downloadedChapters": {}
 }
