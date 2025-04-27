@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290429,
+  "lastStartNumber": 290443,
   "downloadedChapters": {
     "Unknown Series_unknown1": {
       "timestamp": "2025-04-27T13:45:07.776948",
@@ -54,6 +54,12 @@
       "imageCount": 14,
       "githubPath": "series/unknown_series/chapter_1",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_1"
+    },
+    "Unknown Series_68": {
+      "timestamp": "2025-04-27T19:28:48.918089",
+      "imageCount": 14,
+      "githubPath": "series/unknown_series/chapter_68",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_68"
     }
   },
   "unknownChapterCounter": 3
