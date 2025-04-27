@@ -79,20 +79,6 @@
         "uploadTime": "2025-04-27T19:01:25.373097"
       },
       {
-        "chapter": "unknown1",
-        "startNumber": 290308,
-        "frameCount": 9,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T13:45:08.477190"
-      },
-      {
-        "chapter": "unknown2",
-        "startNumber": 290318,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T13:46:35.691102"
-      },
-      {
         "chapter": "unknown3",
         "startNumber": 290343,
         "frameCount": 16,
