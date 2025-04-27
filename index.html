@@ -784,6 +784,11 @@
                     const title = document.createElement('div');
                     title.className = 'title';
                     title.textContent = series.series || 'Unknown Series';
+                    title.style.cursor = 'pointer'; // Add pointer cursor to indicate it's clickable
+                    // Make only the title clickable to go to the series page
+                    title.addEventListener('click', () => {
+                        window.location.href = `series.html?series=${encodeURIComponent(series.series)}`;
+                    });
                     cardContent.appendChild(title);
                     
                     // Add glowing elements
@@ -878,18 +883,6 @@
                     card.appendChild(cardContent);
                     canvas.appendChild(card);
                     container.appendChild(canvas);
-                    
-                    // Add link functionality for the entire card,
-                    // but don't activate when clicking on child elements with their own interactions
-                    container.addEventListener('click', (e) => {
-                        // Only navigate if the click didn't happen on an interactive element
-                        const clickedOnLink = e.target.closest('a');
-                        const clickedOnChapterItem = e.target.closest('.bg-gray-800');
-                        
-                        if (!clickedOnLink && !clickedOnChapterItem) {
-                            window.location.href = `series.html?series=${encodeURIComponent(series.series)}`;
-                        }
-                    });
                     
                     cyberCard.appendChild(container);
                     seriesContainer.appendChild(cyberCard);
