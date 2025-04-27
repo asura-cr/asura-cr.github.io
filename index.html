@@ -295,49 +295,18 @@
         .tr-8 { grid-area: tr-8; }
         .tr-9 { grid-area: tr-9; }
 
-        .tr-1:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(20deg) rotateY(-10deg) rotateZ(0deg);
-        }
-
-        .tr-2:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg);
-        }
-
-        .tr-3:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(20deg) rotateY(10deg) rotateZ(0deg);
-        }
-
-        .tr-4:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(0deg) rotateY(-10deg) rotateZ(0deg);
-        }
-
-        .tr-5:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-        }
-
-        .tr-6:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(0deg) rotateY(10deg) rotateZ(0deg);
-        }
-
-        .tr-7:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(-20deg) rotateY(-10deg) rotateZ(0deg);
-        }
-
-        .tr-8:hover ~ #card {
-          transition: 125ms ease-in-out;
-          transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg);
-        }
-
+        /* Removing all the rotation effects */
+        .tr-1:hover ~ #card,
+        .tr-2:hover ~ #card,
+        .tr-3:hover ~ #card,
+        .tr-4:hover ~ #card,
+        .tr-5:hover ~ #card,
+        .tr-6:hover ~ #card,
+        .tr-7:hover ~ #card,
+        .tr-8:hover ~ #card,
         .tr-9:hover ~ #card {
           transition: 125ms ease-in-out;
-          transform: rotateX(-20deg) rotateY(10deg) rotateZ(0deg);
+          transform: none;
         }
 
         .noselect {
