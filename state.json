@@ -1,24 +1,5 @@
 {
   "lastStartNumber": 290499,
-  "downloadedChapters": {
-    "Unknown Series_69": {
-      "timestamp": "2025-04-27T21:15:55.255682",
-      "imageCount": 15,
-      "githubPath": "series/unknown_series/chapter_69",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_69"
-    },
-    "Unknown Series_unknown4": {
-      "timestamp": "2025-04-27T21:42:46.566522",
-      "imageCount": 11,
-      "githubPath": "series/unknown_series/chapter_unknown4",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown4"
-    },
-    "Worthless Regression_82": {
-      "timestamp": "2025-04-28T03:04:54.239138",
-      "imageCount": 12,
-      "githubPath": "series/worthless_regression/chapter_82",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\worthless_regression\\chapter_82"
-    }
-  },
+  "downloadedChapters": {},
   "unknownChapterCounter": 4
 }
