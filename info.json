@@ -12,6 +12,18 @@
     ]
   },
   {
+    "series": "Myst, Might, Mayhem",
+    "chapters": [
+      {
+        "chapter": 71,
+        "startNumber": 290606,
+        "frameCount": 16,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-28T19:58:18.195199"
+      }
+    ]
+  },
+  {
     "series": "The Indomitable Martial King",
     "chapters": [
       {
