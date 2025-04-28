@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290592,
+  "lastStartNumber": 290605,
   "downloadedChapters": {
     "Unknown Series_unknown5": {
       "timestamp": "2025-04-28T16:09:56.344746",
@@ -42,7 +42,13 @@
       "imageCount": 16,
       "githubPath": "series/the_indomitable_martial_king/chapter_79",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_indomitable_martial_king\\chapter_79"
+    },
+    "Unknown Series_unknown10": {
+      "timestamp": "2025-04-28T19:31:27.377885",
+      "imageCount": 12,
+      "githubPath": "series/unknown_series/chapter_unknown10",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown10"
     }
   },
-  "unknownChapterCounter": 9
+  "unknownChapterCounter": 10
 }
