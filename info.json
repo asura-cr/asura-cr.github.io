@@ -1,26 +1,7 @@
 [
   {
-    "series": "The Ultimate Shut-in",
-    "chapters": [
-      {
-        "chapter": 27,
-        "startNumber": 290384,
-        "frameCount": 17,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T18:54:29.730356"
-      }
-    ]
-  },
-  {
     "series": "Unknown Series",
     "chapters": [
-      {
-        "chapter": 1,
-        "startNumber": 290416,
-        "frameCount": 14,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T19:07:58.174190"
-      },
       {
         "chapter": 68,
         "startNumber": 290430,
@@ -36,30 +17,11 @@
         "uploadTime": "2025-04-27T21:15:56.086515"
       },
       {
-        "chapter": 72,
-        "startNumber": 290401,
-        "frameCount": 15,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-27T19:01:25.373097"
-      },
-      {
         "chapter": "unknown4",
         "startNumber": 290475,
         "frameCount": 11,
         "filePattern": "01-optimized.webp",
         "uploadTime": "2025-04-27T21:42:47.279257"
-      }
-    ]
-  },
-  {
-    "series": "Worthless Regression",
-    "chapters": [
-      {
-        "chapter": 82,
-        "startNumber": 290488,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T03:04:54.883319"
       }
     ]
   }
