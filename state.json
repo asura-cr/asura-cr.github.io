@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290605,
+  "lastStartNumber": 290621,
   "downloadedChapters": {
     "Unknown Series_unknown5": {
       "timestamp": "2025-04-28T16:09:56.344746",
@@ -48,6 +48,12 @@
       "imageCount": 12,
       "githubPath": "series/unknown_series/chapter_unknown10",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown10"
+    },
+    "Myst, Might, Mayhem_71": {
+      "timestamp": "2025-04-28T19:58:17.501878",
+      "imageCount": 16,
+      "githubPath": "series/myst__might__mayhem/chapter_71",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\myst__might__mayhem\\chapter_71"
     }
   },
   "unknownChapterCounter": 10
