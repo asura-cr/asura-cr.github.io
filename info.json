@@ -60,6 +60,13 @@
         "frameCount": 9,
         "filePattern": "01-kopya-optimized.webp",
         "uploadTime": "2025-04-28T17:35:46.255499"
+      },
+      {
+        "chapter": "unknown10",
+        "startNumber": 290593,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-28T19:31:28.356558"
       }
     ]
   }
