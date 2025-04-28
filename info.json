@@ -19,14 +19,15 @@
     ]
   },
   {
-     "series": "Worthless Regression",
-     "chapters": [
-       {
-         "chapter": 82,
-         "startNumber": 290488,
-         "frameCount": 12,
-         "filePattern": "01-optimized.webp",
-         "uploadTime": "2025-04-28T03:04:54.883319"
-       }
-     ]
+    "series": "Worthless Regression",
+    "chapters": [
+      {
+        "chapter": 82,
+        "startNumber": 290488,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-28T03:04:54.883319"
+      }
+    ]
+  }
 ]
