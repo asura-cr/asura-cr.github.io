@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290523,
+  "lastStartNumber": 290537,
   "downloadedChapters": {
     "Unknown Series_unknown5": {
       "timestamp": "2025-04-28T16:09:56.344746",
@@ -12,6 +12,12 @@
       "imageCount": 12,
       "githubPath": "series/unknown_series/chapter_unknown6",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown6"
+    },
+    "Insanely Talented PlayerKiller Pietro_70": {
+      "timestamp": "2025-04-28T16:17:36.521057",
+      "imageCount": 14,
+      "githubPath": "series/insanely_talented_playerkiller_pietro/chapter_70",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\insanely_talented_playerkiller_pietro\\chapter_70"
     }
   },
   "unknownChapterCounter": 6
