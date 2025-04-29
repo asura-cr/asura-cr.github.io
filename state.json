@@ -1,5 +1,5 @@
 {
-  "lastStartNumber": 290664,
+  "lastStartNumber": 290665,
   "downloadedChapters": {
     "Unknown Series_79": {
       "timestamp": "2025-04-28T21:12:52.628965",
@@ -18,7 +18,13 @@
       "imageCount": 2,
       "githubPath": "series/somebody_stop_the_pope/chapter_39",
       "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\somebody_stop_the_pope\\chapter_39"
+    },
+    "Unknown Series_unknown12": {
+      "timestamp": "2025-04-29T07:04:20.162434",
+      "imageCount": 1,
+      "githubPath": "series/unknown_series/chapter_unknown12",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown12"
     }
   },
-  "unknownChapterCounter": 11
+  "unknownChapterCounter": 12
 }
