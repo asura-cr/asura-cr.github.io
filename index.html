@@ -167,6 +167,12 @@
             letter-spacing: 2px;
         }
 
+        .countdown {
+            color: #00ffaa;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+        }
+
         .glow {
             position: absolute;
             width: 200px;
@@ -206,9 +212,49 @@
             <div class="progress"></div>
         </div>
         <div class="eta">
-            Estimated completion time: No Idea
+            Estimated completion in: <span class="countdown" id="countdown">12:00:00</span>
         </div>
         <div class="cyber-lines"></div>
     </div>
+
+    <script>
+        // Set the maintenance duration to 12 hours (in milliseconds)
+        const MAINTENANCE_DURATION = 12 * 60 * 60 * 1000;
+        
+        // Get the start time from localStorage or set it if not exists
+        let startTime = localStorage.getItem('maintenanceStartTime');
+        if (!startTime) {
+            startTime = new Date().getTime();
+            localStorage.setItem('maintenanceStartTime', startTime);
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const elapsed = now - startTime;
+            const remaining = MAINTENANCE_DURATION - elapsed;
+
+            if (remaining <= 0) {
+                // Maintenance period is over
+                document.getElementById('countdown').textContent = "Completed";
+                // You can add code here to redirect to the main site
+                return;
+            }
+
+            // Calculate hours, minutes, and seconds
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+            // Format the time
+            const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            // Update the countdown display
+            document.getElementById('countdown').textContent = formattedTime;
+        }
+
+        // Update the countdown immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html> 
