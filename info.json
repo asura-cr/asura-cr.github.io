@@ -1,29 +1,5 @@
 [
   {
-    "series": "Insanely Talented PlayerKiller Pietro",
-    "chapters": [
-      {
-        "chapter": 70,
-        "startNumber": 290524,
-        "frameCount": 14,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T16:17:37.368722"
-      }
-    ]
-  },
-  {
-    "series": "Myst, Might, Mayhem",
-    "chapters": [
-      {
-        "chapter": 71,
-        "startNumber": 290606,
-        "frameCount": 16,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T19:58:18.195199"
-      }
-    ]
-  },
-  {
     "series": "Somebody Stop the Pope",
     "chapters": [
       {
@@ -36,18 +12,6 @@
     ]
   },
   {
-    "series": "The Indomitable Martial King",
-    "chapters": [
-      {
-        "chapter": 79,
-        "startNumber": 290577,
-        "frameCount": 16,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T19:02:58.911891"
-      }
-    ]
-  },
-  {
     "series": "Unknown Series",
     "chapters": [
       {
@@ -56,48 +20,6 @@
         "frameCount": 24,
         "filePattern": "01-optimized.webp",
         "uploadTime": "2025-04-28T21:12:53.616590"
-      },
-      {
-        "chapter": "unknown5",
-        "startNumber": 290499,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T16:09:57.196247"
-      },
-      {
-        "chapter": "unknown6",
-        "startNumber": 290511,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T16:11:08.615585"
-      },
-      {
-        "chapter": "unknown7",
-        "startNumber": 290539,
-        "frameCount": 17,
-        "filePattern": "01-kopya-optimized.webp",
-        "uploadTime": "2025-04-28T16:24:19.689119"
-      },
-      {
-        "chapter": "unknown8",
-        "startNumber": 290557,
-        "frameCount": 9,
-        "filePattern": "01-kopya-optimized.webp",
-        "uploadTime": "2025-04-28T17:33:37.095922"
-      },
-      {
-        "chapter": "unknown9",
-        "startNumber": 290567,
-        "frameCount": 9,
-        "filePattern": "01-kopya-optimized.webp",
-        "uploadTime": "2025-04-28T17:35:46.255499"
-      },
-      {
-        "chapter": "unknown10",
-        "startNumber": 290593,
-        "frameCount": 12,
-        "filePattern": "01-optimized.webp",
-        "uploadTime": "2025-04-28T19:31:28.356558"
       },
       {
         "chapter": "unknown11",
