@@ -1,0 +1,40 @@
+[
+  {
+    "series": "Somebody Stop the Pope",
+    "chapters": [
+      {
+        "chapter": 39,
+        "startNumber": 290663,
+        "frameCount": 2,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-29T06:57:46.043395"
+      }
+    ]
+  },
+  {
+    "series": "Unknown Series",
+    "chapters": [
+      {
+        "chapter": 79,
+        "startNumber": 290622,
+        "frameCount": 24,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-28T21:12:53.616590"
+      },
+      {
+        "chapter": "unknown11",
+        "startNumber": 290646,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-29T06:56:57.551297"
+      },
+      {
+        "chapter": "unknown12",
+        "startNumber": 290664,
+        "frameCount": 1,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-04-29T07:04:21.600701"
+      }
+    ]
+  }
+]
