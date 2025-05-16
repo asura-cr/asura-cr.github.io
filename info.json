@@ -14,6 +14,12 @@
     "series": "Unknown Series",
     "chapters": [
       {
+        "chapter": 8,
+        "startNumber": 313832,
+        "frameCount": 16,
+        "filePattern": "01-optimized.webp"
+      },
+      {
         "chapter": 188,
         "startNumber": 313727,
         "frameCount": 10,
