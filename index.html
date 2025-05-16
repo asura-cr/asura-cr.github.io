@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encore</title>
+    <title>Encore - Manga Library</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -57,8 +57,8 @@
             background: rgba(1, 6, 26, 0.8);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--neon-blue);
-            padding: 15px 0;
-            margin-bottom: 30px;
+            padding: 10px 0;
+            margin-bottom: 15px;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
         }
         
@@ -231,6 +231,7 @@
             color: var(--neon-blue);
             font-size: 14px;
             letter-spacing: 1px;
+            margin-bottom: 15px;
             text-shadow: 0 0 5px rgba(0, 243, 255, 0.3);
         }
         
@@ -339,11 +340,12 @@
                     </button>
                 </div>
             </div>
-            <p class="scan-status text-center mt-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
         </div>
     </header>
 
     <div class="container mx-auto px-4">
+        <p class="scan-status text-center">Current Scan Status: <span id="scanStatus">Loading...</span></p>
+        
         <div id="seriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Loading placeholders -->
             <div class="cyber-card">
