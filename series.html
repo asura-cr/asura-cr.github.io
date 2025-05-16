@@ -4,8 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Series Details - Encore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --dark-blue: #050c2e;
+            --darker-blue: #01061a;
+            --accent-purple: #9000ff;
+            --text-color: #e2e8fd;
+            --card-bg: rgba(5, 15, 40, 0.7);
+            --card-border: rgba(0, 243, 255, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--darker-blue);
+            color: var(--text-color);
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(144, 0, 255, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, var(--darker-blue) 21px, transparent 1%) center,
+                linear-gradient(var(--darker-blue) 21px, transparent 1%) center, 
+                rgba(0, 243, 255, 0.1);
+            background-size: 22px 22px;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(1, 6, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--neon-blue);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -33,64 +106,380 @@
             background: #718096;
         }
 
+        /* Chapter item styling */
         .chapter-link {
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
 
         .chapter-link:hover {
             transform: translateX(8px);
+            border-left-color: var(--neon-blue);
+            background: rgba(0, 243, 255, 0.05);
+        }
+        
+        /* Add subtle glitch effect on hover */
+        .chapter-link:hover::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.05), transparent);
+            transform: translateX(-100%);
+            animation: glitch-sweep 1.5s linear infinite;
+        }
+        
+        @keyframes glitch-sweep {
+            to { transform: translateX(100%); }
+        }
+        
+        /* Glitch Effect for title */
+        .glitch {
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+        
+        @keyframes glitch-1 {
+            0%, 80%, 100% { transform: none; opacity: 1; }
+            20%, 60% { transform: translate(-2px, 0) skew(5deg); opacity: 0.75; }
+            40% { transform: translate(2px, 0) skew(-5deg); opacity: 0.75; }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 80%, 100% { transform: none; opacity: 1; }
+            20%, 60% { transform: translate(2px, 0) skew(5deg); opacity: 0.75; }
+            40% { transform: translate(-2px, 0) skew(-5deg); opacity: 0.75; }
+        }
+
+        /* Read button styling */
+        .read-button {
+            background-color: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .read-button:hover {
+            background-color: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            color: white;
+        }
+        
+        .read-button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            animation: shine 4s infinite;
+            opacity: 0;
+        }
+        
+        .read-button:hover::after {
+            opacity: 1;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        /* Spinner design */
+        .cyber-spinner {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .cyber-spinner::before,
+        .cyber-spinner::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            animation-duration: 1.8s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+        }
+        
+        .cyber-spinner::before {
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-right-color: var(--neon-pink);
+            animation-name: spin1;
+        }
+        
+        .cyber-spinner::after {
+            width: 80%;
+            height: 80%;
+            border: 3px solid transparent;
+            border-bottom-color: var(--accent-purple);
+            border-left-color: var(--neon-blue);
+            top: 10%;
+            left: 10%;
+            animation-name: spin2;
+            animation-direction: reverse;
+        }
+        
+        @keyframes spin1 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes spin2 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Back button styling */
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: white;
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
+        
+        .back-button svg {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-button:hover svg {
+            transform: translateX(-5px);
+        }
+        
+        /* Logout button */
+        .logout-button {
+            background-color: transparent;
+            color: var(--neon-pink);
+            border: 1px solid var(--neon-pink);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        
+        .logout-button:hover {
+            background-color: rgba(255, 0, 255, 0.1);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Series content container */
+        .cyber-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 243, 255, 0.2);
+            overflow: hidden;
+        }
+        
+        .cyber-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        }
+        
+        .cyber-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+        }
+        
+        /* Series title styling */
+        .series-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .series-title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        }
+        
+        /* Chapter list container */
+        .chapters-container {
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(1, 6, 26, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        
+        .chapters-header {
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(144, 0, 255, 0.1));
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .chapters-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 18px;
+            color: var(--neon-blue);
+        }
+        
+        /* Loading text effect */
+        .cyber-loading-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .cyber-loading-text::after {
+            content: "...";
+            position: absolute;
+            animation: loadingDots 1.5s infinite;
+        }
+        
+        @keyframes loadingDots {
+            0% { content: "."; }
+            33% { content: ".."; }
+            66% { content: "..."; }
         }
     </style>
 </head>
-<body class="bg-black text-white min-h-screen">
-    <header class="fixed top-0 left-0 right-0 bg-zinc-900 shadow-md z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-gray-400 hover:text-white flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                Back to Library
-            </a>
-            <div class="flex items-center space-x-4">
-                <span id="username" class="text-gray-400 text-sm"></span>
-                <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors duration-200">
-                    Logout
-                </button>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                    Back to Library
+                </a>
+                <div class="flex items-center space-x-4">
+                    <span id="username" class="text-gray-400 text-sm"></span>
+                    <button id="logoutBtn" class="logout-button">
+                        Logout
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 pt-20 pb-10">
-        <div id="loading" class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-            <p class="mt-4 text-gray-400">Loading series details...</p>
+    <main class="container pt-28 pb-16">
+        <div id="loading" class="flex flex-col items-center justify-center py-20">
+            <div class="cyber-spinner"></div>
+            <div class="cyber-loading-text">Loading series data</div>
         </div>
 
         <div id="series-content" class="hidden">
             <div class="mb-8">
-                <h1 id="series-title" class="text-3xl font-bold mb-2"></h1>
-                <div class="flex items-center text-gray-400 text-sm">
+                <h1 id="series-title" class="series-title glitch" data-text=""></h1>
+                <div class="flex items-center text-gray-400 text-sm mt-3">
                     <span id="chapter-count" class="mr-4"></span>
                     <span id="last-updated"></span>
                 </div>
             </div>
 
-            <div class="bg-zinc-900 rounded-lg shadow-lg overflow-hidden">
-                <div class="p-4 border-b border-zinc-800">
-                    <h2 class="text-xl font-semibold">Chapters</h2>
+            <div class="chapters-container">
+                <div class="chapters-header">
+                    <h2>Chapters</h2>
                 </div>
-                <div id="chapters-list" class="divide-y divide-zinc-800">
+                <div id="chapters-list" class="divide-y divide-gray-800">
                     <!-- Chapters will be inserted here -->
                 </div>
             </div>
         </div>
 
         <div id="error-message" class="text-center py-20 hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <p class="mt-4 text-red-400">Error loading series details</p>
-            <button id="retry-button" class="mt-4 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
+            <p class="mt-4 text-red-400 text-lg">Error loading series details</p>
+            <button id="retry-button" class="mt-6 bg-gray-800 hover:bg-gray-700 px-6 py-2 rounded border border-gray-600 hover:border-gray-500">
                 Retry
             </button>
         </div>
@@ -185,7 +574,9 @@
 
                 // Update page title
                 document.title = `${seriesName} - Encore`;
-                document.getElementById('series-title').textContent = seriesName;
+                const seriesTitle = document.getElementById('series-title');
+                seriesTitle.textContent = seriesName;
+                seriesTitle.setAttribute('data-text', seriesName);
 
                 // Sort chapters in descending order
                 const sortedChapters = [...currentSeries.chapters].sort((a, b) => {
@@ -210,13 +601,13 @@
 
                 sortedChapters.forEach(chapter => {
                     const chapterDiv = document.createElement('div');
-                    chapterDiv.className = 'chapter-link p-4 hover:bg-gray-700 flex justify-between items-center';
+                    chapterDiv.className = 'chapter-link p-4 hover:bg-gray-800 flex justify-between items-center';
 
                     const chapterInfo = document.createElement('div');
                     chapterInfo.className = 'flex-1';
 
                     const chapterTitle = document.createElement('h3');
-                    chapterTitle.className = 'text-lg font-medium';
+                    chapterTitle.className = 'text-lg font-medium text-white';
                     chapterTitle.textContent = `Chapter ${chapter.chapter}`;
 
                     const uploadTime = document.createElement('p');
@@ -228,7 +619,7 @@
 
                     const readButton = document.createElement('a');
                     readButton.href = `viewer.html?series=${encodeURIComponent(seriesName)}&chapter=${encodeURIComponent(chapter.chapter)}`;
-                    readButton.className = 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition-colors duration-200 ml-4';
+                    readButton.className = 'read-button ml-4';
                     readButton.textContent = 'Read';
 
                     chapterDiv.appendChild(chapterInfo);
