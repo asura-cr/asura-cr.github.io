@@ -30,6 +30,12 @@
         "startNumber": 313727,
         "frameCount": 10,
         "filePattern": "01-optimized.webp"
+      },
+      {
+        "chapter": "unknown",
+        "startNumber": 313956,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp"
       }
     ]
   }
