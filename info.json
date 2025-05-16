@@ -9,5 +9,16 @@
         "filePattern": "01-optimized.webp"
       }
     ]
+  },
+  {
+    "series": "Unknown Series",
+    "chapters": [
+      {
+        "chapter": 188,
+        "startNumber": 313727,
+        "frameCount": 10,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
   }
 ]
