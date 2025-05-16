@@ -1,23 +1,4 @@
 {
-  "lastStartNumber": 313625,
-  "downloadedChapters": {
-    "Nano Machine_260": {
-      "timestamp": "2025-05-16T15:24:40.978088",
-      "imageCount": 11,
-      "githubPath": "series/nano_machine/chapter_260",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\nano_machine\\chapter_260"
-    },
-    "Unknown Series_188": {
-      "timestamp": "2025-05-16T15:25:21.292223",
-      "imageCount": 10,
-      "githubPath": "series/unknown_series/chapter_188",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_188"
-    },
-    "Unknown Series_8": {
-      "timestamp": "2025-05-16T15:26:16.329176",
-      "imageCount": 16,
-      "githubPath": "series/unknown_series/chapter_8",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_8"
-    }
-  }
+  "lastStartNumber": 313847,
+  "downloadedChapters": {}
 }
