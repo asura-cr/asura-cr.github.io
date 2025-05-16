@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encore</title>
+    <title>Encore - Viewer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -63,6 +63,12 @@
             right: 0;
             z-index: 1000;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        header.retracted {
+            transform: translateY(-100%);
+            opacity: 0;
         }
         
         .container {
@@ -342,10 +348,26 @@
             display: flex;
             animation: fadeIn 0.3s ease;
         }
+        
+        /* Slide-down animation for header reappearing */
+        @keyframes slideDown {
+            from { 
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        header.appearing {
+            animation: slideDown 0.3s ease forwards;
+        }
     </style>
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <a href="index.html" class="back-button">
@@ -442,12 +464,74 @@
             }
         }
 
+        // Header retraction functionality
+        function setupRetractableHeader() {
+            const header = document.getElementById('header');
+            let headerTimeout;
+            let isMouseNearHeader = false;
+            
+            // Function to retract header
+            function retractHeader() {
+                if (!isMouseNearHeader) {
+                    header.classList.add('retracted');
+                }
+            }
+            
+            // Function to show header
+            function showHeader() {
+                header.classList.remove('retracted');
+                header.classList.add('appearing');
+                
+                // Remove the appearing class after animation completes
+                setTimeout(() => {
+                    header.classList.remove('appearing');
+                }, 300);
+                
+                // Reset the timeout
+                clearTimeout(headerTimeout);
+                headerTimeout = setTimeout(retractHeader, 5000);
+            }
+            
+            // Initial timeout to retract header
+            headerTimeout = setTimeout(retractHeader, 5000);
+            
+            // Listen for mouse movement
+            document.addEventListener('mousemove', (e) => {
+                // Check if mouse is near the top of the screen
+                const isNearTop = e.clientY <= 60;
+                
+                // If we moved into the header area and it was hidden
+                if (isNearTop && !isMouseNearHeader) {
+                    isMouseNearHeader = true;
+                    showHeader();
+                } 
+                // If we moved out of the header area
+                else if (!isNearTop && isMouseNearHeader) {
+                    isMouseNearHeader = false;
+                    // Don't retract immediately, let the timeout handle it
+                }
+            });
+            
+            // Reset timer on any user interaction
+            document.addEventListener('click', () => {
+                showHeader();
+            });
+            
+            // Reset timer on scroll
+            document.addEventListener('scroll', () => {
+                showHeader();
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             // Check authentication first
             if (!await checkAuth()) return;
             
             // Update UI
             updateUI();
+            
+            // Setup retractable header
+            setupRetractableHeader();
             
             // Extract query parameters
             const params = new URLSearchParams(window.location.search);
