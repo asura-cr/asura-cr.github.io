@@ -32,6 +32,12 @@
         "filePattern": "01-optimized.webp"
       },
       {
+        "chapter": 128,
+        "startNumber": 314081,
+        "frameCount": 22,
+        "filePattern": "01-optimized.webp"
+      },
+      {
         "chapter": 188,
         "startNumber": 313727,
         "frameCount": 10,
