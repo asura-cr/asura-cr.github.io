@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encore - Manga Library</title>
+    <title>Encore</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -231,7 +231,6 @@
             color: var(--neon-blue);
             font-size: 14px;
             letter-spacing: 1px;
-            margin-bottom: 15px;
             text-shadow: 0 0 5px rgba(0, 243, 255, 0.3);
         }
         
@@ -344,8 +343,6 @@
     </header>
 
     <div class="container mx-auto px-4">
-        <p class="scan-status text-center">Current Scan Status: <span id="scanStatus">Loading...</span></p>
-        
         <div id="seriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Loading placeholders -->
             <div class="cyber-card">
@@ -368,8 +365,9 @@
             </div>
         </div>
         
-        <div class="mt-10 text-center text-gray-500 text-sm">
-            <p>Last updated: <span id="lastUpdated">Loading...</span></p>
+        <div class="mt-10 text-center">
+            <p class="scan-status mb-2">Current Scan Status: <span id="scanStatus">Loading...</span></p>
+            <p class="text-gray-500 text-sm">Last updated: <span id="lastUpdated">Loading...</span></p>
         </div>
     </div>
 
