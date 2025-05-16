@@ -677,29 +677,64 @@
                 function getTimeAgo(timestamp) {
                     if (!timestamp) return 'Unknown time';
                     
-                    const date = new Date(timestamp);
+                    // Try to parse the timestamp correctly
+                    let date;
+                    try {
+                        // If timestamp is a string representation of a number (unix timestamp in ms)
+                        if (!isNaN(Number(timestamp))) {
+                            date = new Date(Number(timestamp));
+                        } else {
+                            // Regular date string
+                            date = new Date(timestamp);
+                        }
+                        
+                        // If date is invalid, try ISO format explicitly
+                        if (isNaN(date.getTime())) {
+                            console.log("Invalid date format, trying ISO format", timestamp);
+                            // Force ISO format with Z for UTC
+                            if (typeof timestamp === 'string' && !timestamp.endsWith('Z')) {
+                                date = new Date(timestamp + 'Z');
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Error parsing date:", e);
+                        return 'Invalid date';
+                    }
+                    
                     if (isNaN(date.getTime())) {
+                        console.error("Could not parse date:", timestamp);
                         return 'Invalid date';
                     }
                     
                     const now = new Date();
-                    const diff = now - date;
                     
+                    // Log for debugging
+                    console.log("Date:", date.toISOString(), "Now:", now.toISOString());
+                    
+                    // Calculate the difference in milliseconds
+                    const diff = now.getTime() - date.getTime();
+                    
+                    // Convert to minutes, hours, and days
                     const minutes = Math.floor(diff / 60000);
                     const hours = Math.floor(minutes / 60);
                     const days = Math.floor(hours / 24);
+                    
+                    // Log the calculated time differences
+                    console.log("Time difference: minutes=", minutes, "hours=", hours, "days=", days);
                     
                     // If more than 10 hours old, mark as expired
                     if (hours >= 10) {
                         return 'Expired';
                     }
                     
-                    if (hours > 0) {
+                    if (days > 0) {
+                        return `${days} day${days > 1 ? 's' : ''} ago`;
+                    } else if (hours > 0) {
                         return `${hours} hour${hours > 1 ? 's' : ''} ago`;
                     } else if (minutes > 0) {
                         return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
                     } else {
-                        return 'just now';
+                        return `${Math.max(1, Math.floor(diff / 1000))} seconds ago`;
                     }
                 }
 
