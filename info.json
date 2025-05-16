@@ -1,5 +1,16 @@
 [
   {
+    "series": "Absolute Regression",
+    "chapters": [
+      {
+        "chapter": 48,
+        "startNumber": 314103,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  },
+  {
     "series": "Nano Machine",
     "chapters": [
       {
