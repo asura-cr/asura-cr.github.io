@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "series": "Nano Machine",
+    "chapters": [
+      {
+        "chapter": 260,
+        "startNumber": 313626,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp"
+      }
+    ]
+  }
+]
