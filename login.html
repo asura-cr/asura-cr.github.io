@@ -4,60 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Encore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --dark-blue: #050c2e;
+            --darker-blue: #01061a;
+            --accent-purple: #9000ff;
+            --text-color: #e2e8fd;
+            --card-bg: rgba(5, 15, 40, 0.7);
+            --card-border: rgba(0, 243, 255, 0.3);
+        }
+        
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #3e1f16 50%, #600f0f 100%);
+            background-color: var(--darker-blue);
+            color: var(--text-color);
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(144, 0, 255, 0.05) 0%, transparent 20%);
             min-height: 100vh;
             margin: 0;
             padding: 0;
         }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, var(--darker-blue) 21px, transparent 1%) center,
+                linear-gradient(var(--darker-blue) 21px, transparent 1%) center, 
+                rgba(0, 243, 255, 0.05);
+            background-size: 22px 22px;
+            z-index: -1;
+        }
 
         .form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-left: 2em;
-            padding-right: 2em;
-            padding-bottom: 0.4em;
-            background-color: rgba(23, 23, 23, 0.8);
-            border-radius: 25px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 2em;
             transition: .4s ease-in-out;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 243, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        }
+
+        .form::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
         }
 
         .form:hover {
-            transform: scale(1.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 243, 255, 0.3);
         }
 
         #heading {
             text-align: center;
-            margin: 2em;
-            color: rgb(255, 255, 255);
-            font-size: 1.2em;
+            margin: 1em 0 2em;
+            color: var(--neon-blue);
+            font-size: 2em;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
         }
 
         .field {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5em;
-            border-radius: 25px;
-            padding: 0.6em;
-            border: none;
-            outline: none;
-            color: white;
-            background-color: #171717;
-            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+            border-radius: 4px;
+            padding: 0.8em;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            background: rgba(1, 6, 26, 0.5);
+            margin-bottom: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .field:focus-within {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
         }
 
         .input-icon {
             height: 1.3em;
             width: 1.3em;
-            fill: white;
+            fill: var(--neon-blue);
         }
 
         .input-field {
@@ -65,37 +123,121 @@
             border: none;
             outline: none;
             width: 100%;
-            color: #d3d3d3;
+            color: var(--text-color);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .button3 {
-            margin-bottom: 3em;
-            padding: 0.5em;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            transition: .4s ease-in-out;
-            background-color: #252525;
-            color: white;
+            width: 100%;
+            padding: 0.8em;
+            border-radius: 4px;
+            border: 1px solid var(--neon-blue);
+            background: transparent;
+            color: var(--neon-blue);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .button3:hover {
-            background-color: red;
+            background: rgba(0, 243, 255, 0.1);
             color: white;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .button3::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            animation: shine 4s infinite;
+            opacity: 0;
+        }
+
+        .button3:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
         }
 
         .error-message {
-            color: #ff4444;
+            color: var(--neon-pink);
             text-align: center;
             margin-bottom: 1em;
             display: none;
+            font-family: 'Rajdhani', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Glitch effect for title */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch-1 {
+            0%, 80%, 100% { transform: none; opacity: 1; }
+            20%, 60% { transform: translate(-2px, 0) skew(5deg); opacity: 0.75; }
+            40% { transform: translate(2px, 0) skew(-5deg); opacity: 0.75; }
+        }
+
+        @keyframes glitch-2 {
+            0%, 80%, 100% { transform: none; opacity: 1; }
+            20%, 60% { transform: translate(2px, 0) skew(5deg); opacity: 0.75; }
+            40% { transform: translate(-2px, 0) skew(-5deg); opacity: 0.75; }
         }
     </style>
 </head>
 <body class="flex items-center justify-center">
     <div class="w-full max-w-md px-4">
         <form class="form" id="loginForm" onsubmit="return handleLogin(event)">
-            <p id="heading">Login</p>
+            <h1 id="heading" class="glitch" data-text="Login">Login</h1>
             <div id="errorMessage" class="error-message"></div>
             <div class="field">
                 <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -114,7 +256,6 @@
     </div>
 
     <script>
-        // API URL - Replace with your Glitch URL
         const API_URL = 'https://encore-js-production.up.railway.app';
 
         // Check if user is already logged in
