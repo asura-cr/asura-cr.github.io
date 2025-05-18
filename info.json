@@ -130,9 +130,10 @@
       },
       {
         "chapter": "unknown",
-        "startNumber": 314142,
-        "frameCount": 2,
-        "filePattern": "01-optimized.webp"
+        "startNumber": 314232,
+        "frameCount": 1,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-18T17:25:46.524534"
       }
     ]
   }
