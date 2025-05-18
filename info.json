@@ -84,6 +84,13 @@
         "filePattern": "01-optimized.webp"
       },
       {
+        "chapter": 15,
+        "startNumber": 314332,
+        "frameCount": 22,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-18T17:27:14.537915"
+      },
+      {
         "chapter": 35,
         "startNumber": 314213,
         "frameCount": 11,
