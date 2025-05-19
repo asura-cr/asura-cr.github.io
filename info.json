@@ -39,6 +39,13 @@
     "series": "Unknown Series",
     "chapters": [
       {
+        "chapter": 5,
+        "startNumber": 314354,
+        "frameCount": 12,
+        "filePattern": "01-kopya-optimized.webp",
+        "uploadTime": "2025-05-19T18:06:42.973873"
+      },
+      {
         "chapter": 133,
         "startNumber": 314146,
         "frameCount": 14,
