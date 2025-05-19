@@ -12,6 +12,18 @@
     ]
   },
   {
+    "series": "Obtained a Mythic Item",
+    "chapters": [
+      {
+        "chapter": 123,
+        "startNumber": 314034,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T17:57:51.778674"
+      }
+    ]
+  },
+  {
     "series": "Player Who Can't Level Up",
     "chapters": [
       {
