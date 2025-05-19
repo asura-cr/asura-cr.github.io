@@ -1,5 +1,17 @@
 [
   {
+    "series": "1",
+    "chapters": [
+      {
+        "chapter": "unknown",
+        "startNumber": 314700,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T19:36:05.140160"
+      }
+    ]
+  },
+  {
     "series": "1 Kopya",
     "chapters": [
       {
