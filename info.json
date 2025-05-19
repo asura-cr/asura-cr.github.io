@@ -34,5 +34,17 @@
         "uploadTime": "2025-05-19T17:55:57.737548"
       }
     ]
+  },
+  {
+    "series": "World's Strongest Survivor",
+    "chapters": [
+      {
+        "chapter": 8,
+        "startNumber": 313832,
+        "frameCount": 15,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T17:56:59.181162"
+      }
+    ]
   }
 ]
