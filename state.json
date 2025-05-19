@@ -1,35 +1,4 @@
 {
-  "lastStartNumber": 314045,
-  "downloadedChapters": {
-    "Wandering Warrior of Wudang_50": {
-      "timestamp": "2025-05-19T18:05:32.589204",
-      "imageCount": 13,
-      "githubPath": "series/wandering_warrior_of_wudang/chapter_50",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\wandering_warrior_of_wudang\\chapter_50"
-    },
-    "Unknown Series_133": {
-      "timestamp": "2025-05-19T18:05:39.148026",
-      "imageCount": 14,
-      "githubPath": "series/unknown_series/chapter_133",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_133"
-    },
-    "Unknown Series_5": {
-      "timestamp": "2025-05-19T18:06:39.932368",
-      "imageCount": 12,
-      "githubPath": "series/unknown_series/chapter_5",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_5"
-    },
-    "Unknown Series_unknown": {
-      "timestamp": "2025-05-19T18:07:36.760585",
-      "imageCount": 12,
-      "githubPath": "series/unknown_series/chapter_unknown",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
-    },
-    "The Extra's Academy Survival Guide_78": {
-      "timestamp": "2025-05-19T18:08:54.196056",
-      "imageCount": 16,
-      "githubPath": "series/the_extra_s_academy_survival_guide/chapter_78",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_extra_s_academy_survival_guide\\chapter_78"
-    }
-  }
+  "lastStartNumber": 314464,
+  "downloadedChapters": {}
 }
