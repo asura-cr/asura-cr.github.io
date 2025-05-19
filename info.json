@@ -1,5 +1,17 @@
 [
   {
+    "series": "Nano Machine",
+    "chapters": [
+      {
+        "chapter": 260,
+        "startNumber": 313626,
+        "frameCount": 10,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T22:31:22.919971"
+      }
+    ]
+  },
+  {
     "series": "Player Who Can't Level Up",
     "chapters": [
       {
