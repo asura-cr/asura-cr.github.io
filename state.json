@@ -1,23 +1,4 @@
 {
-  "lastStartNumber": 314464,
-  "downloadedChapters": {
-    "The Tutorial is Too Hard_218": {
-      "timestamp": "2025-05-19T22:54:34.109123",
-      "imageCount": 12,
-      "githubPath": "series/the_tutorial_is_too_hard/chapter_218",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\the_tutorial_is_too_hard\\chapter_218"
-    },
-    "Worthless Regression_85": {
-      "timestamp": "2025-05-19T22:54:39.915053",
-      "imageCount": 12,
-      "githubPath": "series/worthless_regression/chapter_85",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\worthless_regression\\chapter_85"
-    },
-    "Unknown Series_unknown": {
-      "timestamp": "2025-05-19T22:55:22.078804",
-      "imageCount": 9,
-      "githubPath": "series/unknown_series/chapter_unknown",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
-    }
-  }
+  "lastStartNumber": 314673,
+  "downloadedChapters": {}
 }
