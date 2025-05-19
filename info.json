@@ -48,6 +48,18 @@
     ]
   },
   {
+    "series": "Wandering Warrior of Wudang",
+    "chapters": [
+      {
+        "chapter": 50,
+        "startNumber": 314046,
+        "frameCount": 13,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T22:42:08.010517"
+      }
+    ]
+  },
+  {
     "series": "World's Strongest Survivor",
     "chapters": [
       {
