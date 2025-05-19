@@ -12,6 +12,18 @@
     ]
   },
   {
+    "series": "Logging 10,000 Years into the Future",
+    "chapters": [
+      {
+        "chapter": 10,
+        "startNumber": 314674,
+        "frameCount": 14,
+        "filePattern": "01-kopya-optimized.webp",
+        "uploadTime": "2025-05-19T23:02:54.201584"
+      }
+    ]
+  },
+  {
     "series": "Nano Machine",
     "chapters": [
       {
