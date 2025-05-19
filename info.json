@@ -22,5 +22,17 @@
         "uploadTime": "2025-05-19T21:55:37.691751"
       }
     ]
+  },
+  {
+    "series": "Unknown Series",
+    "chapters": [
+      {
+        "chapter": 1,
+        "startNumber": 313832,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T21:57:27.906945"
+      }
+    ]
   }
 ]
