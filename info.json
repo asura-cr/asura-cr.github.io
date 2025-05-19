@@ -1,5 +1,17 @@
 [
   {
+    "series": "1 Kopya",
+    "chapters": [
+      {
+        "chapter": "unknown",
+        "startNumber": 314674,
+        "frameCount": 14,
+        "filePattern": "01-kopya-optimized.webp",
+        "uploadTime": "2025-05-19T18:50:54.903006"
+      }
+    ]
+  },
+  {
     "series": "Nano Machine",
     "chapters": [
       {
