@@ -1,35 +1,4 @@
 {
-  "lastStartNumber": 313625,
-  "downloadedChapters": {
-    "Player Who Can't Level Up_188": {
-      "timestamp": "2025-05-19T22:31:14.289580",
-      "imageCount": 10,
-      "githubPath": "series/player_who_can_t_level_up/chapter_188",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\player_who_can_t_level_up\\chapter_188"
-    },
-    "Nano Machine_260": {
-      "timestamp": "2025-05-19T22:31:20.116371",
-      "imageCount": 10,
-      "githubPath": "series/nano_machine/chapter_260",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\nano_machine\\chapter_260"
-    },
-    "World's Strongest Survivor_8": {
-      "timestamp": "2025-05-19T22:33:11.289044",
-      "imageCount": 15,
-      "githubPath": "series/world_s_strongest_survivor/chapter_8",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\world_s_strongest_survivor\\chapter_8"
-    },
-    "Unknown Series_unknown": {
-      "timestamp": "2025-05-19T22:33:16.933271",
-      "imageCount": 11,
-      "githubPath": "series/unknown_series/chapter_unknown",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_unknown"
-    },
-    "Obtained a Mythic Item_123": {
-      "timestamp": "2025-05-19T22:34:04.895070",
-      "imageCount": 12,
-      "githubPath": "series/obtained_a_mythic_item/chapter_123",
-      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\obtained_a_mythic_item\\chapter_123"
-    }
-  }
+  "lastStartNumber": 314045,
+  "downloadedChapters": {}
 }
