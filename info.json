@@ -48,6 +48,18 @@
     ]
   },
   {
+    "series": "The Tutorial is Too Hard",
+    "chapters": [
+      {
+        "chapter": 218,
+        "startNumber": 314568,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T18:27:49.089067"
+      }
+    ]
+  },
+  {
     "series": "Unknown Series",
     "chapters": [
       {
