@@ -113,5 +113,17 @@
         "uploadTime": "2025-05-19T22:33:14.091851"
       }
     ]
+  },
+  {
+    "series": "Worthless Regression",
+    "chapters": [
+      {
+        "chapter": 85,
+        "startNumber": 314465,
+        "frameCount": 12,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-19T22:54:42.869406"
+      }
+    ]
   }
 ]
