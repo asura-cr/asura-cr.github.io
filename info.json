@@ -60,6 +60,18 @@
     ]
   },
   {
+    "series": "Somebody Stop the Pope",
+    "chapters": [
+      {
+        "chapter": 42,
+        "startNumber": 314900,
+        "frameCount": 11,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-20T17:35:52.369326"
+      }
+    ]
+  },
+  {
     "series": "The Extra's Academy Survival Guide",
     "chapters": [
       {
