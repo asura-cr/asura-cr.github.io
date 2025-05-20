@@ -1,4 +1,11 @@
 {
   "lastStartNumber": 314938,
-  "downloadedChapters": {}
+  "downloadedChapters": {
+    "Unknown Series_31": {
+      "timestamp": "2025-05-20T18:35:28.427730",
+      "imageCount": 10,
+      "githubPath": "series/unknown_series/chapter_31",
+      "path": "C:\\Users\\DELL\\Downloads\\asura\\downloads\\unknown_series\\chapter_31"
+    }
+  }
 }
