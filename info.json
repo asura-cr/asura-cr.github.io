@@ -67,6 +67,18 @@
     ]
   },
   {
+    "series": "Murim Login",
+    "chapters": [
+      {
+        "chapter": 224,
+        "startNumber": 315065,
+        "frameCount": 14,
+        "filePattern": "01-optimized.webp",
+        "uploadTime": "2025-05-21T21:36:30.575619"
+      }
+    ]
+  },
+  {
     "series": "Nano Machine",
     "chapters": [
       {
