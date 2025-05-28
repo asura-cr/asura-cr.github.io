@@ -507,8 +507,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            // Check authentication first
-            if (!await checkAuth()) return;
             
             // Update UI
             updateUI();
@@ -752,8 +750,6 @@
             }
         });
 
-        // Periodically check authentication
-        setInterval(checkAuth, 60000); // Check every minute
     </script>
 </body>
 </html>
