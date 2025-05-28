@@ -486,30 +486,6 @@
     </main>
 
     <script>
-        // Authentication check
-        function checkAuth() {
-            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
-                localStorage.removeItem('auth');
-                window.location.href = 'login.html';
-                return false;
-            }
-            return true;
-        }
-
-        // Logout function
-        function logout() {
-            localStorage.removeItem('auth');
-            window.location.href = 'login.html';
-        }
-
-        // Update UI with username
-        function updateUI() {
-            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (authData.username) {
-                document.getElementById('username').textContent = authData.username;
-            }
-        }
 
         // Helper function to format time ago
         function getTimeAgo(timestamp) {
@@ -539,14 +515,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            // Check authentication first
-            if (!await checkAuth()) return;
 
             // Update UI
             updateUI();
-
-            // Add logout button listener
-            document.getElementById('logoutBtn').addEventListener('click', logout);
 
             // Get series name from URL parameters
             const params = new URLSearchParams(window.location.search);
@@ -651,8 +622,6 @@
             });
         }
 
-        // Periodically check authentication
-        setInterval(checkAuth, 60000); // Check every minute
     </script>
 </body>
 </html> 
