@@ -597,22 +597,6 @@
     </div>
 
     <script>
-        // Authentication check
-        function checkAuth() {
-            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
-                localStorage.removeItem('auth');
-                window.location.href = 'login.html';
-                return false;
-            }
-            return true;
-        }
-
-        // Logout function
-        function logout() {
-            localStorage.removeItem('auth');
-            window.location.href = 'login.html';
-        }
 
         // Update UI with username
         function updateUI() {
