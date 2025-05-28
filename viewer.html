@@ -446,23 +446,6 @@
 
     <script>
         // Authentication check
-        function checkAuth() {
-            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (!authData.token || !authData.expiry || new Date().getTime() >= authData.expiry) {
-                localStorage.removeItem('auth');
-                window.location.href = 'login.html';
-                return false;
-            }
-            return true;
-        }
-
-        // Update UI with username
-        function updateUI() {
-            const authData = JSON.parse(localStorage.getItem('auth') || '{}');
-            if (authData.username) {
-                document.getElementById('username').textContent = authData.username;
-            }
-        }
 
         // Header retraction functionality
         function setupRetractableHeader() {
