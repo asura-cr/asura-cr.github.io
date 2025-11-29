@@ -82,6 +82,9 @@
                 <button onclick="switchTab('settings')" id="btn-settings" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition">
                     <i class="fa-solid fa-cog mr-2"></i>Settings
                 </button>
+                <button onclick="isAdmin ? logout() : openLoginModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-user mr-2"></i><span id="login-text">${isAdmin ? 'Logout' : 'Login'}</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -181,7 +184,7 @@
                 <div class="glass-panel rounded-xl flex flex-col h-[700px] border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
                     <div class="p-4 border-b border-slate-700 bg-indigo-900/20 rounded-t-xl flex justify-between items-center">
                         <h2 class="font-bold text-white"><i class="fa-solid fa-crosshairs mr-2 text-indigo-400"></i><span id="hit-list-title">Today's</span> Hit List</h2>
-                        <button onclick="clearToday()" class="text-xs text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> Reset List</button>
+                        ${isAdmin ? `<button onclick="clearToday()" class="text-xs text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> Reset List</button>` : ''}
                     </div>
                     <div class="p-3 overflow-y-auto flex-grow space-y-4" id="today-list">
                         <!-- Populated by JS, now categorized -->
@@ -343,6 +346,24 @@
                 <div class="flex space-x-3 pt-4">
                     <button onclick="closeBanModal()" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 rounded text-slate-300">Cancel</button>
                     <button onclick="submitBan()" class="flex-1 py-2 bg-red-600 hover:bg-red-500 rounded text-white font-bold">Ban/Unban</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Admin Login -->
+    <div id="login-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center">
+        <div class="glass-panel rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Admin Login</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase text-slate-400">Password</label>
+                    <input type="password" id="login-password" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button onclick="closeLoginModal()" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 rounded text-slate-300">Cancel</button>
+                    <button onclick="submitLogin()" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-bold">Login</button>
                 </div>
             </div>
         </div>
@@ -551,28 +572,68 @@
 
         // Load data from server
         function loadData() {
-            fetch('/api/roster.json')
+            fetch('http://139.59.26.34:3000/api/roster.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => {
                     appData.roster = data;
                     sortRoster();
                     renderDashboard();
+                    updateLoginText();
                 })
                 .catch(() => {
                     appData.roster = defaultRoster;
                     sortRoster();
                     renderDashboard();
+                    updateLoginText();
                 });
 
-            fetch('/api/settings.json')
+            fetch('http://139.59.26.34:3000/api/settings.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => appData.settings = data)
                 .catch(() => {});
 
-            fetch('/api/dailyPlans.json')
+            fetch('http://139.59.26.34:3000/api/dailyPlans.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => appData.dailyPlans = data)
                 .catch(() => {});
+        }
+
+        function updateLoginText() {
+            document.getElementById('login-text').innerText = isAdmin ? 'Logout' : 'Login';
+        }
+
+        // Check if user is admin
+        let isAdmin = !!localStorage.getItem('adminToken');
+
+        // Login function
+        function login(password) {
+            fetch('http://139.59.26.34:3000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('adminToken', data.token);
+                    isAdmin = true;
+                    closeLoginModal();
+                    updateLoginText();
+                    renderDashboard(); // Re-render to show edit buttons
+                    alert('Logged in as admin');
+                } else {
+                    alert('Invalid password');
+                }
+            })
+            .catch(() => alert('Login failed'));
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('adminToken');
+            isAdmin = false;
+            updateLoginText();
+            renderDashboard();
         }
 
         // --- DATA ACCESSORS (Getters/Setters for current view date) ---
@@ -600,21 +661,25 @@
         // --- CORE DATA MANAGEMENT ---
 
         function saveData() {
-            fetch('/api/roster.json', {
+            const token = localStorage.getItem('adminToken');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers.Authorization = `Bearer ${token}`;
+
+            fetch('http://139.59.26.34:3000/api/roster.json', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify(appData.roster)
             }).catch(error => console.error('Failed to save roster:', error));
 
-            fetch('/api/settings.json', {
+            fetch('http://139.59.26.34:3000/api/settings.json', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify(appData.settings)
             }).catch(error => console.error('Failed to save settings:', error));
 
-            fetch('/api/dailyPlans.json', {
+            fetch('http://139.59.26.34:3000/api/dailyPlans.json', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify(appData.dailyPlans)
             }).catch(error => console.error('Failed to save daily plans:', error));
         }
@@ -945,12 +1010,12 @@
                             <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
                             <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
                         </select>
-                        <button onclick="moveToBacklog(${player.id})" class="text-xs text-pink-400 hover:text-pink-300 p-1" title="Push to Backlog (Tomorrow's List)" ${isBanned ? 'disabled' : ''}>
+                        ${isAdmin ? `<button onclick="moveToBacklog(${player.id})" class="text-xs text-pink-400 hover:text-pink-300 p-1" title="Push to Backlog (Tomorrow's List)" ${isBanned ? 'disabled' : ''}>
                             <i class="fa-solid fa-share"></i>
                         </button>
                         <button onclick="removeFromToday(${player.id})" class="text-xs text-red-400 hover:text-red-300 p-1" title="Remove" ${isBanned ? 'disabled' : ''}>
                             <i class="fa-solid fa-xmark"></i>
-                        </button>
+                        </button>` : ''}
                     </div>
                 </div>
             `;
@@ -1018,9 +1083,9 @@
                         </select>
                         <!-- END Target Edit -->
                         ${backlogButton}
-                        <button onclick="${isBanned ? '#' : actionFunction}" class="h-8 w-8 rounded-full bg-slate-700 ${actionColor} text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned ? 'opacity-50 cursor-not-allowed' : ''}" title="${actionTitle}">
+                        ${isAdmin ? `<button onclick="${isBanned ? '#' : actionFunction}" class="h-8 w-8 rounded-full bg-slate-700 ${actionColor} text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned ? 'opacity-50 cursor-not-allowed' : ''}" title="${actionTitle}">
                             <i class="fa-solid ${actionIcon}"></i>
-                        </button>
+                        </button>` : ''}
                     </div>
                 </div>
             `;
@@ -1058,9 +1123,9 @@
                             <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
                             <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
                         </select>
-                        <button onclick="removeFromBacklog(${playerId})" class="text-xs text-slate-500 hover:text-red-400" title="Remove from Next Day's Schedule" ${isBanned ? 'disabled' : ''}>
+                        ${isAdmin ? `<button onclick="removeFromBacklog(${playerId})" class="text-xs text-slate-500 hover:text-red-400" title="Remove from Next Day's Schedule" ${isBanned ? 'disabled' : ''}>
                             <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button>` : ''}
                     </div>
                 </div>
             `;
@@ -1379,9 +1444,9 @@
                         ${isBanned ? `<span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-ban mr-2"></i>Until: ${p.bannedUntil}</span>` : 'Active'}
                     </td>
                     <td class="p-3 text-right">
-                        <button onclick="editPlayer(${p.id})" class="text-slate-400 hover:text-white mr-3"><i class="fa-solid fa-pen"></i></button>
+                        ${isAdmin ? `<button onclick="editPlayer(${p.id})" class="text-slate-400 hover:text-white mr-3"><i class="fa-solid fa-pen"></i></button>
                         <button onclick="openBanModal(${p.id})" class="text-slate-400 hover:text-red-400 mr-3 ${isBanned ? 'text-red-400' : ''}"><i class="fa-solid fa-ban"></i></button>
-                        <button onclick="deletePlayer(${p.id})" class="text-slate-400 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deletePlayer(${p.id})" class="text-slate-400 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1464,6 +1529,19 @@
 
         function closeBanModal() {
             document.getElementById('ban-modal').classList.add('hidden');
+        }
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function submitLogin() {
+            const password = document.getElementById('login-password').value;
+            login(password);
         }
 
         function submitBan() {
