@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boss List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: translateY(-1px);
+        }
+        .progress-bar-bg {
+            background: #1e293b;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            transition: width 0.5s ease-in-out, background-color 0.3s;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .target-select {
+            background-color: #0f172a; 
+            border: 1px solid #334155;
+            color: #94a3b8; 
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-family: 'Inter', monospace;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-dragon text-indigo-500 text-2xl"></i>
+                <h1 class="text-xl font-bold text-white tracking-wide">BOSS <span class="text-indigo-500">LIST</span></h1>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition">
+                    <i class="fa-solid fa-chart-pie mr-2"></i>Planner
+                </button>
+                <button onclick="switchTab('roster')" id="btn-roster" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-users mr-2"></i>Roster
+                </button>
+                <button onclick="switchTab('settings')" id="btn-settings" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-cog mr-2"></i>Settings
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-6 max-w-7xl mx-auto w-full">
+        
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="space-y-6 animate-fade-in">
+            
+            <!-- Date Navigation Header -->
+            <div class="glass-panel p-3 rounded-xl shadow-lg flex flex-wrap justify-between items-center">
+                <h2 class="text-xl font-bold text-white flex items-center space-x-3">
+                    <i class="fa-solid fa-calendar-days text-indigo-400"></i>
+                    <span>Planning for:</span>
+                </h2>
+                <div class="flex items-center space-x-3 mt-2 md:mt-0">
+                    <button onclick="changeDate(-1)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg text-sm text-white transition"><i class="fa-solid fa-chevron-left"></i> Prev Day</button>
+                    <div class="relative">
+                        <input type="date" id="date-picker" onchange="changeDateTo(this.value)" class="bg-slate-800 border border-slate-600 rounded p-2 text-white font-mono text-sm">
+                    </div>
+                    <button onclick="changeDate(1)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg text-sm text-white transition">Next Day <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Top Stats Bar -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Date & Group -->
+                <div class="glass-panel p-4 rounded-xl shadow-lg border-l-4 border-indigo-500">
+                    <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Active Day & Group</div>
+                    <div class="flex justify-between items-end mt-1">
+                        <div class="text-2xl font-bold text-white" id="display-date">Loading...</div>
+                        <div class="text-3xl font-black text-indigo-400" id="display-group">G1</div>
+                    </div>
+                </div>
+
+                <!-- Global HP -->
+                <div class="glass-panel p-4 rounded-xl shadow-lg border-l-4 border-emerald-500">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Planned HP Used</span>
+                        <span class="text-xs font-bold text-white" id="global-hp-text">0 / 49B</span>
+                    </div>
+                    <div class="progress-bar-bg h-3 w-full">
+                        <div id="global-hp-bar" class="progress-bar-fill bg-emerald-500" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-2 text-right text-xs text-emerald-400 font-mono" id="global-remaining">49B Remaining</div>
+                </div>
+
+                <!-- Tier 2 HP -->
+                <div class="glass-panel p-4 rounded-xl shadow-lg border-l-4 border-amber-500">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Tier 2 Cap</span>
+                        <span class="text-xs font-bold text-white" id="t2-hp-text">0 / 14B</span>
+                    </div>
+                    <div class="progress-bar-bg h-3 w-full">
+                        <div id="t2-hp-bar" class="progress-bar-fill bg-amber-500" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-2 flex justify-between items-center">
+                         <span class="text-xs text-slate-500" id="t2-status-msg">Rotation Group</span>
+                         <span class="text-xs text-amber-400 font-mono" id="t2-remaining">14B Left</span>
+                    </div>
+                </div>
+
+                <!-- Next Day Backlog Count -->
+                <div class="glass-panel p-4 rounded-xl shadow-lg border-l-4 border-pink-500">
+                    <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Next Day's Backlog</div>
+                    <div class="flex justify-between items-end mt-1">
+                        <div class="text-2xl font-bold text-white" id="next-backlog-count">0 Players</div>
+                        <div class="text-xl font-bold text-pink-400" id="next-backlog-dmg">0B</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planning Columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- COLUMN 1: AVAILABLE POOL -->
+                <div class="glass-panel rounded-xl flex flex-col h-[700px]">
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/50 rounded-t-xl flex justify-between items-center">
+                        <h2 class="font-bold text-slate-200"><i class="fa-solid fa-list-ul mr-2 text-slate-400"></i>Available Pool</h2>
+                        <select id="pool-filter" class="bg-slate-900 border border-slate-700 text-xs rounded p-1 text-slate-300">
+                            <option value="all">All Tiers</option>
+                            <option value="active-group">Active Group Only</option>
+                            <option value="T1">Tier 1</option>
+                            <option value="T2">Tier 2</option>
+                            <option value="T3">Tier 3</option>
+                            <option value="T4">Tier 4</option>
+                            <option value="manual">Leaders/Vices</option>
+                        </select>
+                    </div>
+                    <div class="p-3 overflow-y-auto flex-grow space-y-2" id="pool-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: TODAY'S HIT LIST (Current View Date) -->
+                <div class="glass-panel rounded-xl flex flex-col h-[700px] border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
+                    <div class="p-4 border-b border-slate-700 bg-indigo-900/20 rounded-t-xl flex justify-between items-center">
+                        <h2 class="font-bold text-white"><i class="fa-solid fa-crosshairs mr-2 text-indigo-400"></i><span id="hit-list-title">Today's</span> Hit List</h2>
+                        <button onclick="clearToday()" class="text-xs text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> Reset List</button>
+                    </div>
+                    <div class="p-3 overflow-y-auto flex-grow space-y-4" id="today-list">
+                        <!-- Populated by JS, now categorized -->
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: BACKLOG (Day After Current View Date) -->
+                <div class="glass-panel rounded-xl flex flex-col h-[700px]">
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/50 rounded-t-xl">
+                        <h2 class="font-bold text-pink-200"><i class="fa-solid fa-clock-rotate-left mr-2 text-pink-400"></i><span id="backlog-title">Tomorrow's</span> Backlog</h2>
+                        <p class="text-[10px] text-slate-400 mt-1">Players scheduled to hit on the day AFTER the active date. (Editing here updates tomorrow's Hit List)</p>
+                    </div>
+                    <div class="p-3 overflow-y-auto flex-grow space-y-2" id="backlog-list">
+                        <!-- Populated by JS, now categorized -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ROSTER VIEW -->
+        <div id="view-roster" class="hidden animate-fade-in">
+            <div class="glass-panel rounded-xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Manage Roster</h2>
+                    <button onclick="openAddModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg">
+                        <i class="fa-solid fa-plus mr-2"></i>Add Player
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-800 text-slate-400 uppercase">
+                            <tr>
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Tier</th>
+                                <th class="p-3">Group</th>
+                                <th class="p-3">Pacing</th>
+                                <th class="p-3">Default Target</th>
+                                <th class="p-3">Banned Until</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roster-table-body" class="divide-y divide-slate-700">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div id="view-settings" class="hidden animate-fade-in max-w-2xl mx-auto">
+            <div class="glass-panel rounded-xl p-6 space-y-6">
+                <h2 class="text-2xl font-bold mb-4">Settings</h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-1">Global Boss HP (Billions)</label>
+                    <input type="number" id="setting-global-hp" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white" value="49">
+                    <p class="text-xs text-slate-500 mt-1">If the Hit List damage exceeds this, players will automatically be moved to tomorrow's backlog.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-1">Tier 2 Daily Cap (Billions)</label>
+                    <input type="number" id="setting-t2-cap" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white" value="14">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-1">Rotation Reference Date (G1 Start)</label>
+                    <p class="text-xs text-slate-500 mb-2">Used to calculate if today is G1, G2, or G3.</p>
+                    <input type="date" id="setting-ref-date" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white">
+                </div>
+
+                <div class="pt-4 border-t border-slate-700">
+                    <button onclick="saveSettings()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg">
+                        Save Configuration
+                    </button>
+                    <button onclick="resetData()" class="w-full mt-3 bg-red-900/50 hover:bg-red-900 text-red-200 font-bold py-3 rounded-lg text-sm">
+                        Factory Reset (Clear All Data)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal for Adding Player -->
+    <div id="player-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center">
+        <div class="glass-panel rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Add/Edit Player</h3>
+            <input type="hidden" id="modal-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase text-slate-400">IGN</label>
+                    <input type="text" id="modal-name" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs uppercase text-slate-400">Tier</label>
+                        <select id="modal-tier" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1" onchange="toggleGroupSelect()">
+                            <option value="Leader">Leader</option>
+                            <option value="Vice">Vice</option>
+                            <option value="Officer">Officer</option>
+                            <option value="Tier 1">Tier 1</option>
+                            <option value="Tier 2">Tier 2</option>
+                            <option value="Tier 3">Tier 3</option>
+                            <option value="Tier 4">Tier 4</option>
+                            <option value="Tier 5">Tier 5</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase text-slate-400">Group (T2 Only)</label>
+                        <select id="modal-group" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                            <option value="">None</option>
+                            <option value="G1">Group 1</option>
+                            <option value="G2">Group 2</option>
+                            <option value="G3">Group 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs uppercase text-slate-400">Default Target</label>
+                        <select id="modal-target" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                            <option value="2B">2 Billion</option>
+                            <option value="1B">1 Billion</option>
+                            <option value="750M">750 Million</option>
+                            <option value="500M">500 Million</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase text-slate-400">Pacing</label>
+                        <select id="modal-pacing" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                            <option value="false">Off</option>
+                            <option value="true">On</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button onclick="closeModal()" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 rounded text-slate-300">Cancel</button>
+                    <button onclick="submitPlayer()" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-bold">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Banning Player -->
+    <div id="ban-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center">
+        <div class="glass-panel rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Ban Player</h3>
+            <input type="hidden" id="ban-modal-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase text-slate-400 flex items-center">
+                        <i class="fa-solid fa-ban mr-1 text-red-400"></i> Banned Until (YYYY-MM-DD)
+                    </label>
+                    <input type="date" id="ban-modal-until" class="w-full bg-slate-800 border border-slate-600 rounded p-2 mt-1">
+                    <p class="text-xs text-slate-500 mt-1">Leave empty to unban the player.</p>
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button onclick="closeBanModal()" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 rounded text-slate-300">Cancel</button>
+                    <button onclick="submitBan()" class="flex-1 py-2 bg-red-600 hover:bg-red-500 rounded text-white font-bold">Ban/Unban</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- UTILITY FUNCTIONS ---
+        // Converts a Date object to a YYYY-MM-DD string
+        function dateToString(date) {
+            // Need to adjust for local timezone offset for accurate date string comparison
+            const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+            const dateAdjusted = new Date(date.getTime() - userTimezoneOffset);
+            return dateAdjusted.toISOString().split('T')[0];
+        }
+        // Gets a date object for today's date (midnight)
+        function getToday() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            return now;
+        }
+        // Adds days to a date string (YYYY-MM-DD)
+        function addDays(dateStr, days) {
+            const date = new Date(dateStr + 'T00:00:00'); // Append T00:00:00 to treat as UTC midnight for consistent calculation
+            date.setDate(date.getDate() + days);
+            return dateToString(date);
+        }
+        
+        /**
+         * Checks if a player is banned for a given date.
+         * The ban ends at the start of the day specified in bannedUntil.
+         * @param {object} player - The player object.
+         * @param {string} dateStr - The YYYY-MM-DD date to check against.
+         * @returns {boolean} True if the player is banned on dateStr.
+         */
+        function isPlayerBanned(player, dateStr) {
+            // Ban ends at the start of the bannedUntil day. 
+            // So, if dateStr is LESS THAN bannedUntil, they are banned.
+            return player.bannedUntil && player.bannedUntil > dateStr;
+        }
+
+
+        // --- TIER CATEGORIZATION ---
+        const TIER_CATEGORIES = [
+            { key: 'LdrVice', title: 'Leaders & Vices', tiers: ['Leader', 'Vice', 'Officer'], color: 'text-yellow-400' },
+            { key: 'T1Oracle', title: 'Tier 1 & Oracles', tiers: ['Tier 1'], color: 'text-cyan-400' },
+            { key: 'T2', title: 'Tier 2', tiers: ['Tier 2'], color: 'text-emerald-400' },
+            { key: 'T3', title: 'Tier 3', tiers: ['Tier 3'], color: 'text-orange-400' },
+            { key: 'T4T5', title: 'Tier IV & V', tiers: ['Tier 4', 'Tier 5'], color: 'text-fuchsia-400' }
+        ];
+
+        function getCategoryKey(player) {
+            const category = TIER_CATEGORIES.find(cat => cat.tiers.includes(player.tier));
+            return category ? category.key : 'Other';
+        }
+
+        function getCategoryInfo(key) {
+            return TIER_CATEGORIES.find(cat => cat.key === key) || { title: 'Unassigned Tier', color: 'text-slate-400' };
+        }
+        
+        // --- TIER SORTING LOGIC ---
+        function getTierSortValue(tier) {
+            switch (tier) {
+                case 'Leader': return 1;
+                case 'Vice': return 2;
+                case 'Officer': return 3;
+                case 'Tier 1': return 4;
+                case 'Tier 2': return 5;
+                case 'Tier 3': return 6;
+                case 'Tier 4': return 7;
+                case 'Tier 5': return 8;
+                default: return 99; // Fallback
+            }
+        }
+
+        function sortRoster() {
+            appData.roster.sort((a, b) => {
+                // Primary sort: Ban Status (Banned players first, for visibility in Roster table)
+                const aBanned = a.bannedUntil && a.bannedUntil > dateToString(getToday());
+                const bBanned = b.bannedUntil && b.bannedUntil > dateToString(getToday());
+                if (aBanned !== bBanned) {
+                    return aBanned ? -1 : 1;
+                }
+
+                // Secondary sort: Tier
+                const aSort = getTierSortValue(a.tier);
+                const bSort = getTierSortValue(b.tier);
+                if (aSort !== bSort) {
+                    return aSort - bSort; 
+                }
+
+                // Tertiary sort: alphabetical by name
+                return a.name.localeCompare(b.name);
+            });
+        }
+
+
+        // --- DATA INITIALIZATION ---
+        
+        // Default roster data (Updated to include bannedUntil: null)
+        const defaultRoster = [
+            // --- LEADERSHIP (Pacing enabled by default) ---
+            { id: 1, name: "Snailbreaker", tier: "Leader", group: "", target: "2B", pacing: true, bannedUntil: null },
+            { id: 2, name: "Kuuhaku", tier: "Vice", group: "", target: "2B", pacing: true, bannedUntil: null },
+            
+            // --- TIER 2: GROUP 1 (G1) - Kept stable for rotation ---
+            { id: 101, name: "4thos", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+            { id: 102, name: "Kvothe", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+            { id: 103, name: "Fallkriz", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+            { id: 104, name: "Megumixx", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+            { id: 105, name: "Axis Zero", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+            { id: 106, name: "Original Pop", tier: "Tier 2", group: "G1", target: "750M", pacing: false, bannedUntil: null },
+            { id: 107, name: "KaVT", tier: "Tier 2", group: "G1", target: "2B", pacing: false, bannedUntil: null },
+
+            // --- TIER 2: GROUP 2 (G2) - Kept stable for rotation ---
+            { id: 200, name: "SleepyPH", tier: "Tier 2", group: "G2", target: "2B", pacing: false, bannedUntil: null },
+            { id: 201, name: "Poltergeist", tier: "Tier 2", group: "G2", target: "2B", pacing: false, bannedUntil: null },
+            { id: 202, name: "Itachii", tier: "Tier 2", group: "G2", target: "2B", pacing: false, bannedUntil: null },
+            { id: 203, name: "Blacksayan", tier: "Tier 2", group: "G2", target: "2B", pacing: false, bannedUntil: null },
+            { id: 204, name: "ruxi", tier: "Tier 2", group: "G2", target: "2B", pacing: false, bannedUntil: null },
+            { id: 205, name: "awelux", tier: "Tier 2", group: "G2", target: "750M", pacing: false, bannedUntil: null },
+            { id: 206, name: "KingSlushee", tier: "Tier 2", group: "G2", target: "750M", pacing: false, bannedUntil: null },
+            { id: 207, name: "Hakroma", tier: "Tier 2", group: "G2", target: "750M", pacing: false, bannedUntil: null },
+
+            // --- TIER 2: GROUP 3 (G3) - Kept stable for rotation ---
+            { id: 300, name: "MangaBlaze", tier: "Tier 2", group: "G3", target: "2B", pacing: false, bannedUntil: null },
+            { id: 301, name: "WORLDLY DESIRES", tier: "Tier 2", group: "G3", target: "2B", pacing: false, bannedUntil: null },
+            { id: 302, name: "DragonFruit", tier: "Tier 2", group: "G3", target: "2B", pacing: false, bannedUntil: null },
+            { id: 303, name: "Chrono", tier: "Tier 2", group: "G3", target: "2B", pacing: false, bannedUntil: null },
+            { id: 304, name: "Cross4ce", tier: "Tier 2", group: "G3", target: "2B", pacing: false, bannedUntil: null },
+            { id: 305, name: "Shadowsong", tier: "Tier 2", group: "G3", target: "750M", pacing: false, bannedUntil: null },
+            { id: 306, name: "Lionroar", tier: "Tier 2", group: "G3", target: "750M", pacing: false, bannedUntil: null },
+            { id: 307, name: "MIHAWK", tier: "Tier 2", group: "G3", target: "750M", pacing: false, bannedUntil: null },
+
+            // --- TIER 1 PLAYERS (NEW) ---
+            { id: 400, name: "Fluffy KaVT", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 401, name: "Soyfeo", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 402, name: "Machadinha", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 403, name: "CrayonEater6105", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 404, name: "Poookii", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 405, name: "Aetas Deus", tier: "Tier 1", group: "", target: "2B", pacing: false, bannedUntil: null },
+
+            // --- TIER 3 PLAYERS (NEW LIST) ---
+            { id: 501, name: "devil of antartica", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 502, name: "skies2", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 503, name: "NPhleiM", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 504, name: "Ryscan", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 505, name: "VoidBringer", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 506, name: "Takoyaki", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 507, name: "Aminox", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 508, name: "Ops", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 509, name: "G0dbutcher", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 510, name: "Aerial", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 511, name: "Sandztorm", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 512, name: "wanederfalk", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 513, name: "WalkingAlive", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 514, name: "SilverCore-David", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 515, name: "Fangorn", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 516, name: "DKmanga", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 517, name: "Heindall", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 518, name: "Guydy009", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 519, name: "HUSSAIN", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 520, name: "1MAYHEM3", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 521, name: "Markyan", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 522, name: "MrTroller", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 523, name: "JJ", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 524, name: "Raposo", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 525, name: "Krizel09", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 526, name: "Vinnys", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 527, name: "R.TEMPEST", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 528, name: "Badr1290", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 529, name: "Doctor_Notch", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 530, name: "Piticus", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 531, name: "Pseudo Paradox", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 532, name: "Loot Goblin", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+            { id: 533, name: "Zekeriyya", tier: "Tier 3", group: "", target: "2B", pacing: false, bannedUntil: null },
+
+            // --- TIER 4 PLAYERS (NEW LIST) ---
+            { id: 601, name: "Stagnant Water", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 602, name: "Alfghard", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 603, name: "chinesefortune", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 604, name: "LinhWoo", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 605, name: "Jinwok", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 606, name: "Gearfried", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 607, name: "Ghosar", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 608, name: "Tumsy", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 609, name: "Dr1nk3d95", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 610, name: "sai_14", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 611, name: "neopudding", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null },
+            { id: 612, name: "Evankhell", tier: "Tier 4", group: "", target: "1B", pacing: false, bannedUntil: null }
+        ];
+
+        let appData = {
+            // Player data
+            roster: defaultRoster,
+            // Settings
+            settings: {
+                globalHp: 49,
+                t2Cap: 14,
+                refDate: dateToString(getToday()) 
+            },
+            // Planning data: key is date string (YYYY-MM-DD), value is { today: [playerIds], backlog: [playerIds] }
+            dailyPlans: {}, 
+            // Current state for planning view
+            currentViewDate: dateToString(getToday()),
+        };
+
+        // Load data from server
+        function loadData() {
+            fetch('/api/roster.json')
+                .then(response => response.ok ? response.json() : Promise.reject('Not found'))
+                .then(data => {
+                    appData.roster = data;
+                    sortRoster();
+                    renderDashboard();
+                })
+                .catch(() => {
+                    appData.roster = defaultRoster;
+                    sortRoster();
+                    renderDashboard();
+                });
+
+            fetch('/api/settings.json')
+                .then(response => response.ok ? response.json() : Promise.reject('Not found'))
+                .then(data => appData.settings = data)
+                .catch(() => {});
+
+            fetch('/api/dailyPlans.json')
+                .then(response => response.ok ? response.json() : Promise.reject('Not found'))
+                .then(data => appData.dailyPlans = data)
+                .catch(() => {});
+        }
+
+        // --- DATA ACCESSORS (Getters/Setters for current view date) ---
+
+        function getPlan(dateStr) {
+            // Initializes a plan for a date if it doesn't exist
+            if (!appData.dailyPlans[dateStr]) {
+                appData.dailyPlans[dateStr] = { today: [], backlog: [] };
+            }
+            return appData.dailyPlans[dateStr];
+        }
+
+        function getCurrentPlan() {
+            return getPlan(appData.currentViewDate);
+        }
+
+        /**
+         * CRITICAL: This function gets the plan for the day AFTER the current view date.
+         */
+        function getNextDayPlan() {
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            return getPlan(nextDayStr);
+        }
+        
+        // --- CORE DATA MANAGEMENT ---
+
+        function saveData() {
+            fetch('/api/roster.json', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(appData.roster)
+            }).catch(error => console.error('Failed to save roster:', error));
+
+            fetch('/api/settings.json', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(appData.settings)
+            }).catch(error => console.error('Failed to save settings:', error));
+
+            fetch('/api/dailyPlans.json', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(appData.dailyPlans)
+            }).catch(error => console.error('Failed to save daily plans:', error));
+        }
+
+        function getDamageValue(targetStr) {
+            if(targetStr === "2B") return 2;
+            if(targetStr === "1B") return 1;
+            if(targetStr === "750M") return 0.75;
+            if(targetStr === "500M") return 0.5;
+            return 0;
+        }
+
+        function getPlayerById(id) {
+            // Ensure ID is treated as a number
+            const numericId = parseInt(id);
+            return appData.roster.find(p => p.id === numericId);
+        }
+
+        function getGroup(dateStr) {
+            const refDate = new Date(appData.settings.refDate);
+            const targetDate = new Date(dateStr);
+            // Reset times to ignore hours
+            refDate.setHours(0, 0, 0, 0);
+            targetDate.setHours(0, 0, 0, 0);
+            
+            // Calculate difference in days
+            const diffTime = targetDate.getTime() - refDate.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            // If the target date is before the reference date, this ensures the modulus is positive
+            const daysFromRef = diffDays >= 0 ? diffDays : diffDays + Math.ceil(Math.abs(diffDays) / 3) * 3;
+
+            // Logic: 0=G1, 1=G2, 2=G3
+            const remainder = daysFromRef % 3;
+            return `G${remainder + 1}`;
+        }
+        
+        // Helper to get the next rotation group
+        function getNextGroup(currentGroup) {
+            if (currentGroup === 'G1') return 'G2';
+            if (currentGroup === 'G2') return 'G3';
+            return 'G1'; // G3 rotates back to G1
+        }
+        
+        function formatDisplayDate(dateStr) {
+            const today = dateToString(getToday());
+            const tomorrow = addDays(today, 1);
+            
+            if (dateStr === today) return "Today";
+            if (dateStr === tomorrow) return "Tomorrow";
+
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            const date = new Date(dateStr + 'T00:00:00'); // Ensure date object is created correctly
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // --- AUTOMATIC ROTATION LOGIC ---
+
+        // 0. Filter out banned players from existing plans for the current and next day
+        function filterBannedPlayersFromPlans() {
+            const currentPlan = getCurrentPlan();
+            const nextPlan = getNextDayPlan();
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+
+            // Filter Today's Hit List (Day N)
+            currentPlan.today = currentPlan.today.filter(id => {
+                const player = getPlayerById(id);
+                return player && !isPlayerBanned(player, appData.currentViewDate);
+            });
+
+            // Filter Today's Backlog (Day N, hidden T2 group for Day N+1) - Not strictly needed if rotation logic is smart, but good for cleanup
+            currentPlan.backlog = currentPlan.backlog.filter(id => {
+                const player = getPlayerById(id);
+                return player && !isPlayerBanned(player, appData.currentViewDate);
+            });
+            
+            // Filter Tomorrow's Backlog (Day N+1, Column 3)
+            nextPlan.backlog = nextPlan.backlog.filter(id => {
+                const player = getPlayerById(id);
+                // Check ban status for Day N+1
+                return player && !isPlayerBanned(player, nextDayStr); 
+            });
+        }
+
+
+        // 1. Ensures Pacing Players are always scheduled for the next day's backlog (unconditional)
+        function schedulePacingPlayers() {
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            const nextPlan = getNextDayPlan(); // Day N+1
+            
+            // Only consider pacing players NOT banned on Day N+1
+            const pacingPlayerIds = appData.roster
+                .filter(p => p.pacing && !isPlayerBanned(p, nextDayStr)) 
+                .map(p => p.id);
+            
+            // Filter out existing pacing players from tomorrow's backlog first
+            nextPlan.backlog = nextPlan.backlog.filter(id => !appData.roster.find(p => p.id === id)?.pacing);
+
+            // Add ALL unbanned pacing players back unconditionally
+            pacingPlayerIds.forEach(pId => {
+                if(!nextPlan.backlog.includes(pId)) {
+                    nextPlan.backlog.push(pId);
+                }
+            });
+        }
+        
+        /**
+         * 2. Orchestrates Tier 2 rotation and promotes other players from the CURRENT day's backlog.
+         */
+        function applyAutomaticRotation() {
+            const currentPlan = getCurrentPlan(); // Day N Plan (Source Backlog & Target Hit List)
+            const nextPlan = getNextDayPlan(); // Day N+1 Plan (Overflow Destination Backlog, Col 3)
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+
+            const todayGroup = getGroup(appData.currentViewDate);
+            const nextGroup = getNextGroup(todayGroup);
+            const nextNextGroup = getNextGroup(nextGroup);
+            const maxHp = appData.settings.globalHp;
+
+            let currentDamage = currentPlan.today.reduce((total, id) => {
+                const player = getPlayerById(id);
+                return total + (player ? getDamageValue(player.target) : 0);
+            }, 0);
+            
+            // --- 1. Auto-schedule T2 players based on rotation ---
+            
+            // Only iterate through T2 players who are NOT banned on Day N or Day N+1/N+2
+            const t2Players = appData.roster.filter(p => p.tier === 'Tier 2');
+            const newT2Today = [];
+            
+            t2Players.forEach(player => {
+                // Remove player from all plans first to avoid duplicates/stale entries
+                currentPlan.today = currentPlan.today.filter(id => id !== player.id);
+                currentPlan.backlog = currentPlan.backlog.filter(id => id !== player.id);
+                nextPlan.backlog = nextPlan.backlog.filter(id => id !== player.id);
+                
+                // If banned on Day N, skip to next player. They are filtered from all lists.
+                // if (isPlayerBanned(player, appData.currentViewDate)) {
+                //     console.log(`T2 Player ${player.name} skipped: Banned on Day N.`);
+                //     return;
+                // }
+
+                if (player.group === todayGroup) {
+                    // T2 (Active Group): Push to Today's Hit List (only if room)
+                    const dmg = getDamageValue(player.target);
+                    if (currentDamage + dmg <= maxHp) {
+                        newT2Today.push(player.id);
+                        currentDamage += dmg;
+                    } else {
+                        // If T2 active group is full, push to tomorrow's backlog, but ONLY if not banned Day N+1
+                        if (!isPlayerBanned(player, nextDayStr)) {
+                            nextPlan.backlog.push(player.id);
+                        }
+                        console.log(`T2 Player ${player.name} moved to Day N+1 Backlog due to Cap.`);
+                    }
+                } else if (player.group === nextGroup) {
+                    // T2 (Tomorrow's Group): Push to Today's Backlog (Col 2 - ready for tomorrow). 
+                    // Player is not banned on Day N (checked above), so they can wait here.
+                    currentPlan.backlog.push(player.id);
+                } else if (player.group === nextNextGroup) {
+                    // T2 (Day After Tomorrow's Group): Push to Tomorrow's Backlog (Col 3 - ready for day N+2).
+                    // Check ban status for Day N+2 (by checking against Day N+1's date)
+                    if (!isPlayerBanned(player, nextDayStr)) {
+                        nextPlan.backlog.push(player.id);
+                    } else {
+                        console.log(`T2 Player ${player.name} skipped: Banned on Day N+2.`);
+                    }
+                }
+            });
+
+            // Add new T2 Today players to the start of the list
+            currentPlan.today.unshift(...newT2Today);
+
+            // --- 2. Promote other players from current day's backlog (manual adds, overflow from prev day) ---
+            
+            // Candidates are players already in the current day's backlog (who aren't T2 or already handled).
+            // They MUST NOT be banned on Day N (guaranteed by filterBannedPlayersFromPlans or T2 logic).
+            const candidates = currentPlan.backlog.filter(pId => {
+                const player = getPlayerById(pId);
+                // Exclude T2 players, which are now managed by rotation logic above
+                return player && player.tier !== 'Tier 2'; 
+            });
+
+            const promotedPlayers = [];
+            const overflowPlayers = [];
+            let cutoffFound = false;
+
+            for (const playerId of candidates) {
+                const player = getPlayerById(playerId);
+                if (!player) continue; // Should be impossible if filterBannedPlayersFromPlans ran
+
+                const dmg = getDamageValue(player.target);
+
+                if (!cutoffFound && currentDamage + dmg <= maxHp) {
+                    currentDamage += dmg;
+                    promotedPlayers.push(playerId);
+                } else {
+                    cutoffFound = true;
+                    // Only move to overflow if they are NOT banned on Day N+1 (the target day)
+                    if (!isPlayerBanned(player, nextDayStr)) {
+                        overflowPlayers.push(playerId);
+                    } else {
+                        console.log(`Non-T2 Player ${player.name} dropped: Banned on Day N+1.`);
+                    }
+                }
+            }
+            
+            // Update Plans for promotion/overflow
+            currentPlan.today.push(...promotedPlayers); // Add promoted players to the end of today's list
+            currentPlan.backlog = currentPlan.backlog.filter(id => !promotedPlayers.includes(id)); // Remove promoted players
+
+            // Move OVERFLOW players (non-T2) to Day N+1's Backlog (The real "Tomorrow's Backlog", Col 3)
+            overflowPlayers.forEach(id => {
+                if (!nextPlan.backlog.includes(id)) {
+                    nextPlan.backlog.push(id);
+                }
+            });
+
+            // Clean up currentPlan.backlog - only T2 (G-Next) should remain.
+            currentPlan.backlog = currentPlan.backlog.filter(pId => {
+                const player = getPlayerById(pId);
+                return player && player.tier === 'Tier 2'; 
+            });
+
+            if (promotedPlayers.length > 0) {
+                 console.log(`✅ AUTO PROMOTION: Promoted ${promotedPlayers.length} non-T2 players from Today's Backlog into the Hit List.`);
+            }
+        }
+        
+        /**
+         * 3. Enforces the Global HP Cap by moving excess players to the next day's backlog.
+         * This runs AFTER rotation and manual additions to trim the final list.
+         */
+        function enforceDamageCap() {
+            const currentPlan = getCurrentPlan();
+            const nextPlan = getNextDayPlan();
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            const maxHp = appData.settings.globalHp;
+            
+            let currentDamage = 0;
+            const keptPlayers = [];
+            let excessPlayers = [];
+
+            // Iterate through the list to find the cutoff point
+            for (let i = 0; i < currentPlan.today.length; i++) {
+                const playerId = currentPlan.today[i];
+                const player = getPlayerById(playerId);
+                if (!player) continue;
+
+                const dmg = getDamageValue(player.target);
+
+                if (currentDamage + dmg <= maxHp) {
+                    currentDamage += dmg;
+                    keptPlayers.push(playerId);
+                } else {
+                    // Player exceeds the cap, add them and the rest of the list to excessPlayers
+                    excessPlayers.push(playerId);
+                    excessPlayers.push(...currentPlan.today.slice(i + 1));
+                    break; 
+                }
+            }
+
+            if (excessPlayers.length > 0) {
+                // Remove players from today's list
+                currentPlan.today = keptPlayers; 
+                
+                // Move excess players to the next day's backlog (Col 3), if not banned Day N+1
+                const newlyMovedToBacklog = [];
+                excessPlayers.forEach(id => {
+                    const player = getPlayerById(id);
+                    if (player && !isPlayerBanned(player, nextDayStr) && !nextPlan.backlog.includes(id)) { 
+                        nextPlan.backlog.push(id);
+                        newlyMovedToBacklog.push(player.name);
+                    } else if (player && isPlayerBanned(player, nextDayStr)) {
+                         console.log(`Player ${player.name} dropped during cap enforcement: Banned on Day N+1.`);
+                    }
+                });
+                
+                if (newlyMovedToBacklog.length > 0) {
+                    console.log(`🚨 MANUAL CAP ENFORCED: ${newlyMovedToBacklog.length} players moved to Tomorrow's Backlog. Today's Planned Damage: ${currentDamage.toFixed(2)}B.`);
+                }
+            }
+        }
+
+
+        // --- RENDER FUNCTIONS ---
+        
+        // Helper function to render a player card in the Hit List (Column 2)
+        function renderTodayCard(playerId, todayGroup) {
+            const player = getPlayerById(playerId);
+            if(!player) return '';
+
+            let cardClass = 'border-slate-700 bg-slate-800';
+            let groupIndicator = '';
+            const isBanned = isPlayerBanned(player, appData.currentViewDate);
+            
+            if (isBanned) {
+                cardClass = 'border-red-500/50 bg-red-900/10';
+            } else if (player.pacing) {
+                cardClass = 'border-indigo-500/50 bg-indigo-900/10';
+            } else if (player.tier === 'Tier 2') {
+                 if(player.group === todayGroup) {
+                     groupIndicator = '<i class="fa-solid fa-check-circle text-emerald-400 text-xs ml-1" title="Active Group"></i>';
+                 } else {
+                     groupIndicator = '<i class="fa-solid fa-triangle-exclamation text-red-400 text-xs ml-1" title="Out of Rotation"></i>';
+                 }
+            }
+
+            if (isBanned) {
+                groupIndicator += '<i class="fa-solid fa-ban text-red-400 text-xs ml-1" title="Banned"></i>';
+            }
+
+            return `
+                <div class="p-3 rounded-lg border ${cardClass} flex justify-between items-center group relative animate-fade-in">
+                    <div class="flex items-center gap-3">
+                        <div class="h-2 w-2 rounded-full ${player.group === todayGroup ? 'bg-emerald-500' : 'bg-slate-500'}"></div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-200">
+                                ${player.name} ${groupIndicator}
+                            </div>
+                            <div class="text-[10px] text-slate-400">${player.tier} ${player.group || ''}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                            <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
+                            <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
+                            <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
+                            <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
+                        </select>
+                        <button onclick="moveToBacklog(${player.id})" class="text-xs text-pink-400 hover:text-pink-300 p-1" title="Push to Backlog (Tomorrow's List)" ${isBanned ? 'disabled' : ''}>
+                            <i class="fa-solid fa-share"></i>
+                        </button>
+                        <button onclick="removeFromToday(${player.id})" class="text-xs text-red-400 hover:text-red-300 p-1" title="Remove" ${isBanned ? 'disabled' : ''}>
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to render a player card in the Available Pool (Column 1)
+        function renderPoolCard(player, todayGroup, isUsedNext, isBanned) {
+            
+            const isTodayGroup = player.group === todayGroup;
+            const isTier2 = player.tier === 'Tier 2';
+            
+            let borderClass = "border-slate-700";
+            let textClass = "text-slate-200";
+            let actionIcon = "fa-arrow-right";
+            let actionColor = "hover:bg-emerald-600";
+            let actionTitle = "Move to Today's List";
+            let actionFunction = `moveToToday(${player.id})`;
+            let disabledClass = "";
+            let banIndicator = "";
+
+            if (isBanned) {
+                borderClass = "border-red-500/50 bg-red-900/10";
+                textClass = "text-red-400";
+                disabledClass = "opacity-50 cursor-not-allowed";
+                banIndicator = '<i class="fa-solid fa-ban text-red-400 text-xs ml-1" title="Banned"></i>';
+                actionFunction = "#";
+                actionTitle = "Player is banned";
+            } else if (player.pacing) {
+                borderClass = "border-indigo-500/50 bg-indigo-900/10";
+                textClass = "text-indigo-400";
+            } else if (isTier2 && isTodayGroup) {
+                borderClass = "border-emerald-500/50 bg-emerald-900/10";
+                textClass = "text-emerald-400";
+            }
+
+            // If the player is in the next day's backlog (Col 3), change the main action to move them to today.
+            // Pacing players are special and keep their main action as "Move to Today" regardless.
+            const backlogButton = isUsedNext && !player.pacing ? 
+                `<button onclick="removeFromBacklog(${player.id})" class="h-8 w-8 rounded-full bg-slate-700 hover:bg-red-600 text-slate-400 hover:text-white transition flex items-center justify-center" title="Remove from Next Day's Schedule (Backlog)">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` :
+                `<button onclick="${isBanned ? '#' : `moveToBacklogFromPool(${player.id})`}" class="h-8 w-8 rounded-full bg-slate-700 hover:bg-pink-600 text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned ? 'opacity-50 cursor-not-allowed' : ''}" title="${isBanned ? 'Player is banned' : 'Schedule for Backlog (Day N+1)'}">
+                    <i class="fa-regular fa-clock"></i>
+                </button>`;
+
+            return `
+                <div class="p-3 rounded-lg border ${borderClass} bg-slate-800 flex justify-between items-center card-hover group ${disabledClass}">
+                    <div class="flex-1 min-w-0">
+                        <div class="font-bold text-sm ${textClass} truncate">
+                            ${player.name}
+                            ${player.pacing ? '<i class="fa-solid fa-bolt text-indigo-400 text-xs ml-1" title="Pacing Player (Continuous Schedule)"></i>' : ''} ${banIndicator}
+                        </div>
+                        <div class="text-[10px] text-slate-400 flex gap-2">
+                            <span>${player.tier}</span>
+                            ${player.group ? `<span class="px-1 rounded bg-slate-700">${player.group}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <!-- New: Inline Target Edit in Pool -->
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                            <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
+                            <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
+                            <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
+                            <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
+                        </select>
+                        <!-- END Target Edit -->
+                        ${backlogButton}
+                        <button onclick="${isBanned ? '#' : actionFunction}" class="h-8 w-8 rounded-full bg-slate-700 ${actionColor} text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned ? 'opacity-50 cursor-not-allowed' : ''}" title="${actionTitle}">
+                            <i class="fa-solid ${actionIcon}"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to render a player card in the Backlog (Column 3)
+        function renderBacklogCard(playerId) {
+            const player = getPlayerById(playerId);
+            if(!player) return '';
+
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            const isBanned = isPlayerBanned(player, nextDayStr);
+            const isPacing = player.pacing;
+            let cardClass = 'border border-slate-700 bg-slate-800/50';
+            let pacingIcon = isPacing ? '<i class="fa-solid fa-bolt text-indigo-400 text-[10px]" title="Pacing Player (Continuous Schedule)"></i>' : '';
+            
+            if (isBanned) {
+                cardClass = 'border border-red-500/50 bg-red-900/10';
+                pacingIcon += '<i class="fa-solid fa-ban text-red-400 text-[10px] ml-1" title="Banned"></i>';
+            }
+            
+            return `
+                <div class="p-3 rounded-lg ${cardClass} flex justify-between items-center opacity-75 hover:opacity-100 transition">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-pink-500 text-xs"></i>
+                        <div>
+                            <div class="font-bold text-sm text-slate-300">${player.name} ${pacingIcon}</div>
+                            <div class="text-[10px] text-slate-500">${player.tier}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                            <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
+                            <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
+                            <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
+                            <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
+                        </select>
+                        <button onclick="removeFromBacklog(${playerId})" class="text-xs text-slate-500 hover:text-red-400" title="Remove from Next Day's Schedule" ${isBanned ? 'disabled' : ''}>
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        function renderCategoryHeader(categoryInfo) {
+            return `
+                <h3 class="text-sm font-semibold uppercase ${categoryInfo.color} border-b border-slate-700/50 pb-1 mt-4 first:mt-0">
+                    ${categoryInfo.title}
+                </h3>
+            `;
+        }
+
+        function renderDashboard() {
+            
+            // 0. Clean up plans first (remove any players who became banned today or tomorrow)
+            filterBannedPlayersFromPlans();            // 1. Schedule Pacing Players (Unconditional -> Backlog N+1)
+            schedulePacingPlayers();
+            
+            // 2. Apply Automatic Rotation (T2 logic and promotion from Backlog N -> Today N)
+            applyAutomaticRotation();
+
+            // 3. ENFORCE GLOBAL DAMAGE CAP (Trims the final list after manual additions/rotation)
+            enforceDamageCap();
+
+            saveData(); // Save the newly scheduled players/rotations/enforced lists immediately
+
+            const currentPlan = getCurrentPlan();
+            const nextPlan = getNextDayPlan();
+            const todayGroup = getGroup(appData.currentViewDate);
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            
+            // 4. Update Date Header
+            document.getElementById('date-picker').value = appData.currentViewDate;
+            document.getElementById('display-date').innerText = formatDisplayDate(appData.currentViewDate);
+            document.getElementById('hit-list-title').innerText = formatDisplayDate(appData.currentViewDate) + "'s";
+            document.getElementById('backlog-title').innerText = formatDisplayDate(nextDayStr) + "'s";
+
+            // 5. Update Group
+            document.getElementById('display-group').innerText = todayGroup;
+            document.getElementById('display-group').className = `text-3xl font-black ${getGroupColor(todayGroup)}`;
+
+            // 6. Render Available Pool
+            const poolList = document.getElementById('pool-list');
+            poolList.innerHTML = '';
+            
+            const filter = document.getElementById('pool-filter').value;
+            
+            appData.roster.forEach(player => {
+                const isUsedToday = currentPlan.today.includes(player.id);
+                const isUsedNext = nextPlan.backlog.includes(player.id); 
+                const isBannedToday = isPlayerBanned(player, appData.currentViewDate);
+                const isBannedNext = isPlayerBanned(player, nextDayStr);
+
+                // USED TODAY: If player is in today's hit list, they are not available in the pool.
+                if(isUsedToday) return; 
+                
+                // T2/Pacing Logic:
+                if (player.pacing) {
+                    // Pacing player is only available if NOT scheduled for tomorrow (Col 3).
+                    if (isUsedNext) return;
+                } else if (player.tier === 'Tier 2') {
+                    const playerGroup = player.group;
+                    const nextGroup = getNextGroup(todayGroup);
+                    const nextNextGroup = getNextGroup(nextGroup);
+                    
+                    // T2 players in G-Active are in today's list (Col 2) - EXCLUDED
+                    if (playerGroup === todayGroup && currentPlan.today.includes(player.id)) return;
+                    // T2 players in G-Next are in today's backlog (Col 2 - hidden holding for G-Next) - EXCLUDED
+                    if (playerGroup === nextGroup && currentPlan.backlog.includes(player.id)) return;
+                    // T2 players in G-Next-Next are in tomorrow's backlog (Col 3) - EXCLUDED
+                    if (playerGroup === nextNextGroup && nextPlan.backlog.includes(player.id)) return;
+                } else {
+                    // Non-T2, Non-Pacing: If they are scheduled for tomorrow, they are not available in the pool.
+                    if (isUsedNext) return;
+                }
+
+
+                const isManualTier = ['Leader', 'Vice', 'Officer'].includes(player.tier);
+
+                if(filter === 'active-group' && player.group !== todayGroup) return;
+                if(filter === 'manual' && !isManualTier) return;
+                if(filter.startsWith('T') && player.tier !== filter) return;
+
+                poolList.innerHTML += renderPoolCard(player, todayGroup, isUsedNext, isBannedToday);
+            });
+
+            // 7. Render Today's Hit List (Categorized)
+            const todayListEl = document.getElementById('today-list');
+            todayListEl.innerHTML = '';
+            
+            let globalDmg = 0;
+            let t2Dmg = 0;
+            
+            const todayGroups = currentPlan.today.reduce((acc, pid) => {
+                const player = getPlayerById(pid);
+                if (player) {
+                    const category = getCategoryKey(player);
+                    if (!acc[category]) acc[category] = [];
+                    acc[category].push(pid);
+                    
+                    const dmg = getDamageValue(player.target);
+                    globalDmg += dmg;
+                    if(player.tier === 'Tier 2') t2Dmg += dmg;
+                }
+                return acc;
+            }, {});
+
+            TIER_CATEGORIES.forEach(cat => {
+                if (todayGroups[cat.key] && todayGroups[cat.key].length > 0) {
+                    todayListEl.innerHTML += renderCategoryHeader(cat);
+                    todayGroups[cat.key].forEach(pid => {
+                        todayListEl.innerHTML += renderTodayCard(pid, todayGroup); 
+                    });
+                }
+            });
+
+            // 8. Render Backlog (Next Day's List) (Categorized)
+            const backlogListEl = document.getElementById('backlog-list');
+            backlogListEl.innerHTML = '';
+            let backlogTotal = 0;
+            
+            // Group Backlog players by category
+            const backlogGroups = nextPlan.backlog.reduce((acc, pid) => {
+                const player = getPlayerById(pid);
+                if (player) {
+                    const category = getCategoryKey(player);
+                    if (!acc[category]) acc[category] = [];
+                    acc[category].push(pid);
+                    backlogTotal += getDamageValue(player.target);
+                }
+                return acc;
+            }, {});
+            
+            TIER_CATEGORIES.forEach(cat => {
+                 if (backlogGroups[cat.key] && backlogGroups[cat.key].length > 0) {
+                    backlogListEl.innerHTML += renderCategoryHeader(cat);
+                    backlogGroups[cat.key].forEach(pid => {
+                        backlogListEl.innerHTML += renderBacklogCard(pid);
+                    });
+                }
+            });
+
+            // 9. Update Stats (Global, T2, and Next Day Backlog)
+            updateStatBars(globalDmg, t2Dmg, backlogTotal, nextPlan.backlog.length);
+        }
+
+        function updateStatBars(global, t2, backlogDmg, backlogCount) {
+            // Global
+            const globalMax = appData.settings.globalHp;
+            const globalPct = Math.min((global / globalMax) * 100, 100);
+            document.getElementById('global-hp-text').innerText = `${global.toFixed(2)}B / ${globalMax}B`;
+            document.getElementById('global-hp-bar').style.width = `${globalPct}%`;
+            document.getElementById('global-hp-bar').className = `progress-bar-fill ${global > globalMax ? 'bg-red-500' : 'bg-emerald-500'}`;
+            document.getElementById('global-remaining').innerText = `${(globalMax - global).toFixed(2)}B Remaining`;
+            if(global > globalMax) document.getElementById('global-remaining').innerText = "OVER CAPACITY! (Auto-enforced)";
+
+            // T2
+            const t2Max = appData.settings.t2Cap;
+            const t2Pct = Math.min((t2 / t2Max) * 100, 100);
+            document.getElementById('t2-hp-text').innerText = `${t2.toFixed(2)}B / ${t2Max}B`;
+            document.getElementById('t2-hp-bar').style.width = `${t2Pct}%`;
+            document.getElementById('t2-hp-bar').className = `progress-bar-fill ${t2 > t2Max ? 'bg-red-500' : 'bg-amber-500'}`;
+            document.getElementById('t2-remaining').innerText = `${(t2Max - t2).toFixed(2)}B Left`;
+            document.getElementById('t2-status-msg').innerText = t2 > t2Max ? "⚠️ Reduce T2 Players" : "Rotation Group";
+
+            // Next Day Backlog
+            document.getElementById('next-backlog-count').innerText = `${backlogCount} Players`;
+            document.getElementById('next-backlog-dmg').innerText = `${backlogDmg.toFixed(2)}B`;
+        }
+
+
+        // --- DATE NAVIGATION ---
+
+        function changeDate(days) {
+            const newDateStr = addDays(appData.currentViewDate, days);
+            changeDateTo(newDateStr);
+        }
+
+        function changeDateTo(dateStr) {
+            appData.currentViewDate = dateStr;
+            saveData(); 
+            renderDashboard(); // Manually trigger rendering after data change
+        }
+        
+        // --- ACTIONS ---
+
+        function moveToToday(id) {
+            const currentPlan = getCurrentPlan();
+            // Ban check against current date
+            if (isPlayerBanned(getPlayerById(id), appData.currentViewDate)) {
+                 console.log("Cannot move player to today's list: Player is currently banned.");
+                 return;
+            }
+            
+            // 1. Add to today's list (if not already there)
+            if (!currentPlan.today.includes(id)) {
+                 currentPlan.today.push(id);
+            }
+            // 2. Remove from next day's backlog (Cleanup: if they are hitting today, they shouldn't be scheduled for tomorrow)
+            const nextPlan = getNextDayPlan();
+            nextPlan.backlog = nextPlan.backlog.filter(pid => pid !== id);
+            
+            saveData();
+            renderDashboard();
+        }
+        
+        // Move directly from Pool (Col 1) to Backlog (Col 3)
+        function moveToBacklogFromPool(id) {
+            const nextPlan = getNextDayPlan();
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            
+            // Ban check against next day's date
+            if (isPlayerBanned(getPlayerById(id), nextDayStr)) {
+                 console.log("Cannot schedule player for tomorrow: Player is banned on that day.");
+                 return;
+            }
+
+            // 1. Add to next day's backlog (for the day AFTER the current view date)
+            if (!nextPlan.backlog.includes(id)) {
+                nextPlan.backlog.push(id);
+            }
+            // 2. Cleanup: Ensure they are not also on the current day's list.
+            const currentPlan = getCurrentPlan();
+            currentPlan.today = currentPlan.today.filter(pid => pid !== id);
+
+            saveData();
+            renderDashboard();
+        }
+
+
+        function removeFromToday(id) {
+            const currentPlan = getCurrentPlan();
+            currentPlan.today = currentPlan.today.filter(pid => pid !== id);
+            saveData();
+            renderDashboard();
+        }
+
+        /**
+         * Pushes a player from Today's Hit List (Col 2) to Tomorrow's Backlog (Col 3).
+         */
+        function moveToBacklog(id) {
+            const currentPlan = getCurrentPlan();
+            const nextPlan = getNextDayPlan(); // Gets the object for Day N+1
+            const nextDayStr = addDays(appData.currentViewDate, 1);
+            
+            // 1. Remove from today's list (Day N)
+            currentPlan.today = currentPlan.today.filter(pid => pid !== id);
+            
+            // 2. Add to next day's backlog (Day N+1, which is Column 3), if not banned
+            if (!isPlayerBanned(getPlayerById(id), nextDayStr) && !nextPlan.backlog.includes(id)) {
+                nextPlan.backlog.push(id);
+            } else if (isPlayerBanned(getPlayerById(id), nextDayStr)) {
+                console.log("Player cannot be moved to backlog: Banned on Day N+1.");
+            }
+            
+            saveData();
+            renderDashboard();
+        }
+        
+        /**
+         * Removes a player from Tomorrow's Backlog (Col 3).
+         */
+        function removeFromBacklog(id) {
+            // Note: T2 players and Pacing players will be re-added on the next render if they are still unbanned
+            const nextPlan = getNextDayPlan();
+            nextPlan.backlog = nextPlan.backlog.filter(pid => pid !== id);
+            saveData();
+            renderDashboard();
+        }
+
+        function clearToday() {
+             console.log(`User confirmed clearing the Hit List for ${formatDisplayDate(appData.currentViewDate)}.`);
+             const currentPlan = getCurrentPlan();
+             currentPlan.today = [];
+             saveData();
+             renderDashboard();
+        }
+        
+        function updateTarget(id, newTarget) {
+            // Find player by ID (ID passed from HTML element is a string, ensure it's converted)
+            const p = getPlayerById(id);
+            if(p) {
+                p.target = newTarget;
+                saveData();
+                // No need to re-render dashboard entirely just for target change, but we call it to update HP stats
+                renderDashboard();
+            }
+        }
+        
+        // --- ROSTER/SETTINGS ---
+
+        function renderRosterTable() {
+            const tbody = document.getElementById('roster-table-body');
+            tbody.innerHTML = '';
+            
+            const today = dateToString(getToday());
+
+            // The roster is already sorted by sortRoster() on submission/load
+            appData.roster.forEach(p => {
+                const isBanned = isPlayerBanned(p, today);
+                const tr = document.createElement('tr');
+                tr.className = `transition ${isBanned ? 'bg-red-900/40 opacity-70' : 'hover:bg-slate-700/50'}`;
+                tr.innerHTML = `
+                    <td class="p-3 font-medium ${p.pacing ? 'text-indigo-300' : 'text-white'}">${p.name}</td>
+                    <td class="p-3"><span class="bg-slate-700 px-2 py-1 rounded text-xs">${p.tier}</span></td>
+                    <td class="p-3">${p.group || '-'}</td>
+                    <td class="p-3">
+                        <button onclick="togglePacing(${p.id})" class="text-xs px-2 py-1 rounded-full font-bold transition ${p.pacing ? 'bg-indigo-600 text-white hover:bg-indigo-500' : 'bg-slate-700 text-slate-400 hover:bg-slate-600'}">
+                            ${p.pacing ? '<i class="fa-solid fa-bolt mr-1"></i> ON' : 'OFF'}
+                        </button>
+                    </td>
+                    <td class="p-3 font-mono text-indigo-300">${p.target}</td>
+                    <td class="p-3 text-sm">
+                        ${isBanned ? `<span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-ban mr-2"></i>Until: ${p.bannedUntil}</span>` : 'Active'}
+                    </td>
+                    <td class="p-3 text-right">
+                        <button onclick="editPlayer(${p.id})" class="text-slate-400 hover:text-white mr-3"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="openBanModal(${p.id})" class="text-slate-400 hover:text-red-400 mr-3 ${isBanned ? 'text-red-400' : ''}"><i class="fa-solid fa-ban"></i></button>
+                        <button onclick="deletePlayer(${p.id})" class="text-slate-400 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function togglePacing(id) {
+            const p = getPlayerById(id);
+            if(p) {
+                p.pacing = !p.pacing;
+                saveData();
+                renderRosterTable();
+                renderDashboard(); 
+            }
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabId) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-roster').classList.add('hidden');
+            document.getElementById('view-settings').classList.add('hidden');
+            
+            document.getElementById('btn-dashboard').className = "px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition";
+            document.getElementById('btn-roster').className = "px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition";
+            document.getElementById('btn-settings').className = "px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-medium hover:bg-slate-700 transition";
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabId}`).className = "px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition";
+
+            if(tabId === 'roster') renderRosterTable();
+            if(tabId === 'settings') loadSettings();
+            if(tabId === 'dashboard') renderDashboard();
+        }
+
+        function loadSettings() {
+            document.getElementById('setting-global-hp').value = appData.settings.globalHp;
+            document.getElementById('setting-t2-cap').value = appData.settings.t2Cap;
+            document.getElementById('setting-ref-date').value = appData.settings.refDate;
+        }
+
+        // --- HELPERS (Cont) ---
+        function getGroupColor(g) {
+            if(g === 'G1') return 'text-cyan-400';
+            if(g === 'G2') return 'text-purple-400';
+            if(g === 'G3') return 'text-lime-400';
+            return 'text-white';
+        }
+
+        function toggleGroupSelect() {
+            const tier = document.getElementById('modal-tier').value;
+            const grp = document.getElementById('modal-group');
+            if(tier === 'Tier 2') grp.disabled = false;
+            else { grp.value = ""; grp.disabled = true; }
+        }
+
+        // --- MODAL & SETTINGS (Cont) ---
+
+        function openAddModal() {
+            document.getElementById('player-modal').classList.remove('hidden');
+            document.getElementById('modal-id').value = '';
+            document.getElementById('modal-name').value = '';
+            document.getElementById('modal-tier').value = 'Tier 2';
+            document.getElementById('modal-group').value = '';
+            document.getElementById('modal-target').value = '2B';
+            document.getElementById('modal-pacing').value = 'false';
+            toggleGroupSelect(); 
+        }
+
+        function closeModal() {
+            document.getElementById('player-modal').classList.add('hidden');
+        }
+
+        function openBanModal(id) {
+            const p = getPlayerById(id);
+            if(!p) return;
+            document.getElementById('ban-modal').classList.remove('hidden');
+            document.getElementById('ban-modal-id').value = p.id;
+            document.getElementById('ban-modal-until').value = p.bannedUntil || '';
+        }
+
+        function closeBanModal() {
+            document.getElementById('ban-modal').classList.add('hidden');
+        }
+
+        function submitBan() {
+            const id = document.getElementById('ban-modal-id').value;
+            const bannedUntil = document.getElementById('ban-modal-until').value || null;
+            
+            const p = getPlayerById(id);
+            if(!p) return;
+            
+            const today = dateToString(getToday());
+            
+            if(bannedUntil) {
+                // Ban
+                p.bannedUntil = bannedUntil;
+                // Add to today's hitlist and tomorrow's backlog if not already
+                const currentPlan = getCurrentPlan();
+                const nextPlan = getNextDayPlan();
+                if(!currentPlan.today.includes(id)) {
+                    currentPlan.today.push(id);
+                }
+                if(!nextPlan.backlog.includes(id)) {
+                    nextPlan.backlog.push(id);
+                }
+            } else {
+                // Unban
+                p.bannedUntil = null;
+                // Remove from plans
+                Object.keys(appData.dailyPlans).forEach(dateStr => {
+                    const plan = appData.dailyPlans[dateStr];
+                    plan.today = plan.today.filter(pid => pid !== id);
+                    plan.backlog = plan.backlog.filter(pid => pid !== id);
+                });
+            }
+            
+            sortRoster();
+            saveData();
+            closeBanModal();
+            renderRosterTable();
+            renderDashboard();
+        }
+
+        function submitPlayer() {
+            const id = document.getElementById('modal-id').value;
+            const name = document.getElementById('modal-name').value.trim();
+
+            if(!name) {
+                console.error("Name required");
+                return;
+            }
+
+            const newPlayerData = {
+                name: name,
+                tier: document.getElementById('modal-tier').value,
+                group: document.getElementById('modal-group').value,
+                target: document.getElementById('modal-target').value,
+                pacing: document.getElementById('modal-pacing').value === 'true',
+            };
+
+            if(id) {
+                // Edit
+                const p = getPlayerById(id);
+                if(p) {
+                    Object.assign(p, newPlayerData);
+                }
+            } else {
+                // Add
+                const existingPlayer = appData.roster.find(p => p.name.toLowerCase() === name.toLowerCase());
+                if (existingPlayer) {
+                    console.log(`Player with name ${name} already exists. Skipping.`);
+                    closeModal();
+                    return; 
+                }
+
+                appData.roster.push({
+                    id: Date.now(),
+                    ...newPlayerData,
+                });
+            }
+            
+            sortRoster(); 
+            saveData();
+            closeModal();
+            renderRosterTable();
+            renderDashboard(); // Rerender dashboard to apply ban filters
+        }
+
+        function editPlayer(id) {
+            const p = getPlayerById(id);
+            if(!p) return;
+            openAddModal();
+            document.getElementById('modal-id').value = p.id;
+            document.getElementById('modal-name').value = p.name;
+            document.getElementById('modal-tier').value = p.tier;
+            document.getElementById('modal-group').value = p.group;
+            document.getElementById('modal-target').value = p.target;
+            document.getElementById('modal-pacing').value = p.pacing ? 'true' : 'false';
+            toggleGroupSelect();
+        }
+
+        function deletePlayer(id) {
+            console.log(`User confirmed deleting player with ID ${id}.`);
+            appData.roster = appData.roster.filter(p => p.id !== id);
+            // Also remove from all daily plans
+            Object.keys(appData.dailyPlans).forEach(dateStr => {
+                const plan = appData.dailyPlans[dateStr];
+                plan.today = plan.today.filter(pid => pid !== id);
+                plan.backlog = plan.backlog.filter(pid => pid !== id);
+            });
+
+            saveData();
+            renderRosterTable();
+            renderDashboard();
+        }
+
+        function saveSettings() {
+            appData.settings.globalHp = parseFloat(document.getElementById('setting-global-hp').value);
+            appData.settings.t2Cap = parseFloat(document.getElementById('setting-t2-cap').value);
+            appData.settings.refDate = document.getElementById('setting-ref-date').value;
+            saveData();
+            console.log("Configuration saved successfully!");
+            renderDashboard();
+        }
+        
+        function resetData() {
+             console.log("Factory Reset initiated. Clearing all data.");
+             localStorage.clear();
+             location.reload();
+        }
+
+        // Init
+        document.getElementById('pool-filter').addEventListener('change', renderDashboard);
+        document.getElementById('date-picker').value = appData.currentViewDate;
+        loadData();
+
+    </script>
+</body>
+</html>
