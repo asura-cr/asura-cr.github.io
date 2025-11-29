@@ -572,7 +572,7 @@
 
         // Load data from server
         function loadData() {
-            fetch('http://139.59.26.34:3000/api/roster.json')
+            fetch('https://helix-of-fate.duckdns.org/api/roster.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => {
                     appData.roster = data;
@@ -587,12 +587,12 @@
                     updateLoginText();
                 });
 
-            fetch('http://139.59.26.34:3000/api/settings.json')
+            fetch('https://helix-of-fate.duckdns.org/api/settings.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => appData.settings = data)
                 .catch(() => {});
 
-            fetch('http://139.59.26.34:3000/api/dailyPlans.json')
+            fetch('https://helix-of-fate.duckdns.org/api/dailyPlans.json')
                 .then(response => response.ok ? response.json() : Promise.reject('Not found'))
                 .then(data => appData.dailyPlans = data)
                 .catch(() => {});
@@ -607,7 +607,7 @@
 
         // Login function
         function login(password) {
-            fetch('http://139.59.26.34:3000/api/login', {
+            fetch('https://helix-of-fate.duckdns.org/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password })
@@ -665,19 +665,19 @@
             const headers = { 'Content-Type': 'application/json' };
             if (token) headers.Authorization = `Bearer ${token}`;
 
-            fetch('http://139.59.26.34:3000/api/roster.json', {
+            fetch('https://helix-of-fate.duckdns.org/api/roster.json', {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify(appData.roster)
             }).catch(error => console.error('Failed to save roster:', error));
 
-            fetch('http://139.59.26.34:3000/api/settings.json', {
+            fetch('https://helix-of-fate.duckdns.org/api/settings.json', {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify(appData.settings)
             }).catch(error => console.error('Failed to save settings:', error));
 
-            fetch('http://139.59.26.34:3000/api/dailyPlans.json', {
+            fetch('https://helix-of-fate.duckdns.org/api/dailyPlans.json', {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify(appData.dailyPlans)
@@ -1004,13 +1004,13 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned || player.target === '2B' || player.target === '750M' ? 'disabled' : ''}>
                             <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
                             <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
                             <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
                             <option value="500M" ${player.target === '500M' ? 'selected' : ''}>500M</option>
                         </select>
-                        ${isAdmin ? `<button onclick="moveToBacklog(${player.id})" class="text-xs text-pink-400 hover:text-pink-300 p-1" title="Push to Backlog (Tomorrow's List)" ${isBanned ? 'disabled' : ''}>
+                        ${isAdmin ? `<button onclick="moveToBacklog(${player.id})" class="text-xs text-pink-400 hover:text-pink-300 p-1" title="Push to Backlog (Tomorrow's List)" ${isBanned || player.target === '2B' || player.target === '750M' ? 'disabled opacity-50 cursor-not-allowed' : ''}>
                             <i class="fa-solid fa-share"></i>
                         </button>
                         <button onclick="removeFromToday(${player.id})" class="text-xs text-red-400 hover:text-red-300 p-1" title="Remove" ${isBanned ? 'disabled' : ''}>
@@ -1057,7 +1057,7 @@
                 `<button onclick="removeFromBacklog(${player.id})" class="h-8 w-8 rounded-full bg-slate-700 hover:bg-red-600 text-slate-400 hover:text-white transition flex items-center justify-center" title="Remove from Next Day's Schedule (Backlog)">
                     <i class="fa-solid fa-trash"></i>
                 </button>` :
-                `<button onclick="${isBanned ? '#' : `moveToBacklogFromPool(${player.id})`}" class="h-8 w-8 rounded-full bg-slate-700 hover:bg-pink-600 text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned ? 'opacity-50 cursor-not-allowed' : ''}" title="${isBanned ? 'Player is banned' : 'Schedule for Backlog (Day N+1)'}">
+                `<button onclick="${isBanned || player.target === '2B' || player.target === '750M' ? '#' : `moveToBacklogFromPool(${player.id})`}" class="h-8 w-8 rounded-full bg-slate-700 hover:bg-pink-600 text-slate-400 hover:text-white transition flex items-center justify-center ${isBanned || player.target === '2B' || player.target === '750M' ? 'opacity-50 cursor-not-allowed' : ''}" title="${isBanned || player.target === '2B' || player.target === '750M' ? 'Cannot schedule: banned or high target' : 'Schedule for Backlog (Day N+1)'}">
                     <i class="fa-regular fa-clock"></i>
                 </button>`;
 
@@ -1075,7 +1075,7 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <!-- New: Inline Target Edit in Pool -->
-                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned || player.target === '2B' || player.target === '750M' ? 'disabled' : ''}>
                             <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
                             <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
                             <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
@@ -1117,7 +1117,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned ? 'disabled' : ''}>
+                         <select onchange="updateTarget(${player.id}, this.value)" class="target-select" ${isBanned || player.target === '2B' || player.target === '750M' ? 'disabled' : ''}>
                             <option value="2B" ${player.target === '2B' ? 'selected' : ''}>2B</option>
                             <option value="1B" ${player.target === '1B' ? 'selected' : ''}>1B</option>
                             <option value="750M" ${player.target === '750M' ? 'selected' : ''}>750M</option>
